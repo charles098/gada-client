@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 // Pages
-import Home from 'routes/Home';
+import Home from './routes/Home';
 
 // Store
-import { store } from 'store/config';
+import { store } from './store/config';
 
 const App: FC = () => {
     return (
