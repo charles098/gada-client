@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import LocationIcon from '../../images/icons/LocationIcon';
 
 /*
 <MainWrapper>
@@ -41,6 +42,12 @@ const Main: FC = () => {
                 <LocationTitle>국내 여행지</LocationTitle>
                 <LocationContainer>국내 여행지 리스트</LocationContainer>
             </LocationWrapper>
+            <LocationIcon 
+             width='15px'
+             height='15px'
+             color='blue'
+             style={{opacity: 0.5}}
+            />
         </MainWrapper>
     )
 };
