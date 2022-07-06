@@ -4,15 +4,15 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 // Pages
-import Home from './routes/Home';
-import Plan from './routes/Plan';
+import Home from 'routes/Home';
+import Plan from 'routes/Plan';
 
 // Style
-import { theme } from './styles/theme';
-import { GlobalStyle } from './styles/global-style';
+import { theme } from 'styles/theme';
+import { GlobalStyle } from 'styles/global-style';
 
 // Store
-import { store } from './store/config';
+import { store } from 'store/config';
 
 const App: FC = () => {
     return (

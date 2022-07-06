@@ -1,10 +1,30 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
+// containers
+import PlanInfo from 'containers/Plan/PlanInfo';
+import PlaceOption from 'containers/Plan/PlaceOption';
+import Map from 'containers/Plan/Map';
+import PlanMaker from 'containers/Plan/PlanMaker';
+
 const Plan: FC = () => {
     return (
         <Container>
-            <div>Plan</div>
+            {/* header 삭제 */}
+            <div
+                className="header"
+                style={{
+                    width: '100%',
+                    height: '100px',
+                    backgroundColor: '#60A5F8',
+                }}
+            />
+            <PlanInfo />
+            <PlaceOption />
+            <div className="main">
+                <Map />
+                <PlanMaker />
+            </div>
         </Container>
     );
 };
@@ -12,7 +32,10 @@ const Plan: FC = () => {
 export default Plan;
 
 const Container = styled.div`
-    width: 100px;
-    height: 100px;
-    background-color: ${({ theme }) => theme.PRIMARY};
+    width: 100%;
+    background-color: yellow;
+
+    & .main {
+        display: flex;
+    }
 `;

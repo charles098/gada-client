@@ -10,6 +10,7 @@
             "images/*": ["src/images/*"],
             "routes/*": ["src/routes/*"],
             "store/*": ["src/store/*"],
+            "styles/*": ["src/styles/*"],
             "types/*": ["src/types/*"],
             "utils/*": ["src/utils/*"]
         },
