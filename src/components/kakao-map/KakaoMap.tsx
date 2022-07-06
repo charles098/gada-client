@@ -2,16 +2,27 @@ import React, { FC } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
 
 interface LatLng {
-    lat: number | string;
-    lng: number | string;
+    lat: number;
+    lng: number;
 }
+interface KakaoMapProps {
+    center: LatLng;
+    style: any;
+}
+/**
+ * @Todo : defaultProps 미사용시 any 를 KakoMapProps로 변경
+ */
+const KakaoMap: FC = ({ center, style, children }: any): JSX.Element => {
+    return (
+        <Map center={center} style={style}>
+            {children}
+        </Map>
+    );
+};
 
-const KakaoMap: FC = ({ center, style }: any): JSX.Element => {
-    return <Map center={center} style={style} />;
+KakaoMap.defaultProps = {
+    center: { lat: 33.5563, lng: 126.79581 },
+    style: { width: '100%', height: '800px' },
 };
 
 export default KakaoMap;
-KakaoMap.defaultProps = {
-    center: { lat: 33.5563, lng: 126.79581 },
-    style: { width: '100%', height: '360px' },
-};
