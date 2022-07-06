@@ -7,7 +7,7 @@ module.exports = {
         'plugin:import/warnings',
         'plugin:prettier/recommended',
         'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint',
+        'prettier',
     ],
     rules: {
         'linebreak-style': 0,
@@ -24,5 +24,16 @@ module.exports = {
             { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
         ],
         'jsx-a11y/no-noninteractive-element-interactions': 0,
+        'react/function-component-definition': [
+            2,
+            { namedComponents: 'arrow-function' },
+        ],
+        'no-param-reassign': [
+            'error',
+            {
+                props: true,
+                ignorePropertyModificationsFor: ['state'],
+            },
+        ],
     },
 };
