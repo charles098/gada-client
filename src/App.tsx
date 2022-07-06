@@ -1,10 +1,15 @@
 import React, { FC } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 
 // Pages
 import Home from './routes/Home';
-import Main from './routes/Main';
+import Plan from './routes/Plan';
+
+// Style
+import { theme } from './styles/theme';
+import { GlobalStyle } from './styles/global-style';
 
 // Store
 import { store } from './store/config';
@@ -12,12 +17,15 @@ import { store } from './store/config';
 const App: FC = () => {
     return (
         <Provider store={store}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/main" element={<Main />}/>
-                </Routes>
-            </BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/plan" element={<Plan />} />
+                    </Routes>
+                </BrowserRouter>
+            </ThemeProvider>
         </Provider>
     );
 };
