@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-//import styled from 'styled-component';
+import styled from 'styled-components';
 
 /*
 <MainWrapper>

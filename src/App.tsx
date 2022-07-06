@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components';
 // Pages
 import Home from './routes/Home';
 import Plan from './routes/Plan';
+import Main from './routes/Main';
 
 // Style
 import { theme } from './styles/theme';
@@ -23,6 +24,7 @@ const App: FC = () => {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/plan" element={<Plan />} />
+                        <Route path="/main" element={<Main />} />
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>
