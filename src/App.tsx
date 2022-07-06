@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 
 // Pages
 import Home from './routes/Home';
+import Main from './routes/Main';
 
 // Store
 import { store } from './store/config';
@@ -14,6 +15,7 @@ const App: FC = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/main" element={<Main />}/>
                 </Routes>
             </BrowserRouter>
         </Provider>
