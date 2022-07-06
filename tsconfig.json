@@ -3,6 +3,7 @@
         "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],
         "baseUrl": ".",
+        "types":["kakao.maps.d.ts"],
         "paths": {
             "components/*": ["src/components/*"],
             "containers/*": ["src/containers/*"],
