@@ -5,7 +5,7 @@ import jejuImg from 'images/jeju.jpg';
 import dragImg from 'images/drag2.png';
 
 const PlaceOption: FC = () => {
-    const optionArr = Array.from({ length: 8 });
+    const optionArr = Array.from({ length: 20 });
 
     return (
         <Container>
@@ -31,12 +31,13 @@ const Container = styled.div`
     width: auto;
     height: 130px;
     margin: 30px;
+    position: relative;
 
     & > .drag-explanation {
         width: 280px;
         position: absolute;
-        left: 1350px;
-        top: 120px;
+        left: 1080px;
+        top: -30px;
     }
 
     /* background-color: green; */
