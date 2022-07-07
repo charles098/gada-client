@@ -95,4 +95,8 @@ const PlanCardContainer = styled(Slider)`
         width: 25px;
         height: 25px;
     }
+
+    .slick-disabled {
+        opacity: 0;
+    }
 `;
