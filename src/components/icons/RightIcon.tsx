@@ -5,7 +5,7 @@ const RightIcon = ({
     width = '15px',
     color = '#666666',
     ...props
-}: React.SVGProps<SVGSVGElement>) => (
+}: SVGProps<SVGSVGElement>) => (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
       width={width} 
