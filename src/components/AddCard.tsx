@@ -1,10 +1,16 @@
 import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { PlusIcon } from 'components/icons';
+import { RootState } from 'store/modules'
+import { largeModal } from 'store/modules/modal';
 
 const AddCard : FC = () => {
+    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
+    const dispatch = useDispatch();
+    
     return (
-        <AddPlanCard>
+        <AddPlanCard onClick={() => {dispatch(largeModal(!largeModalIsOpen))}}>
             <AddButtonHelper />
             <AddButton>
                 <PlusIcon style={plusIconStyle}/>
