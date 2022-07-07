@@ -18,7 +18,6 @@ const AddCard : FC = () => {
 export default AddCard;
 
 const AddPlanCard = styled.div`
-    width: 200px;
     height: 230px;
     display: flex;
     flex-direction: column;

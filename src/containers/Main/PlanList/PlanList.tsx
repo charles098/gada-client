@@ -1,5 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import {
     LeftIcon,
     RightIcon
@@ -9,6 +12,16 @@ import PlanCard from 'components/PlanCard';
 import jejuImg from 'images/jeju.jpg';
 
 const PlanList : FC = () => {
+    const settings = {
+        infinite: false,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 2,
+        arrow: false,
+        nextArrow: <RightIcon/>,
+        prevArrow: <LeftIcon/>
+    }
+
     const defaultProps = {
         dday: 'D-45',
         src: jejuImg,
@@ -21,10 +34,11 @@ const PlanList : FC = () => {
         <PlanListWrapper>
             <PlanListTitle>유저님, 여행을 준비하세요.</PlanListTitle>
             <PlanListContainer>
-                <LeftIcon style={leftIconStyle}/>
-                <PlanCardContainer>
+                <PlanCardContainer
+                {...settings}
+                >
                     <AddCard />
-                    {[...Array(4)].map(() => (
+                    {[...Array(10)].map(() => (
                         <PlanCard
                         dday={defaultProps.dday}
                         src={defaultProps.src}
@@ -34,7 +48,6 @@ const PlanList : FC = () => {
                         />
                     ))}
                 </PlanCardContainer>
-                <RightIcon style={rightIconStyle}/>
             </PlanListContainer>
         </PlanListWrapper>
     )
@@ -62,30 +75,18 @@ const PlanListContainer = styled.div`
     border-radius: 10px;
 `;
 
-const leftIconStyle = {
-    marginRight: '54px',
-    cursor: 'pointer',
-}
+const PlanCardContainer = styled(Slider)`
+    width: 1200px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-left: auto;
+    margin-right: auto;
 
-const rightIconStyle = {
-    marginLeft: '54px',
-    cursor: 'pointer',
-}
-
-const PlanCardContainer = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-
-    > div:not(div:first-of-type) {
-        margin-left: 20px;
-    }
-
-    > div {
+    & > div > div > div {
         cursor: pointer;
     }
 
-    > div:hover {
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    & > div > div > div:hover {
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
 `;

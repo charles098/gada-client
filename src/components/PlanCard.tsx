@@ -32,12 +32,11 @@ const PlanCard = ( {
 export default PlanCard;
 
 const Wrapper = styled.div`
-    width: 200px;
     height: 230px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center
+    align-items: center;
 `;
 
 const Dday = styled.div`
