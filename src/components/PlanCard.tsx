@@ -91,5 +91,5 @@ const PlanTitle = styled.div`
 
 const PlanDate = styled.div`
     font-size: 15px;
-    color: #CFCFCF;
+    color: #aaaaaa;
 `;

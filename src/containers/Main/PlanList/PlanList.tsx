@@ -81,12 +81,18 @@ const PlanCardContainer = styled(Slider)`
     padding-right: 50px;
     margin-left: auto;
     margin-right: auto;
-
+    
     & > div > div > div {
         cursor: pointer;
     }
 
     & > div > div > div:hover {
         box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .slick-next,
+    .slick-prev {
+        width: 25px;
+        height: 25px;
     }
 `;

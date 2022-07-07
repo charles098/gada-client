@@ -53,5 +53,5 @@ const Title = styled.div`
 
 const Instruction = styled.div`
     font-size: 15px;
-    color: #CFCFCF;
+    color: #aaaaaa;
 `;
