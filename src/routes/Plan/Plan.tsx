@@ -34,7 +34,6 @@ export default Plan;
 
 const Container = styled.div`
     width: 1440px;
-    background-color: yellow;
     margin: auto;
 
     & .main {
