@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import jejuImg from 'images/jeju.jpg';
 import dragImg from 'images/drag2.png';
 
-const PlaceOption: FC = () => {
+const OptionMaker: FC = () => {
     const optionArr = Array.from({ length: 20 });
 
     return (
@@ -25,7 +25,7 @@ const PlaceOption: FC = () => {
     );
 };
 
-export default PlaceOption;
+export default OptionMaker;
 
 const Container = styled.div`
     width: auto;
