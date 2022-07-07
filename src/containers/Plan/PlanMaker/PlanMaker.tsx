@@ -8,7 +8,9 @@ const PlanMaker: FC = () => {
 export default PlanMaker;
 
 const Container = styled.div`
-    width: 1000px;
-    height: 850px;
+    width: 635px;
+    height: 620px;
+    margin: 0 30px 30px 30px;
+
     background-color: purple;
 `;

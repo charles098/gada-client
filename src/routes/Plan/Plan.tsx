@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 // containers
-import PlanInfo from 'containers/Plan/PlanInfo';
-import PlaceOption from 'containers/Plan/PlaceOption';
-import Map from 'containers/Plan/Map';
-import PlanMaker from 'containers/Plan/PlanMaker';
+import PlanInfo from 'containers/plan/PlanInfo';
+import PlaceOption from 'containers/plan/PlaceOption';
+import Map from 'containers/plan/Map';
+import PlanMaker from 'containers/plan/PlanMaker';
 
 const Plan: FC = () => {
     return (
@@ -15,10 +15,11 @@ const Plan: FC = () => {
                 className="header"
                 style={{
                     width: '100%',
-                    height: '100px',
+                    height: '60px',
                     backgroundColor: '#60A5F8',
                 }}
             />
+
             <PlanInfo />
             <PlaceOption />
             <div className="main">
@@ -32,8 +33,9 @@ const Plan: FC = () => {
 export default Plan;
 
 const Container = styled.div`
-    width: 100%;
+    width: 1440px;
     background-color: yellow;
+    margin: auto;
 
     & .main {
         display: flex;

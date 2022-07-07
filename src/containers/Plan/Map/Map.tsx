@@ -8,7 +8,9 @@ const Map: FC = () => {
 export default Map;
 
 const Container = styled.div`
-    width: 100%;
-    height: 850px;
+    width: 810px;
+    height: 620px;
+    margin: 0 30px 30px 30px;
+
     background-color: orange;
 `;
