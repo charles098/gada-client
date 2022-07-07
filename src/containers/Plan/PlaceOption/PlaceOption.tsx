@@ -39,8 +39,6 @@ const Container = styled.div`
         left: 1080px;
         top: -30px;
     }
-
-    /* background-color: green; */
 `;
 
 const AddOptionButton = styled.button`

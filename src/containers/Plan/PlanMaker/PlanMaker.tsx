@@ -6,6 +6,7 @@ import SetupRoute from 'components/SetupRoute';
 
 const PlanMaker: FC = () => {
     const dayList = Array.from({ length: 3 }, (x, i) => i + 1);
+
     return (
         <Container>
             <DayPicker>
@@ -68,7 +69,6 @@ const DayPicker = styled.div`
 `;
 
 const RouteContainer = styled.div`
-    /* background-color: orange; */
     width: 100%;
     height: 560px;
     display: flex;

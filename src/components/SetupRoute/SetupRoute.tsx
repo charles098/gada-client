@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
-const SetupRoute = () => {
+const SetupRoute: FC = () => {
     const placeArr = Array.from({ length: 3 });
 
     return (
@@ -23,6 +23,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 15px;
 `;
 
 const Place = styled.div`
@@ -31,7 +32,7 @@ const Place = styled.div`
     cursor: move;
     width: 400px;
     height: 80px;
-    margin-top: 40px;
+    margin-bottom: 35px;
     border-radius: 13px;
     box-shadow: 1px 1px 10px 1px #d9d9d9;
     display: flex;

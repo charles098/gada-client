@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
-const ShowDistance = () => {
+const ShowDistance: FC = () => {
     return <Container />;
 };
 
