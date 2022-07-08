@@ -29,10 +29,12 @@ const HeaderContainer = styled.header`
     justify-content: flex-start;
     align-items: center;
     background-color: #60A5F8;
+    font-family: 'Jalnan';
+    letter-spacing: 1px;
 `;
 
 const HeaderTitle = styled.h1`
-    font-size: 32px;
+    font-size: 30px;
     color: white;
     cursor: default;
 `;
