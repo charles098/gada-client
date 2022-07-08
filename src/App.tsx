@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 // Pages
-import Home from './routes/Home';
-import Plan from './routes/Plan';
-import Main from './routes/Main';
+import Home from 'routes/Home';
+import Plan from 'routes/Plan';
+import Main from 'routes/Main';
 
 // Style
 import { theme } from './styles/theme';

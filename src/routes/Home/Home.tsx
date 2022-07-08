@@ -1,7 +1,8 @@
-import React from "react";
+import React, { FC } from 'react';
+import KakaoMap from '../../components/kakao-map/KakaoMap';
 
-const Home = () => {
-  return <div>Home</div>
-}
+const Home: FC = () => {
+    return <KakaoMap />;
+};
 
 export default Home;
