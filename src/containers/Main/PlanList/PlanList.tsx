@@ -64,6 +64,7 @@ const PlanListTitle = styled.h2`
     font-size: 30px;
     margin-bottom: 35px;
     cursor: default;
+    font-family: 'NotoSansBold';
 `;
 
 const PlanListContainer = styled.div`
