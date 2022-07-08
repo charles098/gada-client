@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // containers
 import PlanInfo from 'containers/plan/PlanInfo';
-import PlaceOption from 'containers/plan/OptionMaker';
+import OptionMaker from 'containers/plan/OptionMaker';
 import Map from 'containers/plan/Map';
 import PlanMaker from 'containers/plan/PlanMaker';
 
@@ -21,7 +21,7 @@ const Plan: FC = () => {
             />
 
             <PlanInfo />
-            <PlaceOption />
+            <OptionMaker />
             <div className="main">
                 <Map />
                 <PlanMaker />

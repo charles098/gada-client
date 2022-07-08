@@ -14,7 +14,7 @@ const PlanMaker: FC = () => {
                     All
                 </button>
                 {dayList.map((day) => (
-                    <button type="button" className="day-button">
+                    <button key={day} type="button" className="day-button">
                         Day{day}
                     </button>
                 ))}
