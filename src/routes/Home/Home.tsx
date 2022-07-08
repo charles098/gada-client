@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import KakaoMap from '../../components/kakao-map/KakaoMap';
+import PlanModal from 'containers/Plan/PlanModal';
 
 const Home: FC = () => {
-    return <KakaoMap />;
+    return <PlanModal />;
 };
 
 export default Home;
