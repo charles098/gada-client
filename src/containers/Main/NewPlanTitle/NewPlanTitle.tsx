@@ -23,8 +23,8 @@ const NewPlanTitle : FC = () => {
 export default NewPlanTitle;
 
 const TitleWrapper = styled.div`
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 `
 
 const TitleLabel = styled.label`
@@ -35,7 +35,7 @@ const TitleLabel = styled.label`
   margin-bottom: 10px;
 `
 const TitleInput = styled.input`
-  width: 310px;
+  width: 270px;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 500;

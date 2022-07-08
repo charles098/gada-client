@@ -17,8 +17,8 @@ const Main: FC = () => {
         <Wrapper>
             {largeModalIsOpen && (
                 <Modal
-                width={624}
-                height={800}
+                width={524}
+                height={700}
                 >
                     {/* 모달 내부 - 여기서 커스텀 하면 됩니다 */}
                     <Form>
@@ -56,7 +56,7 @@ const Form = styled.form`
 const SubmitButton = styled.input`
   background-color: #60A5F8;
   border: none;
-  padding: 10px 150px;
+  padding: 10px 120px;
   font-size: 18px;
   color: white;
   font-weight: bold;

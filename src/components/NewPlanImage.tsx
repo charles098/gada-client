@@ -29,9 +29,9 @@ const NewPlanImage: FC = () => {
 export default NewPlanImage;
 
 const Wrapper = styled.div<{ src : string }>`
-  width: 151px;
-  height: 151px;
-  margin-top: 20px;
+  width: 120px;
+  height: 120px;
+  margin-top: 10px;
   border-radius: 50%;
   position: relative;
   background-color: #ECF3FD;
@@ -43,8 +43,8 @@ const Wrapper = styled.div<{ src : string }>`
 const AddImageButton = styled.input`
   position: absolute;
   z-index: 10;
-  width: 151px;
-  height: 151px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   opacity: 0;
   cursor: pointer;

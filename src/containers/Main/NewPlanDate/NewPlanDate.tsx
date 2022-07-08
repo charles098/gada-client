@@ -17,7 +17,7 @@ const NewPlanDate: FC = () => {
     const getDateInput = useCallback((calendar: any) => {
         const start = calendar.startDate.toLocaleDateString();
         const end = calendar.endDate.toLocaleDateString();
-        return `${start}-${end}`
+        return `${start} ~ ${end}`
     }, [Calendar])
     return (
         <>
@@ -61,7 +61,7 @@ const DateLabel = styled.label`
   margin-bottom: 10px;
 `
 const DateInput = styled.input`
-  width: 310px;
+  width: 270px;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 500;
@@ -76,7 +76,7 @@ const DateRangeWrapper = styled(DateRange)`
   background-color: white;
 
   .rdrMonth {
-    width: 370px;
+    width: 320px;
   }
 
   .rdrMonthAndYearWrapper {
