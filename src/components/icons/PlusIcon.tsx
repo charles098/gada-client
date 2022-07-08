@@ -5,7 +5,7 @@ const PlusIcon = ({
     width = '36px',
     color = '#4A8AF7',
     ...props
-}: React.SVGProps<SVGSVGElement>) => (
+}: SVGProps<SVGSVGElement>) => (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
       width={width} 
