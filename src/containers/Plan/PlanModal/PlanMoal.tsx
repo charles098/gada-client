@@ -44,11 +44,6 @@ const PlanModal = () => {
     const [searchFormInput, setSearchFormInput] = useState<string>();
 
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
-    const [search, setSearch] = useState<any>([]);
-
-    function handleSubmit(e: FormEvent<HTMLDivElement>) {
-        e.preventDefault();
-    }
 
     return (
         <Modal width={1111} height={884}>
