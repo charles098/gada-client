@@ -1,5 +1,7 @@
+/* eslint-disable camelcase */
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
+import PlaceItem from 'containers/Plan/PlanModal/PlaceItem';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { largeModal } from 'store/modules/modal';
@@ -7,6 +9,8 @@ import styled from 'styled-components';
 
 const PlanModal = () => {
     const [searchFormInput, setSearchFormInput] = useState<string>();
+
+    const [search, setSearch] = useState<any>([]);
 
     function handleSubmit(e: FormEvent<HTMLDivElement>) {
         e.preventDefault();
@@ -33,6 +37,16 @@ const PlanModal = () => {
                             (data, status, _pagination) => {
                                 if (status === kakao.maps.services.Status.OK) {
                                     console.log(data);
+                                    setSearch(data ?? []);
+                                } else if (
+                                    status ===
+                                    kakao.maps.services.Status.ZERO_RESULT
+                                ) {
+                                    alert('검색 결과가 존재하지 않습니다.');
+                                } else if (
+                                    status === kakao.maps.services.Status.ERROR
+                                ) {
+                                    alert('검색 결과 중 오류가 발생했습니다.');
                                 }
                             },
                         );
@@ -47,12 +61,19 @@ const PlanModal = () => {
                         onChange={(e) => setSearchFormInput(e.target.value)}
                         value={searchFormInput}
                     />
-                    <button type="submit">확인</button>
                 </PlaceSearchForm>
                 <PlaceSearchResult>
                     <header> 검색결과</header>
-                    <div className="contents">HelloWorld</div>
+                    <div className="contents">
+                        {search.map(({ address_name, place_name }: any) => (
+                            <PlaceItem
+                                name={place_name}
+                                address={address_name}
+                            />
+                        ))}
+                    </div>
                 </PlaceSearchResult>
+                <SubmitButton>등록완료</SubmitButton>
             </Contents>
         </Modal>
     );
@@ -103,6 +124,7 @@ const PlaceSearchInput = styled.input`
     margin: 0px;
     margin-left: 25px;
     border: 0px;
+    outline: 0px;
 
     font-family: 'Noto Sans KR';
     font-style: normal;
@@ -122,6 +144,33 @@ const PlaceSearchResult = styled.div`
     }
     .contents {
         margin-top: 20px;
+        height: 400px;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #60a5f8bb;
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: #dedede;
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
     }
+`;
+const SubmitButton = styled.button`
+    width: 430px;
+    height: 56px;
+    background: #60a5f8;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
+    align-self: center;
+    border: 0px;
+
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 32px;
+    color: white;
 `;
 export default PlanModal;
