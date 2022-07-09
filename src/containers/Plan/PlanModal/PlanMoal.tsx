@@ -7,9 +7,43 @@ import { useDispatch } from 'react-redux';
 import { largeModal } from 'store/modules/modal';
 import styled from 'styled-components';
 
+interface placeInfo {
+    place_name: string;
+    place_img_url: string | undefined;
+    place_url?: string;
+    address: string;
+    road_address?: string;
+    lat: string;
+    lng: string;
+}
+
+const searchKakaoImage = async (
+    keyword: string,
+): Promise<string | undefined> => {
+    try {
+        const res = await fetch(
+            `https://dapi.kakao.com/v2/search/image?query=${keyword} &size=1&sort=sim`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'KakaoAK 893bfbac1c7f570ab519588089eea08c',
+                },
+            },
+        );
+
+        const data = await res.json();
+        console.log(keyword, data);
+        return data.documents[0]?.thumbnail_url;
+    } catch (e) {
+        return '';
+    }
+};
+
 const PlanModal = () => {
     const [searchFormInput, setSearchFormInput] = useState<string>();
 
+    const [placeList, setPlaceList] = useState<placeInfo[]>([]);
     const [search, setSearch] = useState<any>([]);
 
     function handleSubmit(e: FormEvent<HTMLDivElement>) {
@@ -33,11 +67,29 @@ const PlanModal = () => {
                         const ps = new kakao.maps.services.Places();
 
                         ps.keywordSearch(
-                            searchFormInput,
-                            (data, status, _pagination) => {
+                            `${searchFormInput} 관광명소`,
+                            async (data, status, _pagination) => {
                                 if (status === kakao.maps.services.Status.OK) {
-                                    console.log(data);
-                                    setSearch(data ?? []);
+                                    // console.log(data);
+                                    const list: any = data.map(
+                                        async (place): Promise<placeInfo> => {
+                                            const place_img_url =
+                                                await searchKakaoImage(
+                                                    place.address_name,
+                                                );
+                                            return {
+                                                place_name: place.place_name,
+                                                place_img_url,
+                                                place_url: place.place_url,
+                                                address: place.address_name,
+                                                road_address:
+                                                    place?.road_address_name,
+                                                lat: place.x,
+                                                lng: place.y,
+                                            };
+                                        },
+                                    );
+                                    setPlaceList(await Promise.all(list));
                                 } else if (
                                     status ===
                                     kakao.maps.services.Status.ZERO_RESULT
@@ -65,10 +117,11 @@ const PlanModal = () => {
                 <PlaceSearchResult>
                     <header> 검색결과</header>
                     <div className="contents">
-                        {search.map(({ address_name, place_name }: any) => (
+                        {placeList.map((data: any) => (
                             <PlaceItem
-                                name={place_name}
-                                address={address_name}
+                                img={data.place_img_url}
+                                name={data.place_name}
+                                address={data.address_name}
                             />
                         ))}
                     </div>
