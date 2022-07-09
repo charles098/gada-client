@@ -19,7 +19,11 @@ const NewPlanImage: FC = () => {
             <AddImageButton
                 type='file'
                 accept="image/jpg, image/png, image/jpeg"
-                onChange={(e: any) => encodeFileToBase64(e.target.files[0])}
+                name="image"
+                onChange={(e: any) => {
+                  if (e.target.files.length > 0)
+                    encodeFileToBase64(e.target.files[0])
+                }}
             />
             {!imageSrc && <PlusIcon style={plusStyle} />}
         </Wrapper>

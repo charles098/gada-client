@@ -29,6 +29,7 @@ const NewPlanDate: FC = () => {
                 </DateLabel>
                 <DateInput
                     type='text'
+                    name="date"
                     value={getDateInput(Calendar[0])}
                     disabled
                 />
@@ -77,6 +78,7 @@ const DateRangeWrapper = styled(DateRange)`
 
   .rdrMonth {
     width: 320px;
+    height: 250px;
   }
 
   .rdrMonthAndYearWrapper {
