@@ -64,6 +64,10 @@ const InputWrapper = styled.input`
 
     &::placeholder { color: #aaaaaa; }
     &:focus { outline:none; }
+    :-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px white inset;
+        box-shadow: 0 0 0 1000px white inset;
+    }
 `
 
 const Email = styled(InputWrapper)`
