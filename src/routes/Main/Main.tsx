@@ -1,63 +1,36 @@
 import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-
-/*
-<MainWrapper>
-    <Header />
-
-    <PlanListWrapper>
-        PlanListTitle
-        PlanListContainer
-            LeftArrow
-                PlanListBox
-            RightArrow
-    <PlanListWrapper />
-
-    <LocationWrapper>
-        LocationTitle
-        LocationContainer
-    <LocationWrapper />
-
-<MainWrapper />
-
-*/
-
-
+import Header from 'components/Header';
+import PlanList from 'containers/main/PlanList';
+import LocationList from 'containers/main/LocationList';
+import Modal from "components/Modal";
+import NewPlanForm from 'containers/main/NewPlanForm';
+import { RootState } from 'store/modules';
 
 const Main: FC = () => {
-    return (
-        <MainWrapper>
-            <Header>여행 가다</Header>
-            <PlanListWrapper>
-                <PlanListTitle>유저님, 여행을 준비하세요.</PlanListTitle>
-                <PlanListContainer>
-                    <LeftArrow>왼쪽 화살표</LeftArrow>
-                    <PlanListBox>여행 리스트</PlanListBox>
-                    <RightArrow>오른쪽 화살표</RightArrow>
-                </PlanListContainer>
-            </PlanListWrapper>
+    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
 
-            <LocationWrapper>
-                <LocationTitle>국내 여행지</LocationTitle>
-                <LocationContainer>국내 여행지 리스트</LocationContainer>
-            </LocationWrapper>
-        </MainWrapper>
+    return (
+        <Wrapper>
+            {largeModalIsOpen && (
+                <Modal
+                width={524}
+                height={713}
+                >
+                    {/* 모달 내부 - 여기서 커스텀 하면 됩니다 */}
+                    <NewPlanForm />
+                </Modal>
+            )}
+            <Header />
+            <PlanList />
+            <LocationList />
+        </Wrapper>
     )
 };
 
-const MainWrapper = styled.div``;
-
-const Header = styled.header``;
-const PlanListWrapper = styled.section``;
-const PlanListTitle = styled.h1``;
-const PlanListContainer = styled.div``;
-const LeftArrow = styled.div``;
-const PlanListBox = styled.div``;
-const RightArrow = styled.div``;
-
-const LocationWrapper = styled.section``;
-const LocationTitle = styled.h1``;
-const LocationContainer = styled.div``;
-
-
 export default Main;
+
+const Wrapper = styled.div`
+    width: 100%;
+`;

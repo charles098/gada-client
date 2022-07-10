@@ -5,7 +5,7 @@ const ChatIcon = ({
     width = '30px',
     color = '#4B2F1B',
     ...props
-}: React.SVGProps<SVGSVGElement>) => (
+}: SVGProps<SVGSVGElement>) => (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
       width={width} 

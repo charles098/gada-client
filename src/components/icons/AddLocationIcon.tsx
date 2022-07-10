@@ -5,7 +5,7 @@ const AddLocationIcon = ({
     width = '234px',
     color = '#3D95FF',
     ...props
-}: React.SVGProps<SVGSVGElement>) => (
+}: SVGProps<SVGSVGElement>) => (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
       width={width} 
