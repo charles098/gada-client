@@ -2,8 +2,8 @@
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
 import PlaceItem from 'containers/Plan/PlanModal/PlaceItem';
-import React, { useRef, useState } from 'react';
-import { Map } from 'react-kakao-maps-sdk';
+import React, { useRef, useState, useMemo } from 'react';
+import { Map, MapInfoWindow } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
 import { searchByKeyword } from './searchScenario';
@@ -15,6 +15,14 @@ const PICK_PALCE = false;
 const PlanModal = () => {
     const [contents, setContents] = useState<boolean>(SEARCH_PLACE);
     const [position, setPosition] = useState<{ lat: number; lng: number }>();
+    const mapCenter: { lat: number; lng: number } = useMemo(
+        () =>
+            position ?? {
+                lat: 33.450701,
+                lng: 126.570667,
+            },
+        [contents],
+    );
     const [searchFormInput, setSearchFormInput] = useState<string>();
     const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
@@ -71,11 +79,7 @@ const PlanModal = () => {
                         </>
                     ) : (
                         <Map
-                            center={{
-                                // 지도의 중심좌표
-                                lat: 33.450701,
-                                lng: 126.570667,
-                            }}
+                            center={mapCenter}
                             style={{
                                 // 지도의 크기
                                 width: '100%',
@@ -83,7 +87,19 @@ const PlanModal = () => {
                             }}
                             level={3}
                             zoomable={false}
-                        />
+                            onClick={(_t, mouseEvent) =>
+                                setPosition({
+                                    lat: mouseEvent.latLng.getLat(),
+                                    lng: mouseEvent.latLng.getLng(),
+                                })
+                            }
+                        >
+                            {position && (
+                                <StyledMapInfoView position={position}>
+                                    hi
+                                </StyledMapInfoView>
+                            )}
+                        </Map>
                     )}
                 </PlaceContents>
                 <SubmitButton>등록완료</SubmitButton>
@@ -178,6 +194,8 @@ const PlaceContents = styled.div`
             box-shadow: inset 0px 0px 5px white;
         }
     }
+    .info_view {
+    }
 `;
 const SubmitButton = styled.button`
     width: 430px;
@@ -191,5 +209,9 @@ const SubmitButton = styled.button`
     font-size: 22px;
     line-height: 32px;
     color: white;
+`;
+
+const StyledMapInfoView = styled(MapInfoWindow)`
+    color: red;
 `;
 export default PlanModal;
