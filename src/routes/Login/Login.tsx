@@ -5,8 +5,11 @@ import {
     ChatIcon,
     GoogleIcon
 } from 'components/icons';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+    const navigate = useNavigate();
+
     return (
         <Wrapper>
             <LoginHeader />
@@ -19,10 +22,10 @@ const Login = () => {
                     <GoogleIcon style={LoginIconStyle} />
                     <LoginText>구글 로그인</LoginText>
                 </GoogleLogin>
-                <LocalLogin>
+                <LocalLogin onClick={() => navigate("/login-form")}>
                     <LoginText>다른 계정으로 로그인</LoginText>
                 </LocalLogin>
-                <Register>회원가입</Register>
+                <Register onClick={() => navigate("/register")}>회원가입</Register>
             </LoginContainer>
         </Wrapper>
     )
