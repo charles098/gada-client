@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
-import PlaceItem from 'containers/Plan/PlanModal/PlaceItem';
+import PlaceItem from 'containers/plan/PlanModal/PlaceItem';
 import React, { useRef, useState, useMemo } from 'react';
 import { Map, MapInfoWindow } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';

@@ -2301,6 +2301,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/sortablejs@^1.13.0", "@types/sortablejs@1":
+  "integrity" "sha512-C3064MH72iEfeGCYEGCt7FCxXoAXaMPG0QPnstcxvPmbl54erpISu06d++FY37Smja64iWy5L8wOyHHBghWbJQ=="
+  "resolved" "https://registry.npmjs.org/@types/sortablejs/-/sortablejs-1.13.0.tgz"
+  "version" "1.13.0"
+
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
@@ -4016,6 +4021,7 @@ chokidar@^2.1.8:
     path-is-absolute "^1.0.0"
     readdirp "^2.2.1"
     upath "^1.1.1"
+>>>>>>> 408753368da5fce244be4b248ad1aff411c4468b
   optionalDependencies:
     fsevents "^1.2.7"
 
