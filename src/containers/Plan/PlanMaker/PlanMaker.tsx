@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import styled from 'styled-components';
 
 import ShowDistance from 'components/ShowDistance';
@@ -14,7 +14,7 @@ const PlanMaker: FC = () => {
                     All
                 </button>
                 {dayList.map((day) => (
-                    <button key={day} type="button" className="day-button">
+                    <button type="button" className="day-button">
                         Day{day}
                     </button>
                 ))}

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface PlanDetail {
+    id: number;
     day: number;
     sequence: number;
     name: string;
@@ -12,10 +13,10 @@ export interface PlanDetail {
     category: string;
 }
 
-export type Plan = {
+export interface Plan {
     setupDay: number;
     planList: Array<PlanDetail>;
-};
+}
 
 const initialState: Plan = {
     setupDay: 1,
@@ -28,12 +29,16 @@ const planDetailSlice = createSlice({
     reducers: {
         initializeData(state: Plan, action) {
             const { initData } = action.payload;
-            state.planList = initData;
+            state.planList = [...initData];
+        },
+        update(state, action) {
+            const { list } = action.payload;
+            state.planList = [...list];
         },
     },
 });
 
 const { reducer, actions } = planDetailSlice;
 
-export const { initializeData } = actions;
+export const { initializeData, update } = actions;
 export default reducer;
