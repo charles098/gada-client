@@ -64,7 +64,7 @@ const dummyPlanDetailList: Array<PlanDetail> = [
 ];
 const dummyPlaceOptionList: Array<PlaceOption> = [
     {
-        id: 1,
+        id: 3,
         day: 1,
         sequence: 3,
         name: 'new plan - 3',
@@ -76,7 +76,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         category: 'fsdf',
     },
     {
-        id: 2,
+        id: 4,
         day: 1,
         sequence: 4,
         name: 'new plan - 4',
@@ -88,7 +88,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         category: 'fsdf',
     },
     {
-        id: 3,
+        id: 0,
         day: 1,
         sequence: 0,
         name: 'new plan - 0',
@@ -100,7 +100,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         category: 'fsdf',
     },
     {
-        id: 4,
+        id: 2,
         day: 1,
         sequence: 2,
         name: 'new plan - 2',

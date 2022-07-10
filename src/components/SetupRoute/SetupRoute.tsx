@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
-import { PlanDetail, sortPlanList } from 'store/modules/plan';
+import { PlanDetail, sortPlanList, dropPlaceOption } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 
@@ -37,7 +37,7 @@ const SetupRoute: FC = () => {
     const onDrop = useCallback((e: React.DragEvent<HTMLElement>) => {
         if (isGrabInnerItem.current) return;
         e.currentTarget.classList.remove('drag-over');
-        console.dir(e.dataTransfer);
+        dispatch(dropPlaceOption({}));
     }, []);
 
     // util로 분리
@@ -65,7 +65,7 @@ const SetupRoute: FC = () => {
                 list={getSortableList(planList)}
                 setList={onSort}
             >
-                {planList.map((plan: PlanDetail) => (
+                {planList.map((plan: PlanDetail, i) => (
                     <Place
                         key={plan.id}
                         onDragStart={onDragStart}

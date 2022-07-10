@@ -4,15 +4,30 @@ import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 
 import { RootState } from 'store/modules';
-import { PlaceOption, sortplaceOptionList } from 'store/modules/plan';
+import {
+    PlaceOption,
+    sortplaceOptionList,
+    grabPlaceOption,
+} from 'store/modules/plan';
 import jejuImg from 'images/jeju.jpg';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
 
+// drop -> end
 const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
+
+    const onDragStart = (e: React.DragEvent<HTMLElement>) => {
+        const id = parseInt(e.currentTarget.dataset.id as string, 10);
+        dispatch(grabPlaceOption({ id }));
+    };
+
+    const onDragEnd = () => {
+        const id = null;
+        dispatch(grabPlaceOption({ id }));
+    };
 
     // util로 분리
     const getSortableList = (list: Array<PlaceOption>): Array<PlaceOption> => {
@@ -36,7 +51,13 @@ const SelectedOption: FC = () => {
                 setList={onSort}
             >
                 {placeOptionList.map((option) => (
-                    <Place key={option.id} draggable="true">
+                    <Place
+                        key={option.id}
+                        data-id={option.id}
+                        draggable="true"
+                        onDragStart={onDragStart}
+                        onDragEnd={onDragEnd}
+                    >
                         <div className="img-container">
                             <img src={jejuImg} alt="img" draggable="false" />
                         </div>

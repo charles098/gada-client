@@ -28,12 +28,14 @@ export interface PlaceOption {
 
 export interface Plan {
     setupDay: number;
+    grabOptionId: number | null;
     planList: Array<PlanDetail>;
     placeOptionList: Array<PlaceOption>;
 }
 
 const initialState: Plan = {
     setupDay: 1,
+    grabOptionId: null,
     planList: [],
     placeOptionList: [],
 };
@@ -55,10 +57,29 @@ const planDetailSlice = createSlice({
             const { list } = action.payload;
             state.placeOptionList = [...list];
         },
+        grabPlaceOption(state: Plan, action) {
+            const { id } = action.payload;
+            state.grabOptionId = id;
+        },
+        dropPlaceOption(state: Plan, action) {
+            const droppedPlan: any = state.placeOptionList.find(
+                (option) => option.id === state.grabOptionId,
+            );
+            const idx = state.placeOptionList.indexOf(droppedPlan);
+            state.placeOptionList.splice(idx, 1);
+            state.planList.push(droppedPlan);
+        },
     },
 });
 
 const { reducer, actions } = planDetailSlice;
 
-export const { initializeData, sortPlanList, sortplaceOptionList } = actions;
+export const {
+    initializeData,
+    sortPlanList,
+    sortplaceOptionList,
+    grabPlaceOption,
+    dropPlaceOption,
+} = actions;
+
 export default reducer;
