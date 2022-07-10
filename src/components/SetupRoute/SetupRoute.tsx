@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useCallback } from 'react';
+import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
@@ -12,6 +12,20 @@ const SetupRoute: FC = () => {
     const planList = useSelector(planListSelector);
     const isGrabInnerItem = useRef(false);
     const enterCount = useRef(0);
+    const newPlan = useRef<HTMLElement | null>(null);
+    const [isDrop, setIsDrop] = useState(false);
+
+    useEffect(() => {
+        if (isDrop) {
+            const node = newPlan.current;
+            node?.classList.add('focus');
+            setTimeout(() => {
+                node?.classList.remove('focus');
+            }, 500);
+            node?.scrollIntoView();
+            setIsDrop(false);
+        }
+    }, [planList]);
 
     const onDragStart = useCallback((e: React.DragEvent<HTMLElement>) => {
         isGrabInnerItem.current = true;
@@ -38,6 +52,7 @@ const SetupRoute: FC = () => {
         if (isGrabInnerItem.current) return;
         e.currentTarget.classList.remove('drag-over');
         dispatch(dropPlaceOption({}));
+        setIsDrop(true);
     }, []);
 
     // util로 분리
@@ -65,16 +80,32 @@ const SetupRoute: FC = () => {
                 list={getSortableList(planList)}
                 setList={onSort}
             >
-                {planList.map((plan: PlanDetail, i) => (
-                    <Place
-                        key={plan.id}
-                        onDragStart={onDragStart}
-                        onDragEnd={onDragEnd}
-                    >
-                        <Name>{plan.name}</Name>
-                        <Location>{plan.address}</Location>
-                    </Place>
-                ))}
+                {planList.map((plan: PlanDetail, index) => {
+                    console.log(index);
+                    if (index === planList.length - 1) {
+                        return (
+                            <Place
+                                ref={newPlan as React.RefObject<HTMLDivElement>}
+                                key={plan.id}
+                                onDragStart={onDragStart}
+                                onDragEnd={onDragEnd}
+                            >
+                                <Name>{plan.name}</Name>
+                                <Location>{plan.address}</Location>
+                            </Place>
+                        );
+                    }
+                    return (
+                        <Place
+                            key={plan.id}
+                            onDragStart={onDragStart}
+                            onDragEnd={onDragEnd}
+                        >
+                            <Name>{plan.name}</Name>
+                            <Location>{plan.address}</Location>
+                        </Place>
+                    );
+                })}
             </ReactSortable>
         </Container>
     );
@@ -107,6 +138,10 @@ const Place = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    &.focus {
+        background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
+    }
 `;
 
 const Name = styled.div`

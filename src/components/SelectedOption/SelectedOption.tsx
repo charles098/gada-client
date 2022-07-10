@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useCallback } from 'react';
+import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
@@ -19,14 +19,20 @@ const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
 
+    useEffect(() => {
+        const map: { [key: number]: boolean } = {};
+        placeOptionList.forEach((option: PlaceOption) => {
+            map[option.id] = false;
+        });
+    }, [placeOptionList]);
+
     const onDragStart = (e: React.DragEvent<HTMLElement>) => {
         const id = parseInt(e.currentTarget.dataset.id as string, 10);
         dispatch(grabPlaceOption({ id }));
     };
 
-    const onDragEnd = () => {
-        const id = null;
-        dispatch(grabPlaceOption({ id }));
+    const onDragEnd = (e: React.DragEvent<HTMLElement>) => {
+        dispatch(grabPlaceOption({ id: null }));
     };
 
     // util로 분리
@@ -102,6 +108,40 @@ const Place = styled.div`
         font-size: 13px;
         margin-top: 3px;
     }
+
+    &.grab-item {
+        width: 400px;
+        height: 80px;
+        margin-bottom: 35px;
+        border-radius: 13px;
+        box-shadow: 1px 1px 10px 1px #d9d9d9;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+`;
+
+const GrabPlace = styled.div`
+    width: 400px;
+    height: 80px;
+    margin-bottom: 35px;
+    border-radius: 13px;
+    box-shadow: 1px 1px 10px 1px #d9d9d9;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`;
+
+const Name = styled.div`
+    font-size: 20px;
+    margin: 0 0 7px 15px;
+`;
+
+const Location = styled.div`
+    margin-left: 15px;
+    color: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 
 export default SelectedOption;
