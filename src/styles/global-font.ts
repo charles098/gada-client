@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-import Jalnan from 'styles/fonts/Jalnand.woff';
+import Jalnan from 'styles/fonts/Jalnan.woff';
 import NotoSansBlack from 'styles/fonts/NotoSansKR-Black.woff';
 import NotoSansBold from 'styles/fonts/NotoSansKR-Bold.woff';
 import NotoSansLight from 'styles/fonts/NotoSansKR-Light.woff';
