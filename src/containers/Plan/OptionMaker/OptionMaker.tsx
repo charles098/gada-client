@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import dragImg from 'images/drag2.png';
-import PlaceOption from 'components/PlaceOption/PlaceOption';
+import PlaceOption from 'components/SelectedOption/SelectedOption';
 
 const OptionMaker: FC = () => {
     return (
@@ -12,8 +12,6 @@ const OptionMaker: FC = () => {
         </Container>
     );
 };
-
-export default OptionMaker;
 
 const Container = styled.div`
     width: auto;
@@ -40,3 +38,5 @@ const AddOptionButton = styled.button`
     font-size: 20px;
     font-weight: bold;
 `;
+
+export default OptionMaker;

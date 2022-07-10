@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import jejuImg from 'images/jeju.jpg';
 
-const PlaceOption = () => {
+const SelectedOption = () => {
     const optionArr = Array.from({ length: 20 }, (v, i) => i + 1);
 
     // const dragStartHandler = (e: React.DragEvent<HTMLElement>) => {};
@@ -21,8 +20,6 @@ const PlaceOption = () => {
         </Container>
     );
 };
-
-export default PlaceOption;
 
 const Container = styled.div`
     width: 100%;
@@ -56,3 +53,5 @@ const Option = styled.div`
         margin-top: 3px;
     }
 `;
+
+export default SelectedOption;

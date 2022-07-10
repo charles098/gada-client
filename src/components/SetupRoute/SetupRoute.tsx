@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
@@ -71,33 +71,34 @@ const SetupRoute: FC = () => {
         dispatch(initializeData({ initData }));
     }, []);
 
-    const onDragStart = (e: React.DragEvent<HTMLElement>) => {
+    const onDragStart = useCallback((e: React.DragEvent<HTMLElement>) => {
         isGrabInnerItem.current = true;
-    };
+    }, []);
 
-    const onDragEnd = (e: React.DragEvent<HTMLElement>) => {
+    const onDragEnd = useCallback((e: React.DragEvent<HTMLElement>) => {
         isGrabInnerItem.current = false;
-    };
+    }, []);
 
-    const onDragEnter = (e: React.DragEvent<HTMLElement>) => {
+    const onDragEnter = useCallback((e: React.DragEvent<HTMLElement>) => {
         if (isGrabInnerItem.current) return;
         enterCount.current += 1;
         e.currentTarget.classList.add('drag-over');
-    };
+    }, []);
 
-    const onDragLeave = (e: React.DragEvent<HTMLElement>) => {
+    const onDragLeave = useCallback((e: React.DragEvent<HTMLElement>) => {
         enterCount.current -= 1;
         if (enterCount.current === 0) {
             e.currentTarget.classList.remove('drag-over');
         }
-    };
+    }, []);
 
-    const onDrop = (e: React.DragEvent<HTMLElement>) => {
+    const onDrop = useCallback((e: React.DragEvent<HTMLElement>) => {
         if (isGrabInnerItem.current) return;
         e.currentTarget.classList.remove('drag-over');
         console.dir(e.dataTransfer);
-    };
+    }, []);
 
+    // util로 분리
     const getSortableList = (list: Array<PlanDetail>): Array<PlanDetail> => {
         return list.map((x) => ({
             ...x,
@@ -105,6 +106,7 @@ const SetupRoute: FC = () => {
         }));
     };
 
+    // util로 분리
     const onSort = (list: Array<PlanDetail>): void => {
         dispatch(update({ list }));
     };
