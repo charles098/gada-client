@@ -12,9 +12,9 @@ import GlobalFont from 'styles/global-font';
 import { store } from 'store/config';
 
 // Pages
-import Home from './routes/Home';
-import Plan from './routes/Plan';
-import Main from './routes/Main';
+import Home from 'routes/Home';
+import Plan from 'routes/Plan';
+import Main from 'routes/Main';
 
 const App: FC = () => {
     return (
