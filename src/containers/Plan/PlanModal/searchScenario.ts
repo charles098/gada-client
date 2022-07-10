@@ -33,7 +33,7 @@ const searchByKeyword = async (
                 const list: any = data.map(
                     async (place): Promise<placeInfo> => {
                         const placeImgUrl = await searchImageByKakaoAPI(
-                            `${place.place_name}&${place.address_name}& 배경사진`,
+                            `${place.place_name}&${place.address_name} 건물사진&장소사진`,
                         );
                         return {
                             place_name: place.place_name,
