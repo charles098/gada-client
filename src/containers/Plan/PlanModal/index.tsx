@@ -1,3 +1,3 @@
-import PlanMoal from './PlanMoal';
+import PlanModal from './PlanModal';
 
-export default PlanMoal;
+export default PlanModal;
