@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import ShowDistance from 'components/ShowDistance';
@@ -14,7 +14,7 @@ const PlanMaker: FC = () => {
                     All
                 </button>
                 {dayList.map((day) => (
-                    <button type="button" className="day-button">
+                    <button key={day} type="button" className="day-button">
                         Day{day}
                     </button>
                 ))}
@@ -26,8 +26,6 @@ const PlanMaker: FC = () => {
         </Container>
     );
 };
-
-export default PlanMaker;
 
 const Container = styled.div`
     width: 635px;
@@ -73,3 +71,5 @@ const RouteContainer = styled.div`
     height: 560px;
     display: flex;
 `;
+
+export default PlanMaker;

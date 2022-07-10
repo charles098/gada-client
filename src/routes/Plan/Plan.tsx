@@ -100,10 +100,34 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         category: 'fsdf',
     },
     {
-        id: 22,
+        id: 888,
         day: 1,
         sequence: 2,
-        name: 'new plan - 2',
+        name: 'new plan - 8',
+        address: 'jeju',
+        longitude: '3',
+        latitude: '4',
+        description: 'fsdf',
+        cost: 2333,
+        category: 'fsdf',
+    },
+    {
+        id: 777,
+        day: 1,
+        sequence: 2,
+        name: 'new plan - 7',
+        address: 'jeju',
+        longitude: '3',
+        latitude: '4',
+        description: 'fsdf',
+        cost: 2333,
+        category: 'fsdf',
+    },
+    {
+        id: 666,
+        day: 1,
+        sequence: 2,
+        name: 'new plan - 6',
         address: 'jeju',
         longitude: '3',
         latitude: '4',
@@ -126,7 +150,7 @@ const Plan: FC = () => {
 
     return (
         <Container>
-            {/* header 삭제 */}
+            {/* header 삭제 예정 */}
             <div
                 className="header"
                 style={{
@@ -146,8 +170,6 @@ const Plan: FC = () => {
     );
 };
 
-export default Plan;
-
 const Container = styled.div`
     width: 1440px;
     margin: auto;
@@ -156,3 +178,5 @@ const Container = styled.div`
         display: flex;
     }
 `;
+
+export default Plan;

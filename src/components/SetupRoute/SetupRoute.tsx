@@ -51,7 +51,7 @@ const SetupRoute: FC = () => {
     const onDrop = useCallback((e: React.DragEvent<HTMLElement>) => {
         if (isGrabInnerItem.current) return;
         e.currentTarget.classList.remove('drag-over');
-        dispatch(dropPlaceOption({}));
+        dispatch(dropPlaceOption());
         setIsDrop(true);
     }, []);
 
@@ -81,7 +81,6 @@ const SetupRoute: FC = () => {
                 setList={onSort}
             >
                 {planList.map((plan: PlanDetail, index) => {
-                    console.log(index);
                     if (index === planList.length - 1) {
                         return (
                             <Place

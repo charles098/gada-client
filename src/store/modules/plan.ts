@@ -61,7 +61,7 @@ const planDetailSlice = createSlice({
             const { id } = action.payload;
             state.grabOptionId = id;
         },
-        dropPlaceOption(state: Plan, action) {
+        dropPlaceOption(state: Plan) {
             const droppedPlan: any = state.placeOptionList.find(
                 (option) => option.id === state.grabOptionId,
             );

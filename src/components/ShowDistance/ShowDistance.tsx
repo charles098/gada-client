@@ -5,9 +5,9 @@ const ShowDistance: FC = () => {
     return <Container />;
 };
 
-export default ShowDistance;
-
 const Container = styled.div`
     background-color: #f2fbcb;
     width: 120px;
 `;
+
+export default ShowDistance;

@@ -11,8 +11,6 @@ const PlanInfo: FC = () => {
     );
 };
 
-export default PlanInfo;
-
 const Container = styled.div`
     width: auto;
     height: 30px;
@@ -46,3 +44,5 @@ const WithController = styled.button`
     width: 80px;
     height: 25px;
 `;
+
+export default PlanInfo;
