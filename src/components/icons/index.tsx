@@ -13,6 +13,7 @@ import RightIcon from './RightIcon';
 import SearchIcon from './SearchIcon';
 import UnlockIcon from './UnlockIcon';
 import WonIcon from './WonIcon';
+import GoogleIcon from './GoogleIcon';
 
 export { 
     AddLocationIcon,
@@ -29,5 +30,6 @@ export {
     RightIcon,
     SearchIcon,
     UnlockIcon,
-    WonIcon
+    WonIcon,
+    GoogleIcon
 } 
