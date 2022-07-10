@@ -2,59 +2,81 @@
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
 import PlaceItem from 'containers/Plan/PlanModal/PlaceItem';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, {
+    ErrorInfo,
+    FormEvent,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+import { Map } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
 import { searchByKeyword } from './searchScenario';
 import { placeInfo } from './types';
 
+const SEARCH_PLACE = true;
+const PIACK_PALCE = false;
+
 const PlanModal = () => {
+    const [contents, setContents] = useState<boolean>(SEARCH_PLACE);
+
     const [searchFormInput, setSearchFormInput] = useState<string>();
     const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
+
+    const handleClick = () => setContents((f) => !f);
 
     const scrollRef = useRef<HTMLDivElement>(null);
     return (
         <Modal width={1111} height={884}>
             <Contents>
                 <Title>
-                    <LocationIcon width="23px" height="27px" />
-                    나만의 장소 추가하기
+                    <ContentsTrigger onClick={() => setContents((f) => !f)}>
+                        <LocationIcon width="23px" height="27px" />
+                        {contents ? '나만의 장소 추가하기' : '검색으로 찾기'}
+                    </ContentsTrigger>
                 </Title>
                 <PlaceSlider>
                     <div>PlaceInfo</div>
                 </PlaceSlider>
-                <PlaceSearchForm
+                <PlaceForm
                     onSubmit={async (e) => {
                         e.preventDefault();
                         try {
                             setPlaceList(
                                 await searchByKeyword(searchFormInput),
                             );
-                        } catch (e) {
-                            alert(e);
+                        } catch (e: any | Error) {
+                            alert(e?.message);
                         }
                     }}
                 >
                     <SearchIcon width="24px" height="23px" />
-                    <PlaceSearchInput
+                    <PlaceInput
                         placeholder="장소를 입력해주세요"
                         onChange={(e) => setSearchFormInput(e.target.value)}
                         value={searchFormInput}
                     />
-                </PlaceSearchForm>
-                <PlaceSearchResult>
-                    <header> 검색결과</header>
-                    <div className="contents" ref={scrollRef}>
-                        {placeList.map((data: any) => (
-                            <PlaceItem
-                                img={data.place_img_url}
-                                name={data.place_name}
-                                address={data.address}
-                            />
-                        ))}
-                    </div>
-                </PlaceSearchResult>
+                </PlaceForm>
+                <PlaceContents>
+                    {contents ? (
+                        <>
+                            <header> 검색결과</header>
+                            <div className="contents" ref={scrollRef}>
+                                {placeList.map((data: any) => (
+                                    <PlaceItem
+                                        img={data.place_img_url}
+                                        name={data.place_name}
+                                        address={data.address}
+                                    />
+                                ))}
+                            </div>
+                        </>
+                    ) : (
+                        <Map />
+                    )}
+                </PlaceContents>
                 <SubmitButton>등록완료</SubmitButton>
             </Contents>
         </Modal>
@@ -68,12 +90,16 @@ const Contents = styled.div`
     padding: 50px 65px 20px 65px;
 `;
 
-const Title = styled.p`
+const Title = styled.p``;
+const ContentsTrigger = styled.button`
+    display: inline;
+    border: 0px;
+    background: none;
+    text-decoration: none;
     font-size: 22px;
     font-weight: 700;
     padding-left: 70px;
     line-height: 32px;
-
     color: #3d95ff;
 `;
 
@@ -83,7 +109,7 @@ const PlaceSlider = styled.div`
     height: 85px;
 `;
 
-const PlaceSearchForm = styled.form`
+const PlaceForm = styled.form`
     box-sizing: border-box;
 
     width: 975px;
@@ -99,7 +125,7 @@ const PlaceSearchForm = styled.form`
     display: flex;
 `;
 
-const PlaceSearchInput = styled.input`
+const PlaceInput = styled.input`
     display: inline-block;
     width: 100%;
     height: 100%;
@@ -115,7 +141,7 @@ const PlaceSearchInput = styled.input`
     line-height: 29px;
 `;
 
-const PlaceSearchResult = styled.div`
+const PlaceContents = styled.div`
     margin: 36px 80px;
     header {
         font-family: 'Noto Sans KR';
