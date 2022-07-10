@@ -14,6 +14,7 @@ const NewPlanTitle : FC = () => {
             <TitleInput
                 type='text'
                 value={title}
+                name="title"
                 onChange={(e: any) => setTitle(e.target.value)}
             />
         </TitleWrapper>
