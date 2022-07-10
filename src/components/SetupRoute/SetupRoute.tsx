@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
-import { PlanDetail, update } from 'store/modules/plan';
+import { PlanDetail, sortPlanList } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 
@@ -50,7 +50,7 @@ const SetupRoute: FC = () => {
 
     // util로 분리
     const onSort = (list: Array<PlanDetail>): void => {
-        dispatch(update({ list }));
+        dispatch(sortPlanList({ list }));
     };
 
     return (

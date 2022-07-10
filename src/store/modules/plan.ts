@@ -47,14 +47,18 @@ const planDetailSlice = createSlice({
             state.planList = [...initPlanDetailList];
             state.placeOptionList = [...initPlaceOptionList];
         },
-        update(state, action) {
+        sortPlanList(state: Plan, action) {
             const { list } = action.payload;
             state.planList = [...list];
+        },
+        sortplaceOptionList(state: Plan, action) {
+            const { list } = action.payload;
+            state.placeOptionList = [...list];
         },
     },
 });
 
 const { reducer, actions } = planDetailSlice;
 
-export const { initializeData, update } = actions;
+export const { initializeData, sortPlanList, sortplaceOptionList } = actions;
 export default reducer;
