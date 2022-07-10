@@ -3,58 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
-import { PlanDetail, initializeData, update } from 'store/modules/plan';
-
-const data: Array<PlanDetail> = [
-    {
-        id: 1,
-        day: 1,
-        sequence: 3,
-        name: 'busan trip - 3',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-    },
-    {
-        id: 2,
-        day: 1,
-        sequence: 4,
-        name: 'busan trip - 4',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-    },
-    {
-        id: 3,
-        day: 1,
-        sequence: 0,
-        name: 'busan trip - 0',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-    },
-    {
-        id: 4,
-        day: 1,
-        sequence: 2,
-        name: 'busan trip - 2',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-    },
-];
+import { PlanDetail, update } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 
@@ -63,13 +12,6 @@ const SetupRoute: FC = () => {
     const planList = useSelector(planListSelector);
     const isGrabInnerItem = useRef(false);
     const enterCount = useRef(0);
-
-    useEffect(() => {
-        const initData: Array<PlanDetail> = data.sort(
-            (a, b) => a.sequence - b.sequence,
-        );
-        dispatch(initializeData({ initData }));
-    }, []);
 
     const onDragStart = useCallback((e: React.DragEvent<HTMLElement>) => {
         isGrabInnerItem.current = true;

@@ -13,14 +13,29 @@ export interface PlanDetail {
     category: string;
 }
 
+export interface PlaceOption {
+    id: number;
+    day: number;
+    sequence: number;
+    name: string;
+    address: string;
+    longitude: string;
+    latitude: string;
+    description: string;
+    cost: number;
+    category: string;
+}
+
 export interface Plan {
     setupDay: number;
     planList: Array<PlanDetail>;
+    placeOptionList: Array<PlaceOption>;
 }
 
 const initialState: Plan = {
     setupDay: 1,
     planList: [],
+    placeOptionList: [],
 };
 
 const planDetailSlice = createSlice({
@@ -28,8 +43,9 @@ const planDetailSlice = createSlice({
     initialState,
     reducers: {
         initializeData(state: Plan, action) {
-            const { initData } = action.payload;
-            state.planList = [...initData];
+            const { initPlanDetailList, initPlaceOptionList } = action.payload;
+            state.planList = [...initPlanDetailList];
+            state.placeOptionList = [...initPlaceOptionList];
         },
         update(state, action) {
             const { list } = action.payload;
