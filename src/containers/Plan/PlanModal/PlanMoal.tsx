@@ -16,7 +16,7 @@ import { searchByKeyword } from './searchScenario';
 import { placeInfo } from './types';
 
 const SEARCH_PLACE = true;
-const PIACK_PALCE = false;
+const PICK_PALCE = false;
 
 const PlanModal = () => {
     const [contents, setContents] = useState<boolean>(SEARCH_PLACE);
