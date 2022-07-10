@@ -2,49 +2,18 @@
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
 import PlaceItem from 'containers/Plan/PlanModal/PlaceItem';
-import React, { FormEvent, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { largeModal } from 'store/modules/modal';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-interface placeInfo {
-    place_name: string;
-    place_img_url: string | undefined;
-    place_url?: string;
-    address: string;
-    road_address?: string;
-    lat: string;
-    lng: string;
-}
-
-const searchKakaoImage = async (
-    keyword: string,
-): Promise<string | undefined> => {
-    try {
-        const res = await fetch(
-            `https://dapi.kakao.com/v2/search/image?query=${keyword} &size=1&sort=sim`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'KakaoAK 893bfbac1c7f570ab519588089eea08c',
-                },
-            },
-        );
-
-        const data = await res.json();
-        console.log(keyword, data);
-        return data.documents[0]?.thumbnail_url;
-    } catch (e) {
-        return '';
-    }
-};
+import { searchByKeyword } from './searchScenario';
+import { placeInfo } from './types';
 
 const PlanModal = () => {
     const [searchFormInput, setSearchFormInput] = useState<string>();
-
+    const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
 
+    const scrollRef = useRef<HTMLDivElement>(null);
     return (
         <Modal width={1111} height={884}>
             <Contents>
@@ -56,50 +25,15 @@ const PlanModal = () => {
                     <div>PlaceInfo</div>
                 </PlaceSlider>
                 <PlaceSearchForm
-                    onSubmit={(e) => {
+                    onSubmit={async (e) => {
                         e.preventDefault();
-
-                        const ps = new kakao.maps.services.Places();
-
-                        ps.keywordSearch(
-                            `${searchFormInput} 관광명소`,
-                            async (data, status, _pagination) => {
-                                if (status === kakao.maps.services.Status.OK) {
-                                    // console.log(data);
-                                    const list: any = data.map(
-                                        async (place): Promise<placeInfo> => {
-                                            const place_img_url =
-                                                await searchKakaoImage(
-                                                    place.address_name,
-                                                );
-                                            return {
-                                                place_name: place.place_name,
-                                                place_img_url,
-                                                place_url: place.place_url,
-                                                address: place.address_name,
-                                                road_address:
-                                                    place?.road_address_name,
-                                                lat: place.x,
-                                                lng: place.y,
-                                            };
-                                        },
-                                    );
-                                    setPlaceList(await Promise.all(list));
-                                } else if (
-                                    status ===
-                                    kakao.maps.services.Status.ZERO_RESULT
-                                ) {
-                                    alert('검색 결과가 존재하지 않습니다.');
-                                } else if (
-                                    status === kakao.maps.services.Status.ERROR
-                                ) {
-                                    alert('검색 결과 중 오류가 발생했습니다.');
-                                }
-                            },
-                        );
-
-                        console.log(searchFormInput);
-                        console.log('execute');
+                        try {
+                            setPlaceList(
+                                await searchByKeyword(searchFormInput),
+                            );
+                        } catch (e) {
+                            alert(e);
+                        }
                     }}
                 >
                     <SearchIcon width="24px" height="23px" />
@@ -111,12 +45,12 @@ const PlanModal = () => {
                 </PlaceSearchForm>
                 <PlaceSearchResult>
                     <header> 검색결과</header>
-                    <div className="contents">
+                    <div className="contents" ref={scrollRef}>
                         {placeList.map((data: any) => (
                             <PlaceItem
                                 img={data.place_img_url}
                                 name={data.place_name}
-                                address={data.address_name}
+                                address={data.address}
                             />
                         ))}
                     </div>
@@ -191,6 +125,8 @@ const PlaceSearchResult = styled.div`
         line-height: 29px;
     }
     .contents {
+        padding-right: 20px;
+
         margin-top: 20px;
         height: 400px;
         overflow: auto;
