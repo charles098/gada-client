@@ -15,6 +15,7 @@ import { store } from 'store/config';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import LoginForm from './routes/LoginForm';
+import Register from './routes/Register'
 import Plan from './routes/Plan';
 import Main from './routes/Main';
 
@@ -29,6 +30,7 @@ const App: FC = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />}/>
                         <Route path="/login-form" element={<LoginForm />}/>
+                        <Route path="/register" element={ <Register /> }/>
                         <Route path="/plan" element={<Plan />} />
                         <Route path="/main" element={<Main />} />
                     </Routes>
