@@ -2,13 +2,7 @@
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
 import PlaceItem from 'containers/Plan/PlanModal/PlaceItem';
-import React, {
-    ErrorInfo,
-    FormEvent,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { useRef, useState } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
@@ -20,7 +14,7 @@ const PICK_PALCE = false;
 
 const PlanModal = () => {
     const [contents, setContents] = useState<boolean>(SEARCH_PLACE);
-
+    const [position, setPosition] = useState<{ lat: number; lng: number }>();
     const [searchFormInput, setSearchFormInput] = useState<string>();
     const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
@@ -43,12 +37,14 @@ const PlanModal = () => {
                 <PlaceForm
                     onSubmit={async (e) => {
                         e.preventDefault();
-                        try {
-                            setPlaceList(
-                                await searchByKeyword(searchFormInput),
-                            );
-                        } catch (e: any | Error) {
-                            alert(e?.message);
+                        if (contents) {
+                            try {
+                                setPlaceList(
+                                    await searchByKeyword(searchFormInput),
+                                );
+                            } catch (e: any | Error) {
+                                alert(e?.message);
+                            }
                         }
                     }}
                 >
@@ -74,7 +70,20 @@ const PlanModal = () => {
                             </div>
                         </>
                     ) : (
-                        <Map />
+                        <Map
+                            center={{
+                                // 지도의 중심좌표
+                                lat: 33.450701,
+                                lng: 126.570667,
+                            }}
+                            style={{
+                                // 지도의 크기
+                                width: '100%',
+                                height: '470px',
+                            }}
+                            level={3}
+                            zoomable={false}
+                        />
                     )}
                 </PlaceContents>
                 <SubmitButton>등록완료</SubmitButton>
@@ -142,7 +151,7 @@ const PlaceInput = styled.input`
 `;
 
 const PlaceContents = styled.div`
-    margin: 36px 80px;
+    margin: 20px 80px;
     header {
         font-family: 'Noto Sans KR';
         font-style: normal;
@@ -154,7 +163,7 @@ const PlaceContents = styled.div`
         padding-right: 20px;
 
         margin-top: 20px;
-        height: 400px;
+        height: 421px;
         overflow: auto;
         &::-webkit-scrollbar {
             width: 6px;
