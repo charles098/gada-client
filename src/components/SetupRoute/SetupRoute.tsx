@@ -1,18 +1,17 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
-
-import { Plan, PlanDetail, initializeData, update } from 'store/modules/plan';
 import { RootState } from 'store/modules';
+import { PlanDetail, initializeData, update } from 'store/modules/plan';
 
 const data: Array<PlanDetail> = [
     {
         id: 1,
         day: 1,
         sequence: 3,
-        name: '3',
-        address: '',
+        name: 'busan trip - 3',
+        address: 'busan',
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
@@ -23,8 +22,8 @@ const data: Array<PlanDetail> = [
         id: 2,
         day: 1,
         sequence: 4,
-        name: '4',
-        address: '',
+        name: 'busan trip - 4',
+        address: 'busan',
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
@@ -35,8 +34,8 @@ const data: Array<PlanDetail> = [
         id: 3,
         day: 1,
         sequence: 0,
-        name: '0',
-        address: '',
+        name: 'busan trip - 0',
+        address: 'busan',
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
@@ -47,8 +46,8 @@ const data: Array<PlanDetail> = [
         id: 4,
         day: 1,
         sequence: 2,
-        name: '2',
-        address: '',
+        name: 'busan trip - 2',
+        address: 'busan',
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
@@ -59,8 +58,8 @@ const data: Array<PlanDetail> = [
         id: 5,
         day: 1,
         sequence: 1,
-        name: '1',
-        address: '',
+        name: 'busan trip - 1',
+        address: 'busan',
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
@@ -82,15 +81,23 @@ const SetupRoute: FC = () => {
         dispatch(initializeData({ initData }));
     }, []);
 
+    const getSortableList = (list: Array<PlanDetail>): Array<PlanDetail> => {
+        return list.map((x) => ({
+            ...x,
+            chosen: true,
+        }));
+    };
+
+    const onSort = (list: Array<PlanDetail>): void => {
+        dispatch(update({ list }));
+    };
+
     return (
         <ReactSortable
             tag={Container}
             animation={150}
-            list={planList.map((plan: PlanDetail) => ({
-                ...plan,
-                chosen: true,
-            }))}
-            setList={(list: Array<PlanDetail>) => dispatch(update({ list }))}
+            list={getSortableList(planList)}
+            setList={onSort}
         >
             {planList.map((plan: PlanDetail) => (
                 <Place key={plan.id}>
@@ -101,8 +108,6 @@ const SetupRoute: FC = () => {
         </ReactSortable>
     );
 };
-
-export default SetupRoute;
 
 const Container = styled.div`
     width: 450px;
@@ -136,3 +141,5 @@ const Location = styled.div`
     margin-left: 15px;
     color: ${({ theme }) => theme.LIGHT_GRAY};
 `;
+
+export default SetupRoute;
