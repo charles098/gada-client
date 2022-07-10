@@ -1,14 +1,23 @@
 import React from "react";
 import styled from 'styled-components';
 import LoginHeader from 'components/LoginHeader';
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+    const navigate = useNavigate();
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        // 이거 그대로 post 보내면 된다.
-        console.log(e.target.email.value);
-        console.log(e.target.password.value);
+        const { email, password } = e.target;
+
+        if (!email.value) alert('이메일을 입력해주세요!');
+        else if (!password.value) alert('비밀번호를 입력해주세요!');
+        else {
+            // 이거 그대로 post 보내면 된다.
+            console.log(e.target.email.value);
+            console.log(e.target.password.value);    
+        }
     }
 
     return (
@@ -26,7 +35,9 @@ const LoginForm = () => {
                 name="password"
                 />
                 <LinkContainer>
-                    <Register>회원가입</Register>
+                    <Register onClick={() => navigate("/register")}>
+                        회원가입
+                    </Register>
                     <FindPassword>비밀번호 찾기</FindPassword>
                 </LinkContainer>
                 <LoginButton
