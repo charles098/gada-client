@@ -28,13 +28,12 @@ const searchByKeyword = async (
 ): Promise<placeInfo[]> => {
     return new Promise((resolve, reject) => {
         const ps = new kakao.maps.services.Places();
-        ps.keywordSearch(`${keyword} 여행지`, async (data, status) => {
+        ps.keywordSearch(`${keyword}`, async (data, status) => {
             if (status === kakao.maps.services.Status.OK) {
-                // console.log(data);
                 const list: any = data.map(
                     async (place): Promise<placeInfo> => {
                         const placeImgUrl = await searchImageByKakaoAPI(
-                            `${place.place_name}&${place.address_name} 명소사진`,
+                            `${place.place_name}&${place.address_name}& 배경사진`,
                         );
                         return {
                             place_name: place.place_name,
