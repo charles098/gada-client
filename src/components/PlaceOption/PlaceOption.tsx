@@ -11,7 +11,7 @@ const PlaceOption = () => {
     return (
         <Container>
             {optionArr.map((x) => (
-                <Option key={x} draggable="true">
+                <Option key={x} draggable="true" className="place-option">
                     <div className="img-container">
                         <img src={jejuImg} alt="img" draggable="false" />
                     </div>

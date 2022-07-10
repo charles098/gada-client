@@ -54,18 +54,6 @@ const data: Array<PlanDetail> = [
         cost: 2333,
         category: 'fsdf',
     },
-    {
-        id: 5,
-        day: 1,
-        sequence: 1,
-        name: 'busan trip - 1',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-    },
 ];
 
 const planListSelector = (state: RootState) => state.plan.planList;
@@ -73,6 +61,8 @@ const planListSelector = (state: RootState) => state.plan.planList;
 const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
+    const isGrabInnerItem = useRef(false);
+    const enterCount = useRef(0);
 
     useEffect(() => {
         const initData: Array<PlanDetail> = data.sort(
@@ -80,6 +70,33 @@ const SetupRoute: FC = () => {
         );
         dispatch(initializeData({ initData }));
     }, []);
+
+    const onDragStart = (e: React.DragEvent<HTMLElement>) => {
+        isGrabInnerItem.current = true;
+    };
+
+    const onDragEnd = (e: React.DragEvent<HTMLElement>) => {
+        isGrabInnerItem.current = false;
+    };
+
+    const onDragEnter = (e: React.DragEvent<HTMLElement>) => {
+        if (isGrabInnerItem.current) return;
+        enterCount.current += 1;
+        e.currentTarget.classList.add('drag-over');
+    };
+
+    const onDragLeave = (e: React.DragEvent<HTMLElement>) => {
+        enterCount.current -= 1;
+        if (enterCount.current === 0) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+    };
+
+    const onDrop = (e: React.DragEvent<HTMLElement>) => {
+        if (isGrabInnerItem.current) return;
+        e.currentTarget.classList.remove('drag-over');
+        console.dir(e.dataTransfer);
+    };
 
     const getSortableList = (list: Array<PlanDetail>): Array<PlanDetail> => {
         return list.map((x) => ({
@@ -93,19 +110,29 @@ const SetupRoute: FC = () => {
     };
 
     return (
-        <ReactSortable
-            tag={Container}
-            animation={150}
-            list={getSortableList(planList)}
-            setList={onSort}
+        <Container
+            onDragEnter={onDragEnter}
+            onDragLeave={onDragLeave}
+            onDrop={onDrop}
+            onDragOver={(e) => e.preventDefault()}
         >
-            {planList.map((plan: PlanDetail) => (
-                <Place key={plan.id}>
-                    <Name>{plan.name}</Name>
-                    <Location>{plan.address}</Location>
-                </Place>
-            ))}
-        </ReactSortable>
+            <ReactSortable
+                animation={150}
+                list={getSortableList(planList)}
+                setList={onSort}
+            >
+                {planList.map((plan: PlanDetail) => (
+                    <Place
+                        key={plan.id}
+                        onDragStart={onDragStart}
+                        onDragEnd={onDragEnd}
+                    >
+                        <Name>{plan.name}</Name>
+                        <Location>{plan.address}</Location>
+                    </Place>
+                ))}
+            </ReactSortable>
+        </Container>
     );
 };
 
@@ -117,6 +144,12 @@ const Container = styled.div`
     align-items: center;
     padding-top: 15px;
     overflow: scroll;
+
+    &.drag-over {
+        border: solid 2px ${({ theme }) => theme.PRIMARY};
+        border-radius: 20px;
+        background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
+    }
 `;
 
 const Place = styled.div`
