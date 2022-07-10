@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import LoginHeader from 'components/LoginHeader';
 import { 
     ChatIcon,
     GoogleIcon
@@ -11,33 +10,24 @@ const Login = () => {
     const navigate = useNavigate();
 
     return (
-        <Wrapper>
-            <LoginHeader />
-            <LoginContainer>
-                <KakaoLogin>
-                    <ChatIcon style={LoginIconStyle} />
-                    <LoginText>카카오 로그인</LoginText>
-                </KakaoLogin>
-                <GoogleLogin>
-                    <GoogleIcon style={LoginIconStyle} />
-                    <LoginText>구글 로그인</LoginText>
-                </GoogleLogin>
-                <LocalLogin onClick={() => navigate("/login-form")}>
-                    <LoginText>다른 계정으로 로그인</LoginText>
-                </LocalLogin>
-                <Register onClick={() => navigate("/register")}>회원가입</Register>
-            </LoginContainer>
-        </Wrapper>
+        <LoginContainer>
+            <KakaoLogin>
+                <ChatIcon style={LoginIconStyle} />
+                <LoginText>카카오 로그인</LoginText>
+            </KakaoLogin>
+            <GoogleLogin>
+                <GoogleIcon style={LoginIconStyle} />
+                <LoginText>구글 로그인</LoginText>
+            </GoogleLogin>
+            <LocalLogin onClick={() => navigate("/login-form")}>
+                <LoginText>다른 계정으로 로그인</LoginText>
+            </LocalLogin>
+            <Register onClick={() => navigate("/register")}>회원가입</Register>
+        </LoginContainer>
     )
 }
 
 export default Login;
-
-const Wrapper = styled.div`
-    background-color: #60A5F8;
-    width: 100vw;
-    height: 100vh;
-`
 
 const LoginContainer = styled.div`
     display: flex;

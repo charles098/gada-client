@@ -1,24 +1,34 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PlaneIcon } from 'components/icons';
+import { Outlet } from 'react-router-dom';
 
 const LoginHeader = () => {
     return (
-        <TitleContainer>
-            <Title>
-                <PlaneIcon
-                    width="50px"
-                    height="55px"
-                    style={planeIconStyle}
-                />
-                여행가다
-            </Title>
-            <SubTitle>지금 당장 여행 계획을 짜보세요!</SubTitle>
-        </TitleContainer>
+        <Wrapper>
+            <TitleContainer>
+                <Title>
+                    <PlaneIcon
+                        width="50px"
+                        height="55px"
+                        style={planeIconStyle}
+                    />
+                    여행가다
+                </Title>
+                <SubTitle>지금 당장 여행 계획을 짜보세요!</SubTitle>
+            </TitleContainer>
+            <Outlet />
+        </Wrapper>
     )
 }
 
 export default LoginHeader;
+
+const Wrapper = styled.div`
+    background-color: #60A5F8;
+    width: 100vw;
+    height: 100vh;
+`
 
 const TitleContainer = styled.header`
     padding-top: 20vh;

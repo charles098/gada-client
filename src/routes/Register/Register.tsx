@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import LoginHeader from 'components/LoginHeader';
 
 const Register = () => {
     const handleSubmit = (e: any) => {
@@ -22,45 +21,36 @@ const Register = () => {
     }
 
     return (
-        <Wrapper>
-            <LoginHeader />
-            <Form onSubmit={handleSubmit}>
-                <UserName
-                type="text"
-                placeholder="Username"
-                name="name"
-                />
-                <Email
-                type="email"
-                placeholder="Email"
-                name="email"
-                />
-                <Password
-                placeholder="Password"
-                type="password"
-                name="password"
-                />
-                <Password
-                placeholder="Password"
-                type="password"
-                name="passwordCheck"
-                />
-                <RegisterButton
-                type="submit"
-                value="회원가입"
-                />
-            </Form>
-        </Wrapper>
+        <Form onSubmit={handleSubmit}>
+            <UserName
+            type="text"
+            placeholder="Username"
+            name="name"
+            />
+            <Email
+            type="email"
+            placeholder="Email"
+            name="email"
+            />
+            <Password
+            placeholder="Password"
+            type="password"
+            name="password"
+            />
+            <Password
+            placeholder="Password"
+            type="password"
+            name="passwordCheck"
+            />
+            <RegisterButton
+            type="submit"
+            value="회원가입"
+            />
+        </Form>
     )
 }
 
 export default Register;
-
-const Wrapper = styled.div`
-    background-color: #60A5F8;
-    width: 100vw;
-    height: 100vh;
-`
 
 const Form = styled.form`
     margin-top: 10vh;

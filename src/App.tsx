@@ -12,6 +12,7 @@ import GlobalFont from 'styles/global-font';
 import { store } from 'store/config';
 
 // Pages
+import LoginHeader from 'components/LoginHeader';
 import Home from './routes/Home';
 import Login from './routes/Login';
 import LoginForm from './routes/LoginForm';
@@ -28,9 +29,11 @@ const App: FC = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />}/>
-                        <Route path="/login-form" element={<LoginForm />}/>
-                        <Route path="/register" element={ <Register /> }/>
+                        <Route element={<LoginHeader/>}>
+                            <Route path="/login" element={<Login />}/>
+                            <Route path="/login-form" element={<LoginForm />}/>
+                            <Route path="/register" element={ <Register /> }/>
+                        </Route>
                         <Route path="/plan" element={<Plan />} />
                         <Route path="/main" element={<Main />} />
                     </Routes>

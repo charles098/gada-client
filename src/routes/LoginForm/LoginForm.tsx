@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import LoginHeader from 'components/LoginHeader';
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -21,41 +20,32 @@ const LoginForm = () => {
     }
 
     return (
-        <Wrapper>
-            <LoginHeader />
-            <Form onSubmit={handleSubmit}>
-                <Email
-                type="email"
-                placeholder="Email"
-                name="email"
-                />
-                <Password
-                placeholder="Password"
-                type="password"
-                name="password"
-                />
-                <LinkContainer>
-                    <Register onClick={() => navigate("/register")}>
-                        회원가입
-                    </Register>
-                    <FindPassword>비밀번호 찾기</FindPassword>
-                </LinkContainer>
-                <LoginButton
-                type="submit"
-                value="로그인"
-                />
-            </Form>
-        </Wrapper>
+        <Form onSubmit={handleSubmit}>
+            <Email
+            type="email"
+            placeholder="Email"
+            name="email"
+            />
+            <Password
+            placeholder="Password"
+            type="password"
+            name="password"
+            />
+            <LinkContainer>
+                <Register onClick={() => navigate("/register")}>
+                    회원가입
+                </Register>
+                <FindPassword>비밀번호 찾기</FindPassword>
+            </LinkContainer>
+            <LoginButton
+            type="submit"
+            value="로그인"
+            />
+        </Form>
     )
 }
 
 export default LoginForm;
-
-const Wrapper = styled.div`
-    background-color: #60A5F8;
-    width: 100vw;
-    height: 100vh;
-`
 
 const Form = styled.form`
     margin-top: 10vh;
