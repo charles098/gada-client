@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from 'components/Header';
-import PlanList from 'containers/Main/PlanList';
-import LocationList from 'containers/Main/LocationList';
+import PlanList from 'containers/main/PlanList';
+import LocationList from 'containers/main/LocationList';
 import Modal from "components/Modal";
-import NewPlanForm from 'containers/Main/NewPlanForm';
+import NewPlanForm from 'containers/main/NewPlanForm';
 import { RootState } from 'store/modules';
 
 const Main: FC = () => {

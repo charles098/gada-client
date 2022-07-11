@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components'
-import Jalnan from 'styles/fonts/Jalnand.woff';
 import NotoSansBlack from 'styles/fonts/NotoSansKR-Black.woff';
 import NotoSansBold from 'styles/fonts/NotoSansKR-Bold.woff';
 import NotoSansLight from 'styles/fonts/NotoSansKR-Light.woff';
@@ -8,11 +7,6 @@ import NotoSansRegular from 'styles/fonts/NotoSansKR-Regular.woff';
 import NotoSansThin from 'styles/fonts/NotoSansKR-Thin.woff';
 
 export default createGlobalStyle`
-    @font-face {
-        font-family: "Jalnan";
-        src: local("Jalnan"), url(${Jalnan}) format('woff');
-    }
-
     @font-face {
         font-family: 'NotoSansBlack';
         src: local("NotoSansBlack"), url(${NotoSansBlack}) format('woff);

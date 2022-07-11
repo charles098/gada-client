@@ -14,11 +14,19 @@ const NewPlanDate: FC = () => {
             key: "selection",
         },
     ])
+
     const getDateInput = useCallback((calendar: any) => {
         const start = calendar.startDate.toLocaleDateString();
         const end = calendar.endDate.toLocaleDateString();
         return `${start} ~ ${end}`
     }, [Calendar])
+
+    const handleChange = (item: any) => {
+      setCalendar(() => {
+        return [item.selection]
+      })
+    }
+
     return (
         <>
             <DateWrapper>
@@ -37,11 +45,7 @@ const NewPlanDate: FC = () => {
 
             <DateRangeWrapper
                 locale={ko}
-                onChange={item => {
-                    setCalendar(() => {
-                        return [item.selection]
-                    })
-                }}
+                onChange={handleChange}
                 moveRangeOnFirstSelection={false}
                 ranges={Calendar}
                 dateDisplayFormat='yyyy.MM.dd'
