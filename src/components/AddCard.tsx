@@ -9,8 +9,12 @@ const AddCard : FC = () => {
     const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
     const dispatch = useDispatch();
     
+    const handleClick = () => {
+        dispatch(largeModal(!largeModalIsOpen))
+    }
+
     return (
-        <AddPlanCard onClick={() => {dispatch(largeModal(!largeModalIsOpen))}}>
+        <AddPlanCard onClick={handleClick}>
             <AddButtonHelper />
             <AddButton>
                 <PlusIcon style={plusIconStyle}/>
