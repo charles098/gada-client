@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    DragEvent,
-    useEffect,
-    useRef,
-    useCallback,
-    useState,
-} from 'react';
+import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
@@ -14,15 +7,17 @@ import {
     IPlace,
     sortPlanList,
     grabPlan,
+    grabPlaceOption,
     dropPlaceOption,
 } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
+const grabOptionIdSelector = (state: RootState) => state.plan.grabOptionId;
 
 const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
-    const isGrabInnerItem = useRef(false);
+    const grabOptionId = useSelector(grabOptionIdSelector);
     const enterContainerCount = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
@@ -39,37 +34,46 @@ const SetupRoute: FC = () => {
         }
     }, [planList]);
 
-    const onStartDragPlace = useCallback((e: DragEvent<HTMLElement>) => {
-        isGrabInnerItem.current = true;
+    const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
+        enterContainerCount.current = 0;
+        dispatch(grabPlaceOption({ id: null }));
         const id = parseInt(e.currentTarget.dataset.id as string, 10);
         dispatch(grabPlan({ id }));
     }, []);
 
-    const onEndDragPlace = useCallback((e: DragEvent<HTMLElement>) => {
-        isGrabInnerItem.current = false;
-        dispatch(grabPlan({ id: null }));
-    }, []);
+    const onDragEnterConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (grabOptionId) {
+                enterContainerCount.current += 1;
+                e.currentTarget.classList.add('drag-over');
+            }
+        },
+        [grabOptionId],
+    );
 
-    const onDragEnterConainer = useCallback((e: DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        enterContainerCount.current += 1;
-        e.currentTarget.classList.add('drag-over');
-    }, []);
+    const onDragLeaveConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (grabOptionId) {
+                enterContainerCount.current -= 1;
+                if (enterContainerCount.current === 0) {
+                    e.currentTarget.classList.remove('drag-over');
+                }
+            }
+        },
+        [grabOptionId],
+    );
 
-    const onDragLeaveConainer = useCallback((e: DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        enterContainerCount.current -= 1;
-        if (enterContainerCount.current === 0) {
-            e.currentTarget.classList.remove('drag-over');
-        }
-    }, []);
-
-    const onDropContainer = useCallback((e: DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        e.currentTarget.classList.remove('drag-over');
-        dispatch(dropPlaceOption());
-        setIsDrop(true);
-    }, []);
+    const onDropContainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (grabOptionId) {
+                e.currentTarget.classList.remove('drag-over');
+                dispatch(dropPlaceOption());
+                dispatch(grabPlaceOption({ id: null }));
+                setIsDrop(true);
+            }
+        },
+        [grabOptionId],
+    );
 
     // util로 분리
     const getSortableList = (list: IPlace[]): IPlace[] => {
@@ -78,7 +82,6 @@ const SetupRoute: FC = () => {
             chosen: true,
         }));
     };
-    // util로 분리
     const onSort = (list: IPlace[]): void => {
         dispatch(sortPlanList({ list }));
     };
@@ -103,8 +106,7 @@ const SetupRoute: FC = () => {
                                     droppedRef as React.RefObject<HTMLDivElement>
                                 }
                                 key={plan.id}
-                                onDragStart={onStartDragPlace}
-                                onDragEnd={onEndDragPlace}
+                                onDragStart={onDragStartPlace}
                             >
                                 <Name>{plan.name}</Name>
                                 <Location>{plan.address}</Location>
@@ -112,11 +114,7 @@ const SetupRoute: FC = () => {
                         );
                     }
                     return (
-                        <Place
-                            key={plan.id}
-                            onDragStart={onStartDragPlace}
-                            onDragEnd={onEndDragPlace}
-                        >
+                        <Place key={plan.id} onDragStart={onDragStartPlace}>
                             <Name>{plan.name}</Name>
                             <Location>{plan.address}</Location>
                         </Place>

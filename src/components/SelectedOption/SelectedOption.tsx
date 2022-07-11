@@ -1,19 +1,12 @@
-import React, {
-    FC,
-    DragEvent,
-    useEffect,
-    useRef,
-    useCallback,
-    useState,
-} from 'react';
+import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
-
 import { RootState } from 'store/modules';
 import {
     IPlace,
     sortplaceOptionList,
+    grabPlan,
     grabPlaceOption,
     dropPlan,
 } from 'store/modules/plan';
@@ -21,12 +14,12 @@ import jejuImg from 'images/jeju.jpg';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
+const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
 
-// drop -> end
 const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
-    const isGrabInnerItem = useRef(false);
+    const grabPlanId = useSelector(grabPlanIdSelector);
     const enterContainerCount = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
@@ -43,38 +36,46 @@ const SelectedOption: FC = () => {
         }
     }, [placeOptionList]);
 
-    const onStartDragPlace = useCallback((e: DragEvent<HTMLElement>) => {
-        isGrabInnerItem.current = true;
+    const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
+        enterContainerCount.current = 0;
+        dispatch(grabPlan({ id: null }));
         const id = parseInt(e.currentTarget.dataset.id as string, 10);
         dispatch(grabPlaceOption({ id }));
     }, []);
 
-    const onEndDragPlace = useCallback(() => {
-        isGrabInnerItem.current = false;
-        dispatch(grabPlaceOption({ id: null }));
-    }, []);
+    const onDragEnterConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (grabPlanId) {
+                enterContainerCount.current += 1;
+                e.currentTarget.classList.add('drag-over');
+            }
+        },
+        [grabPlanId],
+    );
 
-    const onDragEnterConainer = useCallback((e: DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        enterContainerCount.current += 1;
-        e.currentTarget.classList.add('drag-over');
-    }, []);
+    const onDragLeaveConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (grabPlanId) {
+                enterContainerCount.current -= 1;
+                if (enterContainerCount.current === 0) {
+                    e.currentTarget.classList.remove('drag-over');
+                }
+            }
+        },
+        [grabPlanId],
+    );
 
-    const onDragLeaveConainer = useCallback((e: DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        enterContainerCount.current -= 1;
-        if (enterContainerCount.current === 0) {
-            e.currentTarget.classList.remove('drag-over');
-        }
-    }, []);
-
-    const onDropContainer = useCallback((e: DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        console.log('drop');
-        e.currentTarget.classList.remove('drag-over');
-        dispatch(dropPlan());
-        setIsDrop(true);
-    }, []);
+    const onDropContainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (grabPlanId) {
+                e.currentTarget.classList.remove('drag-over');
+                dispatch(dropPlan());
+                dispatch(grabPlan({ id: null }));
+                setIsDrop(true);
+            }
+        },
+        [grabPlanId],
+    );
 
     // util로 분리
     const getSortableList = (list: IPlace[]): IPlace[] => {
@@ -83,7 +84,6 @@ const SelectedOption: FC = () => {
             chosen: true,
         }));
     };
-    // util로 분리
     const onSort = (list: IPlace[]): void => {
         dispatch(sortplaceOptionList({ list }));
     };
@@ -111,8 +111,7 @@ const SelectedOption: FC = () => {
                                 key={option.id}
                                 data-id={option.id}
                                 draggable="true"
-                                onDragStart={onStartDragPlace}
-                                onDragEnd={onEndDragPlace}
+                                onDragStart={onDragStartPlace}
                             >
                                 <div className="img-container">
                                     <img
@@ -130,8 +129,7 @@ const SelectedOption: FC = () => {
                             key={option.id}
                             data-id={option.id}
                             draggable="true"
-                            onDragStart={onStartDragPlace}
-                            onDragEnd={onEndDragPlace}
+                            onDragStart={onDragStartPlace}
                         >
                             <div className="img-container">
                                 <img
