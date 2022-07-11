@@ -5,7 +5,7 @@ import { ReactSortable } from 'react-sortablejs';
 
 import { RootState } from 'store/modules';
 import {
-    Place,
+    IPlace,
     sortplaceOptionList,
     grabPlaceOption,
 } from 'store/modules/plan';
@@ -21,7 +21,7 @@ const SelectedOption: FC = () => {
 
     useEffect(() => {
         const map: { [key: number]: boolean } = {};
-        placeOptionList.forEach((option: Place) => {
+        placeOptionList.forEach((option: IPlace) => {
             map[option.id] = false;
         });
     }, [placeOptionList]);
@@ -36,7 +36,7 @@ const SelectedOption: FC = () => {
     };
 
     // util로 분리
-    const getSortableList = (list: Place[]): Place[] => {
+    const getSortableList = (list: IPlace[]): IPlace[] => {
         return list.map((x) => ({
             ...x,
             chosen: true,
@@ -44,7 +44,7 @@ const SelectedOption: FC = () => {
     };
 
     // util로 분리
-    const onSort = (list: Place[]): void => {
+    const onSort = (list: IPlace[]): void => {
         dispatch(sortplaceOptionList({ list }));
     };
 

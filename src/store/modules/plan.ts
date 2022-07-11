@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface Place {
+export interface IPlace {
     id: number;
     day: number;
     sequence: number;
@@ -14,14 +14,14 @@ export interface Place {
     imgUrl: string;
 }
 
-export interface Plan {
+export interface IPlan {
     setupDay: number;
     grabOptionId: number | null;
-    planList: Place[];
-    placeOptionList: Place[];
+    planList: IPlace[];
+    placeOptionList: IPlace[];
 }
 
-const initialState: Plan = {
+const initialState: IPlan = {
     setupDay: 1,
     grabOptionId: null,
     planList: [],
@@ -32,27 +32,28 @@ const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
     reducers: {
-        initializeData(state: Plan, action) {
+        initializeData(state: IPlan, action): void {
             const { initPlanDetailList, initPlaceOptionList } = action.payload;
             state.planList = [...initPlanDetailList];
             state.placeOptionList = [...initPlaceOptionList];
         },
-        sortPlanList(state: Plan, action) {
+        sortPlanList(state: IPlan, action) {
             const { list } = action.payload;
             state.planList = [...list];
         },
-        sortplaceOptionList(state: Plan, action) {
+        sortplaceOptionList(state: IPlan, action) {
             const { list } = action.payload;
             state.placeOptionList = [...list];
         },
-        grabPlaceOption(state: Plan, action) {
+        grabPlaceOption(state: IPlan, action) {
             const { id } = action.payload;
             state.grabOptionId = id;
         },
-        dropPlaceOption(state: Plan) {
-            const droppedPlan: Place = state.placeOptionList.find(
+        dropPlaceOption(state: IPlan) {
+            const droppedPlan = state.placeOptionList.find(
                 (option) => option.id === state.grabOptionId,
-            );
+            ) as IPlace;
+
             const idx = state.placeOptionList.indexOf(droppedPlan);
             state.placeOptionList.splice(idx, 1);
             state.planList.push(droppedPlan);

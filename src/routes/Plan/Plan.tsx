@@ -9,10 +9,10 @@ import Map from 'containers/plan/Map';
 import PlanMaker from 'containers/plan/PlanMaker';
 
 // redux (type, reducer)
-import { Place, initializeData } from 'store/modules/plan';
+import { IPlace, initializeData } from 'store/modules/plan';
 
 // dummy data
-const dummyPlanDetailList: Place[] = [
+const dummyPlanDetailList: IPlace[] = [
     {
         id: 1,
         day: 1,
@@ -66,7 +66,7 @@ const dummyPlanDetailList: Place[] = [
         imgUrl: 'http',
     },
 ];
-const dummyPlaceOptionList: Place[] = [
+const dummyPlaceOptionList: IPlace[] = [
     {
         id: 33,
         day: 1,
@@ -151,10 +151,10 @@ const Plan: FC = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const initPlanDetailList: Place[] = dummyPlanDetailList.sort(
+        const initPlanDetailList: IPlace[] = dummyPlanDetailList.sort(
             (a, b) => a.sequence - b.sequence,
         );
-        const initPlaceOptionList: Place[] = dummyPlaceOptionList;
+        const initPlaceOptionList: IPlace[] = dummyPlaceOptionList;
         dispatch(initializeData({ initPlanDetailList, initPlaceOptionList }));
     }, []);
 
