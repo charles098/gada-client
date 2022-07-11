@@ -24,7 +24,7 @@ const PlanModal = () => {
             },
         [contents],
     );
-    const [placeFormInput, setPlaceFormInput] = useState<string>();
+    const [placeFormInput, setPlaceFormInput] = useState({bySearch:"", byPick:""});
     const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
 
@@ -49,7 +49,9 @@ const PlanModal = () => {
                         if (contents) {
                             try {
                                 setPlaceList(
-                                    await searchByKeyword(placeFormInput),
+                                    await searchByKeyword(
+                                        placeFormInput.bySearch,
+                                    ),
                                 );
                             } catch (e: any | Error) {
                                 alert(e?.message);
@@ -60,7 +62,8 @@ const PlanModal = () => {
                     <SearchIcon width="24px" height="23px" />
                     <PlaceInput
                         placeholder="장소를 입력해주세요"
-                        onChange={(e) => setPlaceFormInput(e.target.value)}
+                        onChange={(e) => {
+                            setPlaceFormInput(contents?e.target.value)}}
                         value={placeFormInput}
                     />
                 </PlaceForm>
