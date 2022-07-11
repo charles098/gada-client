@@ -1,13 +1,18 @@
 import React from 'react';
+import { PlaceInfo } from 'store/modules/search';
 import styled from 'styled-components';
 
 const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
 
-const PlaceItem = ({ name, address, img, onClick }: any) => {
+interface Props extends Omit<PlaceInfo, 'latitude' | 'longitude'> {
+    onClick: () => void;
+}
+
+const PlaceListItem = ({ name, address, imgUrl, onClick }: Props) => {
     return (
-        <ItemContainer key={`item-${name}-${address}`}>
-            <ItemImage src={img ?? emptyImage} />
+        <ItemContainer>
+            <ItemImage src={imgUrl ?? emptyImage} />
             <ItemTexts>
                 <h3>{name ?? '장소이름'}</h3>
                 <h5>{address ?? '장소 주소'}</h5>
@@ -80,4 +85,4 @@ const ItemButton = styled.button`
     }
 `;
 
-export default PlaceItem;
+export default PlaceListItem;
