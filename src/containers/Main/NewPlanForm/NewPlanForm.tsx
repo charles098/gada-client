@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import NewPlanImage from 'components/NewPlanImage';
-import NewPlanTitle from 'containers/Main/NewPlanTitle';
-import NewPlanDate from 'containers/Main/NewPlanDate';
+import NewPlanTitle from 'containers/main/NewPlanTitle';
+import NewPlanDate from 'containers/main/NewPlanDate';
 
 const NewPlanForm: FC = () => {
     const [imageData, setImageData] = useState<any>(null);

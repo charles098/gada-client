@@ -2,10 +2,10 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 // containers
-import PlanInfo from 'containers/Plan/PlanInfo';
-import PlaceOption from 'containers/Plan/PlaceOption';
-import Map from 'containers/Plan/Map';
-import PlanMaker from 'containers/Plan/PlanMaker';
+import PlanInfo from 'containers/plan/PlanInfo';
+import PlaceOption from 'containers/plan/PlaceOption';
+import Map from 'containers/plan/Map';
+import PlanMaker from 'containers/plan/PlanMaker';
 
 const Plan: FC = () => {
     return (
