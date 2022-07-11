@@ -5,8 +5,6 @@ const Map: FC = () => {
     return <Container />;
 };
 
-export default Map;
-
 const Container = styled.div`
     background-color: #faeacd;
 
@@ -14,3 +12,5 @@ const Container = styled.div`
     height: 620px;
     margin: 0 30px 30px 30px;
 `;
+
+export default Map;
