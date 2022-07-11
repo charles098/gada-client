@@ -3,76 +3,91 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
-import { PlanDetail, sortPlanList, dropPlaceOption } from 'store/modules/plan';
+import {
+    IPlace,
+    sortPlanList,
+    grabPlan,
+    grabPlaceOption,
+    dropPlaceOption,
+} from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
+const grabPlaceOptionIdSelector = (state: RootState) =>
+    state.plan.grabPlaceOptionId;
 
 const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
-    const isGrabInnerItem = useRef(false);
-    const enterCount = useRef(0);
-    const newPlan = useRef<HTMLElement | null>(null);
+    const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
+    const enterCnt = useRef(0);
+    const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
 
     useEffect(() => {
         if (isDrop) {
-            const node = newPlan.current;
+            setIsDrop(false);
+            const node = droppedRef.current;
             node?.classList.add('focus');
+            node?.scrollIntoView();
             setTimeout(() => {
                 node?.classList.remove('focus');
             }, 500);
-            node?.scrollIntoView();
-            setIsDrop(false);
         }
     }, [planList]);
 
-    const onDragStart = useCallback((e: React.DragEvent<HTMLElement>) => {
-        isGrabInnerItem.current = true;
+    const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
+        enterCnt.current = 0;
+        dispatch(grabPlaceOption({ id: null }));
+        const id = parseInt(e.currentTarget.dataset.id as string, 10);
+        dispatch(grabPlan({ id }));
     }, []);
 
-    const onDragEnd = useCallback((e: React.DragEvent<HTMLElement>) => {
-        isGrabInnerItem.current = false;
-    }, []);
+    const onDragEnterConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (!grabPlaceOptionId) return;
+            enterCnt.current += 1;
+            e.currentTarget.classList.add('drag-over');
+        },
+        [grabPlaceOptionId],
+    );
 
-    const onDragEnter = useCallback((e: React.DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        enterCount.current += 1;
-        e.currentTarget.classList.add('drag-over');
-    }, []);
+    const onDragLeaveConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (!grabPlaceOptionId) return;
+            enterCnt.current -= 1;
+            if (enterCnt.current === 0) {
+                e.currentTarget.classList.remove('drag-over');
+            }
+        },
+        [grabPlaceOptionId],
+    );
 
-    const onDragLeave = useCallback((e: React.DragEvent<HTMLElement>) => {
-        enterCount.current -= 1;
-        if (enterCount.current === 0) {
+    const onDropContainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (!grabPlaceOptionId) return;
             e.currentTarget.classList.remove('drag-over');
-        }
-    }, []);
-
-    const onDrop = useCallback((e: React.DragEvent<HTMLElement>) => {
-        if (isGrabInnerItem.current) return;
-        e.currentTarget.classList.remove('drag-over');
-        dispatch(dropPlaceOption());
-        setIsDrop(true);
-    }, []);
+            dispatch(dropPlaceOption());
+            setIsDrop(true);
+        },
+        [grabPlaceOptionId],
+    );
 
     // util로 분리
-    const getSortableList = (list: Array<PlanDetail>): Array<PlanDetail> => {
+    const getSortableList = (list: IPlace[]): IPlace[] => {
         return list.map((x) => ({
             ...x,
             chosen: true,
         }));
     };
-
-    // util로 분리
-    const onSort = (list: Array<PlanDetail>): void => {
+    const onSort = (list: IPlace[]): void => {
         dispatch(sortPlanList({ list }));
     };
 
     return (
         <Container
-            onDragEnter={onDragEnter}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
+            onDragEnter={onDragEnterConainer}
+            onDragLeave={onDragLeaveConainer}
+            onDrop={onDropContainer}
             onDragOver={(e) => e.preventDefault()}
         >
             <ReactSortable
@@ -80,14 +95,15 @@ const SetupRoute: FC = () => {
                 list={getSortableList(planList)}
                 setList={onSort}
             >
-                {planList.map((plan: PlanDetail, index) => {
+                {planList.map((plan: IPlace, index: number) => {
                     if (index === planList.length - 1) {
                         return (
                             <Place
-                                ref={newPlan as React.RefObject<HTMLDivElement>}
+                                ref={
+                                    droppedRef as React.RefObject<HTMLDivElement>
+                                }
                                 key={plan.id}
-                                onDragStart={onDragStart}
-                                onDragEnd={onDragEnd}
+                                onDragStart={onDragStartPlace}
                             >
                                 <Name>{plan.name}</Name>
                                 <Location>{plan.address}</Location>
@@ -95,11 +111,7 @@ const SetupRoute: FC = () => {
                         );
                     }
                     return (
-                        <Place
-                            key={plan.id}
-                            onDragStart={onDragStart}
-                            onDragEnd={onDragEnd}
-                        >
+                        <Place key={plan.id} onDragStart={onDragStartPlace}>
                             <Name>{plan.name}</Name>
                             <Location>{plan.address}</Location>
                         </Place>

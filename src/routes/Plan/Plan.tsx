@@ -9,10 +9,10 @@ import Map from 'containers/plan/Map';
 import PlanMaker from 'containers/plan/PlanMaker';
 
 // redux (type, reducer)
-import { PlanDetail, PlaceOption, initializeData } from 'store/modules/plan';
+import { IPlace, initializeData } from 'store/modules/plan';
 
 // dummy data
-const dummyPlanDetailList: Array<PlanDetail> = [
+const dummyPlanDetailList: IPlace[] = [
     {
         id: 1,
         day: 1,
@@ -24,6 +24,7 @@ const dummyPlanDetailList: Array<PlanDetail> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 2,
@@ -36,6 +37,7 @@ const dummyPlanDetailList: Array<PlanDetail> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 3,
@@ -48,6 +50,7 @@ const dummyPlanDetailList: Array<PlanDetail> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 4,
@@ -60,9 +63,10 @@ const dummyPlanDetailList: Array<PlanDetail> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
 ];
-const dummyPlaceOptionList: Array<PlaceOption> = [
+const dummyPlaceOptionList: IPlace[] = [
     {
         id: 33,
         day: 1,
@@ -74,6 +78,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 44,
@@ -86,6 +91,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 1010,
@@ -98,6 +104,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 888,
@@ -110,6 +117,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 777,
@@ -122,6 +130,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
     {
         id: 666,
@@ -134,6 +143,7 @@ const dummyPlaceOptionList: Array<PlaceOption> = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
+        imgUrl: 'http',
     },
 ];
 
@@ -141,10 +151,10 @@ const Plan: FC = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const initPlanDetailList: Array<PlanDetail> = dummyPlanDetailList.sort(
+        const initPlanDetailList: IPlace[] = dummyPlanDetailList.sort(
             (a, b) => a.sequence - b.sequence,
         );
-        const initPlaceOptionList: Array<PlaceOption> = dummyPlaceOptionList;
+        const initPlaceOptionList: IPlace[] = dummyPlaceOptionList;
         dispatch(initializeData({ initPlanDetailList, initPlaceOptionList }));
     }, []);
 

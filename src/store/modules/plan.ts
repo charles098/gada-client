@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface PlanDetail {
+export interface IPlace {
     id: number;
     day: number;
     sequence: number;
@@ -11,31 +11,21 @@ export interface PlanDetail {
     description: string;
     cost: number;
     category: string;
+    imgUrl: string;
 }
 
-export interface PlaceOption {
-    id: number;
-    day: number;
-    sequence: number;
-    name: string;
-    address: string;
-    longitude: string;
-    latitude: string;
-    description: string;
-    cost: number;
-    category: string;
-}
-
-export interface Plan {
+export interface IPlan {
     setupDay: number;
-    grabOptionId: number | null;
-    planList: Array<PlanDetail>;
-    placeOptionList: Array<PlaceOption>;
+    grabPlanId: number | null;
+    grabPlaceOptionId: number | null;
+    planList: IPlace[];
+    placeOptionList: IPlace[];
 }
 
-const initialState: Plan = {
+const initialState: IPlan = {
     setupDay: 1,
-    grabOptionId: null,
+    grabPlanId: null,
+    grabPlaceOptionId: null,
     planList: [],
     placeOptionList: [],
 };
@@ -44,30 +34,44 @@ const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
     reducers: {
-        initializeData(state: Plan, action) {
+        initializeData(state: IPlan, action): void {
             const { initPlanDetailList, initPlaceOptionList } = action.payload;
             state.planList = [...initPlanDetailList];
             state.placeOptionList = [...initPlaceOptionList];
         },
-        sortPlanList(state: Plan, action) {
+        sortPlanList(state: IPlan, action) {
             const { list } = action.payload;
             state.planList = [...list];
         },
-        sortplaceOptionList(state: Plan, action) {
+        sortplaceOptionList(state: IPlan, action) {
             const { list } = action.payload;
             state.placeOptionList = [...list];
         },
-        grabPlaceOption(state: Plan, action) {
+        grabPlan(state: IPlan, action) {
             const { id } = action.payload;
-            state.grabOptionId = id;
+            state.grabPlanId = id;
         },
-        dropPlaceOption(state: Plan) {
-            const droppedPlan: any = state.placeOptionList.find(
-                (option) => option.id === state.grabOptionId,
-            );
-            const idx = state.placeOptionList.indexOf(droppedPlan);
+        grabPlaceOption(state: IPlan, action) {
+            const { id } = action.payload;
+            state.grabPlaceOptionId = id;
+        },
+        dropPlan(state: IPlan) {
+            const droppedPlan = state.planList.find(
+                (plan) => plan.id === state.grabPlanId,
+            ) as IPlace;
+
+            const idx = state.planList.indexOf(droppedPlan);
+            state.planList.splice(idx, 1);
+            state.placeOptionList.push(droppedPlan);
+        },
+        dropPlaceOption(state: IPlan) {
+            const droppedOption = state.placeOptionList.find(
+                (option) => option.id === state.grabPlaceOptionId,
+            ) as IPlace;
+
+            const idx = state.placeOptionList.indexOf(droppedOption);
             state.placeOptionList.splice(idx, 1);
-            state.planList.push(droppedPlan);
+            state.planList.push(droppedOption);
         },
     },
 });
@@ -78,7 +82,9 @@ export const {
     initializeData,
     sortPlanList,
     sortplaceOptionList,
+    grabPlan,
     grabPlaceOption,
+    dropPlan,
     dropPlaceOption,
 } = actions;
 
