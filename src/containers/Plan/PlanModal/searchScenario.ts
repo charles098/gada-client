@@ -1,4 +1,4 @@
-import { placeInfo } from './types';
+import { PlaceInfo, Position } from './types';
 
 const ps = new kakao.maps.services.Places();
 
@@ -27,23 +27,21 @@ const searchImageByKakaoAPI = async (
 
 const searchByKeyword = async (
     keyword: string | undefined,
-): Promise<placeInfo[]> => {
+): Promise<PlaceInfo[]> => {
     return new Promise((resolve, reject) => {
         ps.keywordSearch(`${keyword}`, async (data, status) => {
             if (status === kakao.maps.services.Status.OK) {
                 const list: any = data.map(
-                    async (place): Promise<placeInfo> => {
+                    async (place): Promise<PlaceInfo> => {
                         const placeImgUrl = await searchImageByKakaoAPI(
                             `${place.place_name}&${place.address_name} 건물사진&장소사진`,
                         );
                         return {
-                            place_name: place.place_name,
-                            place_img_url: placeImgUrl,
-                            place_url: place.place_url,
+                            name: place.place_name,
+                            imgUrl: placeImgUrl,
                             address: place.address_name,
-                            road_address: place?.road_address_name,
-                            lat: place.x,
-                            lng: place.y,
+                            latitude: place.x,
+                            longitude: place.y,
                         };
                     },
                 );

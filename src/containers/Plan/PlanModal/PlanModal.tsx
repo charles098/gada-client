@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import PlaceItem from './PlaceItem';
 
 import { pickByKeyword, searchByKeyword } from './searchScenario';
-import { placeInfo } from './types';
+import { PlaceInfo, Position } from './types';
 
 const SEARCH_PLACE = true;
 const PICK_PALCE = false;
@@ -16,7 +16,7 @@ const PICK_PALCE = false;
 const PlanModal = () => {
     const [contents, setContents] = useState<boolean>(SEARCH_PLACE);
     const [position, setPosition] = useState<{ lat: number; lng: number }>();
-    const mapCenter: { lat: number; lng: number } = useMemo(
+    const mapCenter: Position = useMemo(
         () =>
             position ?? {
                 lat: 33.450701,
@@ -28,8 +28,8 @@ const PlanModal = () => {
         bySearch: '',
         byPick: '',
     });
-    const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
-    const [placeList, setPlaceList] = useState<placeInfo[]>([]);
+    const [userPlaceList, setUserPlaceList] = useState<PlaceInfo[]>([]);
+    const [placeList, setPlaceList] = useState<PlaceInfo[]>([]);
 
     const handleClick = () => setContents((f) => !f);
 
@@ -98,9 +98,10 @@ const PlanModal = () => {
                             <div className="contents" ref={scrollRef}>
                                 {placeList.map((data: any) => (
                                     <PlaceItem
-                                        img={data.place_img_url}
+                                        imgUrl={data.place_img_url}
                                         name={data.place_name}
                                         address={data.address}
+                                        onClick={undefined}
                                     />
                                 ))}
                             </div>

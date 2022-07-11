@@ -1,13 +1,18 @@
+import { PlaceInfo } from 'containers/plan/PlanModal/types';
 import React from 'react';
 import styled from 'styled-components';
 
 const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
 
-const PlaceItem = ({ name, address, img, onClick }: any) => {
+interface Props extends Omit<PlaceInfo, 'latitude' | 'longitude'> {
+    onClick: any;
+}
+
+const PlaceItem = ({ name, address, imgUrl, onClick }: Props) => {
     return (
         <ItemContainer key={`item-${name}-${address}`}>
-            <ItemImage src={img ?? emptyImage} />
+            <ItemImage src={imgUrl ?? emptyImage} />
             <ItemTexts>
                 <h3>{name ?? '장소이름'}</h3>
                 <h5>{address ?? '장소 주소'}</h5>
