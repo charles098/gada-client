@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
-import { PlanDetail, sortPlanList, dropPlaceOption } from 'store/modules/plan';
+import { Place, sortPlanList, dropPlaceOption } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 
@@ -56,7 +56,7 @@ const SetupRoute: FC = () => {
     }, []);
 
     // util로 분리
-    const getSortableList = (list: Array<PlanDetail>): Array<PlanDetail> => {
+    const getSortableList = (list: Place[]): Place[] => {
         return list.map((x) => ({
             ...x,
             chosen: true,
@@ -64,7 +64,7 @@ const SetupRoute: FC = () => {
     };
 
     // util로 분리
-    const onSort = (list: Array<PlanDetail>): void => {
+    const onSort = (list: Place[]): void => {
         dispatch(sortPlanList({ list }));
     };
 
@@ -80,7 +80,7 @@ const SetupRoute: FC = () => {
                 list={getSortableList(planList)}
                 setList={onSort}
             >
-                {planList.map((plan: PlanDetail, index) => {
+                {planList.map((plan: Place, index) => {
                     if (index === planList.length - 1) {
                         return (
                             <Place

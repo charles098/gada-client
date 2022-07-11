@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface PlanDetail {
+export interface Place {
     id: number;
     day: number;
     sequence: number;
@@ -11,26 +11,14 @@ export interface PlanDetail {
     description: string;
     cost: number;
     category: string;
-}
-
-export interface PlaceOption {
-    id: number;
-    day: number;
-    sequence: number;
-    name: string;
-    address: string;
-    longitude: string;
-    latitude: string;
-    description: string;
-    cost: number;
-    category: string;
+    imgUrl: string;
 }
 
 export interface Plan {
     setupDay: number;
     grabOptionId: number | null;
-    planList: Array<PlanDetail>;
-    placeOptionList: Array<PlaceOption>;
+    planList: Place[];
+    placeOptionList: Place[];
 }
 
 const initialState: Plan = {
@@ -62,7 +50,7 @@ const planDetailSlice = createSlice({
             state.grabOptionId = id;
         },
         dropPlaceOption(state: Plan) {
-            const droppedPlan: any = state.placeOptionList.find(
+            const droppedPlan: Place = state.placeOptionList.find(
                 (option) => option.id === state.grabOptionId,
             );
             const idx = state.placeOptionList.indexOf(droppedPlan);
