@@ -22,11 +22,13 @@ const LoginForm = () => {
     return (
         <Form onSubmit={handleSubmit}>
             <Email
+            autoComplete="email"
             type="email"
             placeholder="Email"
             name="email"
             />
             <Password
+            autoComplete="current-password"
             placeholder="Password"
             type="password"
             name="password"
