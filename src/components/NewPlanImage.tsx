@@ -14,16 +14,18 @@ const NewPlanImage: FC = () => {
         })
       }
     
+    const handleChange = (e: any) => {
+      if (e.target.files.length > 0)
+        encodeFileToBase64(e.target.files[0])
+    }
+
     return (
         <Wrapper src={imageSrc}>
             <AddImageButton
                 type='file'
                 accept="image/jpg, image/png, image/jpeg"
                 name="image"
-                onChange={(e: any) => {
-                  if (e.target.files.length > 0)
-                    encodeFileToBase64(e.target.files[0])
-                }}
+                onChange={handleChange}
             />
             {!imageSrc && <PlusIcon style={plusStyle} />}
         </Wrapper>
