@@ -1,4 +1,4 @@
-import { PlaceInfo, Position } from './types';
+import { PlaceInfo, Position } from './PlanModal.types';
 
 const ps = new kakao.maps.services.Places();
 

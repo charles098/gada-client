@@ -10,5 +10,9 @@ interface Position {
     lat: number;
     lng: number;
 }
+interface PlaceInputTypes {
+    bySearch: string;
+    byPick: string;
+}
 
-export type { PlaceInfo, Position };
+export type { PlaceInfo, Position, PlaceInputTypes };

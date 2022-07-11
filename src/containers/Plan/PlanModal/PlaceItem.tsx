@@ -1,4 +1,4 @@
-import { PlaceInfo } from 'containers/plan/PlanModal/types';
+import { PlaceInfo } from 'containers/plan/PlanModal/PlanModal.types';
 import React from 'react';
 import styled from 'styled-components';
 

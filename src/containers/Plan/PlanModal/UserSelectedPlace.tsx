@@ -1,5 +1,5 @@
 import { CancelIcon } from 'components/icons';
-import { PlaceInfo } from 'containers/plan/PlanModal/types';
+import { PlaceInfo } from 'containers/plan/PlanModal/PlanModal.types';
 import React, { FC } from 'react';
 import styled from 'styled-components';
 

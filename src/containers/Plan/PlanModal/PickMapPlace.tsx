@@ -2,7 +2,7 @@ import { position2DetailAddressByGeocoder } from 'containers/plan/PlanModal/sear
 import React, { useEffect, useRef, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import { PlaceInfo } from './types';
+import { PlaceInfo } from './PlanModal.types';
 
 const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
