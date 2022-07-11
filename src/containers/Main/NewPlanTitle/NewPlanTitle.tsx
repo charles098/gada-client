@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const NewPlanTitle : FC = () => {
     const [title, setTitle] = useState<string>('');
+    const handleChange = (e: any) => setTitle(e.target.value);
 
     return (
         <TitleWrapper>
@@ -15,7 +16,7 @@ const NewPlanTitle : FC = () => {
                 type='text'
                 value={title}
                 name="title"
-                onChange={(e: any) => setTitle(e.target.value)}
+                onChange={handleChange}
             />
         </TitleWrapper>
     )

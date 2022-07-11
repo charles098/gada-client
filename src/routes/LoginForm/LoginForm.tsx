@@ -18,21 +18,27 @@ const LoginForm = () => {
             console.log(e.target.password.value);    
         }
     }
+    
+    const handleRegisterClick = () => {
+        navigate("/register");
+    }
 
     return (
         <Form onSubmit={handleSubmit}>
             <Email
+            autoComplete="email"
             type="email"
             placeholder="Email"
             name="email"
             />
             <Password
+            autoComplete="current-password"
             placeholder="Password"
             type="password"
             name="password"
             />
             <LinkContainer>
-                <Register onClick={() => navigate("/register")}>
+                <Register onClick={handleRegisterClick}>
                     회원가입
                 </Register>
                 <FindPassword>비밀번호 찾기</FindPassword>

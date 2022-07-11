@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
     const navigate = useNavigate();
 
+    const handleLocalLoginClick = () => {navigate("/login-form")};
+    const handleRegisterClick = () => {navigate("/register")};
+
     return (
         <LoginContainer>
             <KakaoLogin>
@@ -19,10 +22,10 @@ const Login = () => {
                 <GoogleIcon style={LoginIconStyle} />
                 <LoginText>구글 로그인</LoginText>
             </GoogleLogin>
-            <LocalLogin onClick={() => navigate("/login-form")}>
+            <LocalLogin onClick={handleLocalLoginClick}>
                 <LoginText>다른 계정으로 로그인</LoginText>
             </LocalLogin>
-            <Register onClick={() => navigate("/register")}>회원가입</Register>
+            <Register onClick={handleRegisterClick}>회원가입</Register>
         </LoginContainer>
     )
 }
