@@ -1,5 +1,5 @@
-import { PlaceInfo } from 'containers/plan/PlanModal/PlanModal.types';
 import React from 'react';
+import { PlaceInfo } from 'store/modules/search';
 import styled from 'styled-components';
 
 const emptyImage =
@@ -9,9 +9,9 @@ interface Props extends Omit<PlaceInfo, 'latitude' | 'longitude'> {
     onClick: () => void;
 }
 
-const PlaceItem = ({ name, address, imgUrl, onClick }: Props) => {
+const PlaceListItem = ({ name, address, imgUrl, onClick }: Props) => {
     return (
-        <ItemContainer key={`item-${name}-${address}`}>
+        <ItemContainer>
             <ItemImage src={imgUrl ?? emptyImage} />
             <ItemTexts>
                 <h3>{name ?? '장소이름'}</h3>
@@ -85,4 +85,4 @@ const ItemButton = styled.button`
     }
 `;
 
-export default PlaceItem;
+export default PlaceListItem;

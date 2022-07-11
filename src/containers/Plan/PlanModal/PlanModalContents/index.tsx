@@ -1,59 +1,50 @@
 import React from 'react';
+import styled from 'styled-components';
+import { RootState } from 'store/modules';
+import { useSelector } from 'react-redux';
+import PlaceList from './PlaceList';
+import CustomPlace from './CustomPlace';
 
-// const PlanModalContents = () => {
-//     return (
-//         <PlaceContents>
-//             {contents ? (
-//                 <>
-//                     <header> 검색결과</header>
-//                     <div className="contents">
-//                         {placeList.map((data: PlaceInfo) => (
-//                             <PlaceItem
-//                                 imgUrl={data.imgUrl}
-//                                 name={data.name}
-//                                 address={data.address}
-//                                 onClick={() => {
-//                                     setUserSelectedPlaces((places) =>
-//                                         places ? [...places, data] : [data],
-//                                     );
-//                                 }}
-//                             />
-//                         ))}
-//                     </div>
-//                 </>
-//             ) : (
-//                 <Map
-//                     center={moving ?? mapCenter}
-//                     isPanto={moving !== undefined}
-//                     style={{
-//                         // 지도의 크기
-//                         width: '100%',
-//                         height: '470px',
-//                     }}
-//                     level={3}
-//                     zoomable={false}
-//                     onClick={(_t, mouseEvent) =>
-//                         setPosition({
-//                             lat: mouseEvent.latLng.getLat(),
-//                             lng: mouseEvent.latLng.getLng(),
-//                         })
-//                     }
-//                 >
-//                     {position && (
-//                         <PickMapPlace
-//                             position={position}
-//                             callback={(customPlace: PlaceInfo) => {
-//                                 setUserSelectedPlaces((places) =>
-//                                     places
-//                                         ? [...places, customPlace]
-//                                         : [customPlace],
-//                                 );
-//                             }}
-//                         />
-//                     )}
-//                 </Map>
-//             )}
-//         </PlaceContents>
-//     );
-// };
-// export default PlanModalContents;
+const state = (state: RootState) => state.search.state;
+
+const PlanModalContents = () => {
+    const contentsType = useSelector(state);
+    return (
+        <PlaceContents>
+            {contentsType ? <PlaceList /> : <CustomPlace />}
+        </PlaceContents>
+    );
+};
+
+const PlaceContents = styled.div`
+    margin: 20px 80px;
+    header {
+        font-family: 'Noto Sans KR';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 29px;
+    }
+    .contents {
+        padding-right: 20px;
+
+        margin-top: 20px;
+        height: 421px;
+        overflow: auto;
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #60a5f8bb;
+            border-radius: 10px;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: #dedede;
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
+    }
+    .info_view {
+    }
+`;
+export default PlanModalContents;

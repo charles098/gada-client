@@ -1,8 +1,8 @@
 import { position2DetailAddressByGeocoder } from 'containers/plan/PlanModal/searchScenario';
 import React, { useEffect, useRef, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
+import { PlaceInfo } from 'store/modules/search';
 import styled from 'styled-components';
-import { PlaceInfo } from './PlanModal.types';
 
 const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
@@ -45,7 +45,7 @@ const PickMapPlace = ({ position, callback }: Props) => {
             >
                 <PickMyPlaceInput
                     placeholder="장소 이름을 입력해주세요!"
-                    value={name}
+                    value={name ?? ''}
                     onChange={(e) => setName(e.target.value)}
                     ref={inputRef}
                 />

@@ -1,4 +1,4 @@
-import { PlaceInfo, Position } from './PlanModal.types';
+import { PlaceInfo, Position } from 'store/modules/search';
 
 const ps = new kakao.maps.services.Places();
 
@@ -55,6 +55,11 @@ const searchByKeyword = async (
     });
 };
 
+/**
+ *
+ * @param keyword
+ * @returns
+ */
 const pickByKeyword = async (
     keyword: string | undefined,
 ): Promise<Position> => {
@@ -72,6 +77,14 @@ const pickByKeyword = async (
     });
 };
 
+/**
+ * Author: ParkAward
+ * CreateAt : 22-07-11
+ *
+ * 카카오 API 위도 경도 기반으로 주소를 반환
+ * @param position Position
+ * @returns 주소 정보
+ */
 const position2DetailAddressByGeocoder = (
     position: Position,
 ): Promise<string> => {
@@ -79,7 +92,7 @@ const position2DetailAddressByGeocoder = (
     return new Promise((resolve, reject) => {
         geocoder.coord2Address(position.lng, position.lat, (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
-                console.log(result);
+                // console.log(result);
                 resolve(result[0].address.address_name);
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                 reject(new Error('주소가 존재하지 않습니다.'));
@@ -90,7 +103,4 @@ const position2DetailAddressByGeocoder = (
     });
 };
 
-// const parseKakaoData2PlaceInfo = (data:any):PlaceInfo =>{
-
-// }
 export { searchByKeyword, pickByKeyword, position2DetailAddressByGeocoder };

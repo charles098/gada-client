@@ -2,19 +2,45 @@ import { SearchIcon } from 'components/icons';
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
-    onSubmit(e: React.FormEvent<HTMLFormElement>): void;
-    onChange(e: React.FormEvent<HTMLInputElement>): void;
-    value: string;
-}
-const PlanPlaceForm = ({ onSubmit, onChange, value }: Props) => {
+import { RootState } from 'store/modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchInput, setPlaceList, setMoving } from 'store/modules/search';
+import { pickByKeyword, searchByKeyword } from '../searchScenario';
+
+const search = (state: RootState) => state.search.search;
+const state = (state: RootState) => state.search.state;
+const list = (state: RootState) => state.search.placeList;
+
+const PlanPlaceForm = () => {
+    const dispatch = useDispatch();
+    const searchInputs = useSelector(search);
+    const contentsType = useSelector(state);
+    const plist = useSelector(list);
     return (
-        <PlaceForm onSubmit={onSubmit}>
+        <PlaceForm
+            onSubmit={async (e) => {
+                e.preventDefault();
+                if (contentsType) {
+                    if (!searchInputs.bySearch) return;
+                    const places = await searchByKeyword(searchInputs.bySearch);
+                    dispatch(setPlaceList(places));
+                    console.log(plist);
+                } else {
+                    const movePoint = await pickByKeyword(searchInputs.byPick);
+                    dispatch(setMoving(movePoint));
+                }
+            }}
+        >
             <SearchIcon width="24px" height="23px" />
             <PlaceInput
                 placeholder="장소를 입력해주세요"
-                onChange={onChange}
-                value={value}
+                onChange={(e) => {
+                    const { value } = e.target;
+                    dispatch(setSearchInput(value));
+                }}
+                value={
+                    contentsType ? searchInputs.bySearch : searchInputs.byPick
+                }
             />
         </PlaceForm>
     );
