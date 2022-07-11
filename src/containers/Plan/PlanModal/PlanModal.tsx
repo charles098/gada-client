@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
+import PickMapPlace from 'containers/plan/PlanModal/PickMapPlace';
 import React, { useRef, useState, useMemo } from 'react';
-import { Map, MapInfoWindow } from 'react-kakao-maps-sdk';
+import { Map, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import PlaceItem from './PlaceItem';
 
@@ -23,7 +24,7 @@ const PlanModal = () => {
             },
         [contents],
     );
-    const [searchFormInput, setSearchFormInput] = useState<string>();
+    const [placeFormInput, setPlaceFormInput] = useState<string>();
     const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
 
@@ -48,7 +49,7 @@ const PlanModal = () => {
                         if (contents) {
                             try {
                                 setPlaceList(
-                                    await searchByKeyword(searchFormInput),
+                                    await searchByKeyword(placeFormInput),
                                 );
                             } catch (e: any | Error) {
                                 alert(e?.message);
@@ -59,8 +60,8 @@ const PlanModal = () => {
                     <SearchIcon width="24px" height="23px" />
                     <PlaceInput
                         placeholder="장소를 입력해주세요"
-                        onChange={(e) => setSearchFormInput(e.target.value)}
-                        value={searchFormInput}
+                        onChange={(e) => setPlaceFormInput(e.target.value)}
+                        value={placeFormInput}
                     />
                 </PlaceForm>
                 <PlaceContents>
@@ -94,11 +95,7 @@ const PlanModal = () => {
                                 })
                             }
                         >
-                            {position && (
-                                <StyledMapInfoView position={position}>
-                                    hi
-                                </StyledMapInfoView>
-                            )}
+                            {position && <PickMapPlace position={position} />}
                         </Map>
                     )}
                 </PlaceContents>
@@ -211,7 +208,4 @@ const SubmitButton = styled.button`
     color: white;
 `;
 
-const StyledMapInfoView = styled(MapInfoWindow)`
-    color: red;
-`;
 export default PlanModal;
