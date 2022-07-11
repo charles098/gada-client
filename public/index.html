@@ -24,6 +24,13 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <style>
+      @font-face {
+        font-family: 'Jalnan';
+        src: local('Jalnan'), url(%PUBLIC_URL%/Jalnan.woff) format('woff');
+      }
+    </style>
+    <link rel="preload" href="%PUBLIC_URL%/Jalnan.woff" as="font" type="font/woff" crossorigin>
     <title>React App</title>
   </head>
   <body>
