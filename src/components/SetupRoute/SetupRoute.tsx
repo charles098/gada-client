@@ -19,7 +19,7 @@ const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
-    const enterContainerCount = useRef(0);
+    const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
 
@@ -36,7 +36,7 @@ const SetupRoute: FC = () => {
     }, [planList]);
 
     const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
-        enterContainerCount.current = 0;
+        enterCnt.current = 0;
         dispatch(grabPlaceOption({ id: null }));
         const id = parseInt(e.currentTarget.dataset.id as string, 10);
         dispatch(grabPlan({ id }));
@@ -44,21 +44,19 @@ const SetupRoute: FC = () => {
 
     const onDragEnterConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabPlaceOptionId) {
-                enterContainerCount.current += 1;
-                e.currentTarget.classList.add('drag-over');
-            }
+            if (!grabPlaceOptionId) return;
+            enterCnt.current += 1;
+            e.currentTarget.classList.add('drag-over');
         },
         [grabPlaceOptionId],
     );
 
     const onDragLeaveConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabPlaceOptionId) {
-                enterContainerCount.current -= 1;
-                if (enterContainerCount.current === 0) {
-                    e.currentTarget.classList.remove('drag-over');
-                }
+            if (!grabPlaceOptionId) return;
+            enterCnt.current -= 1;
+            if (enterCnt.current === 0) {
+                e.currentTarget.classList.remove('drag-over');
             }
         },
         [grabPlaceOptionId],
@@ -66,12 +64,10 @@ const SetupRoute: FC = () => {
 
     const onDropContainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabPlaceOptionId) {
-                e.currentTarget.classList.remove('drag-over');
-                dispatch(dropPlaceOption());
-                dispatch(grabPlaceOption({ id: null }));
-                setIsDrop(true);
-            }
+            if (!grabPlaceOptionId) return;
+            e.currentTarget.classList.remove('drag-over');
+            dispatch(dropPlaceOption());
+            setIsDrop(true);
         },
         [grabPlaceOptionId],
     );

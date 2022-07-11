@@ -20,7 +20,7 @@ const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
     const grabPlanId = useSelector(grabPlanIdSelector);
-    const enterContainerCount = useRef(0);
+    const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
 
@@ -37,7 +37,7 @@ const SelectedOption: FC = () => {
     }, [placeOptionList]);
 
     const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
-        enterContainerCount.current = 0;
+        enterCnt.current = 0;
         dispatch(grabPlan({ id: null }));
         const id = parseInt(e.currentTarget.dataset.id as string, 10);
         dispatch(grabPlaceOption({ id }));
@@ -45,21 +45,21 @@ const SelectedOption: FC = () => {
 
     const onDragEnterConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabPlanId) {
-                enterContainerCount.current += 1;
-                e.currentTarget.classList.add('drag-over');
-            }
+            if (!grabPlanId) return;
+
+            enterCnt.current += 1;
+            e.currentTarget.classList.add('drag-over');
         },
         [grabPlanId],
     );
 
     const onDragLeaveConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabPlanId) {
-                enterContainerCount.current -= 1;
-                if (enterContainerCount.current === 0) {
-                    e.currentTarget.classList.remove('drag-over');
-                }
+            if (!grabPlanId) return;
+
+            enterCnt.current -= 1;
+            if (enterCnt.current === 0) {
+                e.currentTarget.classList.remove('drag-over');
             }
         },
         [grabPlanId],
@@ -67,12 +67,11 @@ const SelectedOption: FC = () => {
 
     const onDropContainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabPlanId) {
-                e.currentTarget.classList.remove('drag-over');
-                dispatch(dropPlan());
-                dispatch(grabPlan({ id: null }));
-                setIsDrop(true);
-            }
+            if (!grabPlanId) return;
+
+            e.currentTarget.classList.remove('drag-over');
+            dispatch(dropPlan());
+            setIsDrop(true);
         },
         [grabPlanId],
     );
