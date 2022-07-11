@@ -55,12 +55,14 @@ const searchByKeyword = async (
     });
 };
 
-const pickByKeyword = async (keyword: string | undefined) => {
+const pickByKeyword = async (
+    keyword: string | undefined,
+): Promise<Position> => {
     return new Promise((resolve, reject) => {
         ps.keywordSearch(`${keyword}`, async (data, status) => {
             if (status === kakao.maps.services.Status.OK) {
                 const place = data[0];
-                resolve({ lat: place.x, lng: place.y });
+                resolve({ lat: Number(place.y), lng: Number(place.x) });
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                 reject(new Error('검색 결과가 존재하지 않습니다.'));
             } else if (status === kakao.maps.services.Status.ERROR) {
@@ -70,4 +72,25 @@ const pickByKeyword = async (keyword: string | undefined) => {
     });
 };
 
-export { searchByKeyword, pickByKeyword };
+const position2DetailAddressByGeocoder = (
+    position: Position,
+): Promise<string> => {
+    const geocoder = new kakao.maps.services.Geocoder();
+    return new Promise((resolve, reject) => {
+        geocoder.coord2Address(position.lng, position.lat, (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+                console.log(result);
+                resolve(result[0].address.address_name);
+            } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                reject(new Error('주소가 존재하지 않습니다.'));
+            } else if (status === kakao.maps.services.Status.ERROR) {
+                reject(new Error('주소 찾기가 오류가 발생했습니다.'));
+            }
+        });
+    });
+};
+
+// const parseKakaoData2PlaceInfo = (data:any):PlaceInfo =>{
+
+// }
+export { searchByKeyword, pickByKeyword, position2DetailAddressByGeocoder };

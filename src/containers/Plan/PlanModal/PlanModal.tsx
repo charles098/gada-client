@@ -1,9 +1,9 @@
-/* eslint-disable camelcase */
 import { LocationIcon, SearchIcon } from 'components/icons';
 import Modal from 'components/Modal';
 import PickMapPlace from 'containers/plan/PlanModal/PickMapPlace';
+import UserSelectedPlace from 'containers/plan/PlanModal/UserSelectedPlace';
 import React, { useRef, useState, useMemo } from 'react';
-import { Map, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import { Map } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import PlaceItem from './PlaceItem';
 
@@ -11,11 +11,12 @@ import { pickByKeyword, searchByKeyword } from './searchScenario';
 import { PlaceInfo, Position } from './types';
 
 const SEARCH_PLACE = true;
-const PICK_PALCE = false;
+const PICK_PLACE = false;
 
 const PlanModal = () => {
     const [contents, setContents] = useState<boolean>(SEARCH_PLACE);
-    const [position, setPosition] = useState<{ lat: number; lng: number }>();
+    const [position, setPosition] = useState<Position>();
+    const [moving, setMoving] = useState<Position>();
     const mapCenter: Position = useMemo(
         () =>
             position ?? {
@@ -28,12 +29,9 @@ const PlanModal = () => {
         bySearch: '',
         byPick: '',
     });
-    const [userPlaceList, setUserPlaceList] = useState<PlaceInfo[]>([]);
+    const [userSelectedPlaces, setUserSelectedPlaces] = useState<PlaceInfo[]>();
     const [placeList, setPlaceList] = useState<PlaceInfo[]>([]);
 
-    const handleClick = () => setContents((f) => !f);
-
-    const scrollRef = useRef<HTMLDivElement>(null);
     return (
         <Modal width={1111} height={884}>
             <Contents>
@@ -44,13 +42,16 @@ const PlanModal = () => {
                     </ContentsTrigger>
                 </Title>
                 <PlaceSlider>
-                    <div>PlaceInfo</div>
+                    <UserSelectedPlace places={userSelectedPlaces} />
                 </PlaceSlider>
                 <PlaceForm
                     onSubmit={async (e) => {
                         e.preventDefault();
 
-                        if (contents && placeFormInput.bySearch) {
+                        if (
+                            contents === SEARCH_PLACE &&
+                            placeFormInput.bySearch
+                        ) {
                             try {
                                 setPlaceList(
                                     await searchByKeyword(
@@ -60,12 +61,16 @@ const PlanModal = () => {
                             } catch (e: any | Error) {
                                 alert(e?.message);
                             }
-                        } else if (!contents && placeFormInput.byPick) {
+                        } else if (
+                            contents === PICK_PLACE &&
+                            placeFormInput.byPick
+                        ) {
                             try {
-                                const result = await pickByKeyword(
+                                const result: Position = await pickByKeyword(
                                     placeFormInput.byPick,
                                 );
-                                console.log(await result);
+                                console.log(result);
+                                setMoving(result);
                             } catch (e: any | Error) {
                                 alert(e?.message);
                             }
@@ -95,20 +100,27 @@ const PlanModal = () => {
                     {contents ? (
                         <>
                             <header> 검색결과</header>
-                            <div className="contents" ref={scrollRef}>
-                                {placeList.map((data: any) => (
+                            <div className="contents">
+                                {placeList.map((data: PlaceInfo) => (
                                     <PlaceItem
-                                        imgUrl={data.place_img_url}
-                                        name={data.place_name}
+                                        imgUrl={data.imgUrl}
+                                        name={data.name}
                                         address={data.address}
-                                        onClick={undefined}
+                                        onClick={() => {
+                                            setUserSelectedPlaces((places) =>
+                                                places
+                                                    ? [...places, data]
+                                                    : [data],
+                                            );
+                                        }}
                                     />
                                 ))}
                             </div>
                         </>
                     ) : (
                         <Map
-                            center={mapCenter}
+                            center={moving ?? mapCenter}
+                            isPanto={moving !== undefined}
                             style={{
                                 // 지도의 크기
                                 width: '100%',
@@ -123,7 +135,18 @@ const PlanModal = () => {
                                 })
                             }
                         >
-                            {position && <PickMapPlace position={position} />}
+                            {position && (
+                                <PickMapPlace
+                                    position={position}
+                                    callback={(customPlace: PlaceInfo) => {
+                                        setUserSelectedPlaces((places) =>
+                                            places
+                                                ? [...places, customPlace]
+                                                : [customPlace],
+                                        );
+                                    }}
+                                />
+                            )}
                         </Map>
                     )}
                 </PlaceContents>

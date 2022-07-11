@@ -6,7 +6,7 @@ const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
 
 interface Props extends Omit<PlaceInfo, 'latitude' | 'longitude'> {
-    onClick: any;
+    onClick: () => void;
 }
 
 const PlaceItem = ({ name, address, imgUrl, onClick }: Props) => {
