@@ -1,7 +1,8 @@
-import React from "react";
+import React, { FC } from 'react';
+import PlanModal from 'containers/plan/PlanModal';
 
-const Home = () => {
-  return <div>Home</div>
-}
+const Home: FC = () => {
+    return <PlanModal />;
+};
 
 export default Home;
