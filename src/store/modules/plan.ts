@@ -16,16 +16,16 @@ export interface IPlace {
 
 export interface IPlan {
     setupDay: number;
-    grabOptionId: number | null;
     grabPlanId: number | null;
+    grabPlaceOptionId: number | null;
     planList: IPlace[];
     placeOptionList: IPlace[];
 }
 
 const initialState: IPlan = {
     setupDay: 1,
-    grabOptionId: null,
     grabPlanId: null,
+    grabPlaceOptionId: null,
     planList: [],
     placeOptionList: [],
 };
@@ -53,7 +53,7 @@ const planDetailSlice = createSlice({
         },
         grabPlaceOption(state: IPlan, action) {
             const { id } = action.payload;
-            state.grabOptionId = id;
+            state.grabPlaceOptionId = id;
         },
         dropPlan(state: IPlan) {
             const droppedPlan = state.planList.find(
@@ -66,7 +66,7 @@ const planDetailSlice = createSlice({
         },
         dropPlaceOption(state: IPlan) {
             const droppedOption = state.placeOptionList.find(
-                (option) => option.id === state.grabOptionId,
+                (option) => option.id === state.grabPlaceOptionId,
             ) as IPlace;
 
             const idx = state.placeOptionList.indexOf(droppedOption);

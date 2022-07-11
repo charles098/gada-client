@@ -12,12 +12,13 @@ import {
 } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
-const grabOptionIdSelector = (state: RootState) => state.plan.grabOptionId;
+const grabPlaceOptionIdSelector = (state: RootState) =>
+    state.plan.grabPlaceOptionId;
 
 const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
-    const grabOptionId = useSelector(grabOptionIdSelector);
+    const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
     const enterContainerCount = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
@@ -43,36 +44,36 @@ const SetupRoute: FC = () => {
 
     const onDragEnterConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabOptionId) {
+            if (grabPlaceOptionId) {
                 enterContainerCount.current += 1;
                 e.currentTarget.classList.add('drag-over');
             }
         },
-        [grabOptionId],
+        [grabPlaceOptionId],
     );
 
     const onDragLeaveConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabOptionId) {
+            if (grabPlaceOptionId) {
                 enterContainerCount.current -= 1;
                 if (enterContainerCount.current === 0) {
                     e.currentTarget.classList.remove('drag-over');
                 }
             }
         },
-        [grabOptionId],
+        [grabPlaceOptionId],
     );
 
     const onDropContainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
-            if (grabOptionId) {
+            if (grabPlaceOptionId) {
                 e.currentTarget.classList.remove('drag-over');
                 dispatch(dropPlaceOption());
                 dispatch(grabPlaceOption({ id: null }));
                 setIsDrop(true);
             }
         },
-        [grabOptionId],
+        [grabPlaceOptionId],
     );
 
     // util로 분리
