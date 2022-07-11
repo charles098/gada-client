@@ -1,13 +1,37 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
+import { PencilIcon as TitleController } from 'components/icons';
 
 const PlanTitle: FC = () => {
-    return <Container>부산 여행</Container>;
+    const onChangeTitle = useCallback(() => {
+        console.log('title');
+    }, []);
+
+    return (
+        <Container>
+            <Title>부산 여행</Title>
+            <TitleController
+                className="title-controller"
+                width="14px"
+                height="12px"
+                onClick={onChangeTitle}
+            />
+        </Container>
+    );
 };
 
 const Container = styled.div`
-    font-size: 28px;
     margin-left: 15px;
+    display: flex;
+
+    & > .title-controller {
+        cursor: pointer;
+    }
+`;
+
+const Title = styled.div`
+    font-size: 28px;
+    margin-right: 5px;
 `;
 
 export default PlanTitle;
