@@ -15,6 +15,7 @@ export interface IPlace {
 }
 
 export interface IPlan {
+    title: string;
     setupDay: number;
     grabPlanId: number | null;
     grabPlaceOptionId: number | null;
@@ -23,6 +24,7 @@ export interface IPlan {
 }
 
 const initialState: IPlan = {
+    title: '부산 바캉스',
     setupDay: 1,
     grabPlanId: null,
     grabPlaceOptionId: null,
@@ -34,10 +36,14 @@ const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
     reducers: {
-        initializeData(state: IPlan, action): void {
+        initializeData(state: IPlan, action) {
             const { initPlanDetailList, initPlaceOptionList } = action.payload;
             state.planList = [...initPlanDetailList];
             state.placeOptionList = [...initPlaceOptionList];
+        },
+        setTitle(state: IPlan, action) {
+            const { newTitle } = action.payload;
+            state.title = newTitle;
         },
         sortPlanList(state: IPlan, action) {
             const { list } = action.payload;
@@ -80,6 +86,7 @@ const { reducer, actions } = planDetailSlice;
 
 export const {
     initializeData,
+    setTitle,
     sortPlanList,
     sortplaceOptionList,
     grabPlan,
