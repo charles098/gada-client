@@ -1,12 +1,15 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import PlanTitle from 'components/PlanTitle';
+import PlanPeriod from 'components/PlanPeriod';
+import PlanWith from 'components/PlanWith';
 
 const PlanInfo: FC = () => {
     return (
         <Container>
-            <TitleController>부산 여행</TitleController>
-            <PeriodController>22.07.08 - 22.07.12</PeriodController>
-            <WithController>1명과 함께</WithController>
+            <PlanTitle />
+            <PlanPeriod />
+            <PlanWith />
         </Container>
     );
 };
@@ -26,23 +29,6 @@ const Container = styled.div`
         background-color: ${({ theme }) => theme.PRIMARY};
         color: white;
     }
-`;
-
-const TitleController = styled.div`
-    font-size: 28px;
-    margin-left: 15px;
-`;
-
-const PeriodController = styled.button`
-    margin-left: 15px;
-    width: 140px;
-    height: 25px;
-`;
-
-const WithController = styled.button`
-    margin-left: 15px;
-    width: 80px;
-    height: 25px;
 `;
 
 export default PlanInfo;
