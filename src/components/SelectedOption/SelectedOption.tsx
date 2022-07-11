@@ -2,74 +2,145 @@ import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
-
 import { RootState } from 'store/modules';
 import {
-    PlaceOption,
+    IPlace,
     sortplaceOptionList,
+    grabPlan,
     grabPlaceOption,
+    dropPlan,
 } from 'store/modules/plan';
 import jejuImg from 'images/jeju.jpg';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
+const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
 
-// drop -> end
 const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
+    const grabPlanId = useSelector(grabPlanIdSelector);
+    const enterCnt = useRef(0);
+    const droppedRef = useRef<HTMLElement | null>(null);
+    const [isDrop, setIsDrop] = useState(false);
 
     useEffect(() => {
-        const map: { [key: number]: boolean } = {};
-        placeOptionList.forEach((option: PlaceOption) => {
-            map[option.id] = false;
-        });
+        if (isDrop) {
+            setIsDrop(false);
+            const node = droppedRef.current;
+            node?.classList.add('focus');
+            node?.scrollIntoView();
+            setTimeout(() => {
+                node?.classList.remove('focus');
+            }, 500);
+        }
     }, [placeOptionList]);
 
-    const onDragStart = (e: React.DragEvent<HTMLElement>) => {
+    const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
+        enterCnt.current = 0;
+        dispatch(grabPlan({ id: null }));
         const id = parseInt(e.currentTarget.dataset.id as string, 10);
         dispatch(grabPlaceOption({ id }));
-    };
+    }, []);
 
-    const onDragEnd = (e: React.DragEvent<HTMLElement>) => {
-        dispatch(grabPlaceOption({ id: null }));
-    };
+    const onDragEnterConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (!grabPlanId) return;
+
+            enterCnt.current += 1;
+            e.currentTarget.classList.add('drag-over');
+        },
+        [grabPlanId],
+    );
+
+    const onDragLeaveConainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (!grabPlanId) return;
+
+            enterCnt.current -= 1;
+            if (enterCnt.current === 0) {
+                e.currentTarget.classList.remove('drag-over');
+            }
+        },
+        [grabPlanId],
+    );
+
+    const onDropContainer = useCallback(
+        (e: React.DragEvent<HTMLElement>) => {
+            if (!grabPlanId) return;
+
+            e.currentTarget.classList.remove('drag-over');
+            dispatch(dropPlan());
+            setIsDrop(true);
+        },
+        [grabPlanId],
+    );
 
     // util로 분리
-    const getSortableList = (list: Array<PlaceOption>): Array<PlaceOption> => {
+    const getSortableList = (list: IPlace[]): IPlace[] => {
         return list.map((x) => ({
             ...x,
             chosen: true,
         }));
     };
-
-    // util로 분리
-    const onSort = (list: Array<PlaceOption>): void => {
+    const onSort = (list: IPlace[]): void => {
         dispatch(sortplaceOptionList({ list }));
     };
 
     return (
-        <Container>
+        <Container
+            onDragEnter={onDragEnterConainer}
+            onDragLeave={onDragLeaveConainer}
+            onDrop={onDropContainer}
+            onDragOver={(e) => e.preventDefault()}
+        >
             <ReactSortable
                 className="sortable-container"
                 animation={150}
                 list={getSortableList(placeOptionList)}
                 setList={onSort}
             >
-                {placeOptionList.map((option) => (
-                    <Place
-                        key={option.id}
-                        data-id={option.id}
-                        draggable="true"
-                        onDragStart={onDragStart}
-                        onDragEnd={onDragEnd}
-                    >
-                        <div className="img-container">
-                            <img src={jejuImg} alt="img" draggable="false" />
-                        </div>
-                        <div className="place-name">{option.name}</div>
-                    </Place>
-                ))}
+                {placeOptionList.map((option: IPlace, index: number) => {
+                    if (index === placeOptionList.length - 1) {
+                        return (
+                            <Place
+                                ref={
+                                    droppedRef as React.RefObject<HTMLDivElement>
+                                }
+                                key={option.id}
+                                data-id={option.id}
+                                draggable="true"
+                                onDragStart={onDragStartPlace}
+                            >
+                                <div className="img-container">
+                                    <img
+                                        src={jejuImg}
+                                        alt="img"
+                                        draggable="false"
+                                    />
+                                </div>
+                                <div className="place-name">{option.name}</div>
+                            </Place>
+                        );
+                    }
+                    return (
+                        <Place
+                            key={option.id}
+                            data-id={option.id}
+                            draggable="true"
+                            onDragStart={onDragStartPlace}
+                        >
+                            <div className="img-container">
+                                <img
+                                    src={jejuImg}
+                                    alt="img"
+                                    draggable="false"
+                                />
+                            </div>
+                            <div className="place-name">{option.name}</div>
+                        </Place>
+                    );
+                })}
             </ReactSortable>
         </Container>
     );
@@ -84,6 +155,12 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         overflow: scroll;
+    }
+
+    &.drag-over {
+        border: solid 2px gray;
+        border-radius: 20px;
+        background-color: ${({ theme }) => theme.LIGHT_GRAY};
     }
 `;
 
@@ -119,6 +196,10 @@ const Place = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+
+    &.focus {
+        background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
     }
 `;
 
