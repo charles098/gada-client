@@ -7,7 +7,7 @@ import { Map, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import PlaceItem from './PlaceItem';
 
-import { searchByKeyword } from './searchScenario';
+import { pickByKeyword, searchByKeyword } from './searchScenario';
 import { placeInfo } from './types';
 
 const SEARCH_PLACE = true;
@@ -24,7 +24,10 @@ const PlanModal = () => {
             },
         [contents],
     );
-    const [placeFormInput, setPlaceFormInput] = useState({bySearch:"", byPick:""});
+    const [placeFormInput, setPlaceFormInput] = useState({
+        bySearch: '',
+        byPick: '',
+    });
     const [userPlaceList, setUserPlaceList] = useState<placeInfo[]>([]);
     const [placeList, setPlaceList] = useState<placeInfo[]>([]);
 
@@ -46,13 +49,23 @@ const PlanModal = () => {
                 <PlaceForm
                     onSubmit={async (e) => {
                         e.preventDefault();
-                        if (contents) {
+
+                        if (contents && placeFormInput.bySearch) {
                             try {
                                 setPlaceList(
                                     await searchByKeyword(
                                         placeFormInput.bySearch,
                                     ),
                                 );
+                            } catch (e: any | Error) {
+                                alert(e?.message);
+                            }
+                        } else if (!contents && placeFormInput.byPick) {
+                            try {
+                                const result = await pickByKeyword(
+                                    placeFormInput.byPick,
+                                );
+                                console.log(await result);
                             } catch (e: any | Error) {
                                 alert(e?.message);
                             }
@@ -63,8 +76,19 @@ const PlanModal = () => {
                     <PlaceInput
                         placeholder="장소를 입력해주세요"
                         onChange={(e) => {
-                            setPlaceFormInput(contents?e.target.value)}}
-                        value={placeFormInput}
+                            const { value } = e.target;
+                            setPlaceFormInput((inputs) => {
+                                const $temp = { ...inputs };
+                                if (contents) $temp.bySearch = value;
+                                else $temp.byPick = value;
+                                return $temp;
+                            });
+                        }}
+                        value={
+                            contents
+                                ? placeFormInput.bySearch
+                                : placeFormInput.byPick
+                        }
                     />
                 </PlaceForm>
                 <PlaceContents>

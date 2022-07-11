@@ -1,5 +1,7 @@
 import { placeInfo } from './types';
 
+const ps = new kakao.maps.services.Places();
+
 const searchImageByKakaoAPI = async (
     keyword: string,
 ): Promise<string | undefined> => {
@@ -27,7 +29,6 @@ const searchByKeyword = async (
     keyword: string | undefined,
 ): Promise<placeInfo[]> => {
     return new Promise((resolve, reject) => {
-        const ps = new kakao.maps.services.Places();
         ps.keywordSearch(`${keyword}`, async (data, status) => {
             if (status === kakao.maps.services.Status.OK) {
                 const list: any = data.map(
@@ -56,4 +57,19 @@ const searchByKeyword = async (
     });
 };
 
-export { searchByKeyword };
+const pickByKeyword = async (keyword: string | undefined) => {
+    return new Promise((resolve, reject) => {
+        ps.keywordSearch(`${keyword}`, async (data, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+                const place = data[0];
+                resolve({ lat: place.x, lng: place.y });
+            } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                reject(new Error('검색 결과가 존재하지 않습니다.'));
+            } else if (status === kakao.maps.services.Status.ERROR) {
+                reject(new Error('검색 결과 중 오류가 발생했습니다.'));
+            }
+        });
+    });
+};
+
+export { searchByKeyword, pickByKeyword };

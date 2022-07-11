@@ -1,11 +1,14 @@
-interface placeInfo {
-    place_name: string;
-    place_img_url: string | undefined;
-    place_url?: string;
+interface PlaceInfo {
+    name: string;
+    imgUrl: string | undefined;
     address: string;
-    road_address?: string;
-    lat: string;
-    lng: string;
+    latitude: string;
+    longitude: string;
 }
 
-export type { placeInfo };
+interface Position {
+    lat: number;
+    lng: number;
+}
+
+export type { PlaceInfo, Position };
