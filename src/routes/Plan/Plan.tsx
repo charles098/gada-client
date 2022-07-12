@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 // containers
@@ -10,6 +10,8 @@ import PlanMaker from 'containers/plan/PlanMaker';
 
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
+import { RootState } from 'store/modules';
+import PlanModal from 'containers/plan/PlanModal';
 
 // dummy data
 const dummyPlanDetailList: IPlace[] = [
@@ -149,6 +151,7 @@ const dummyPlaceOptionList: IPlace[] = [
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
+    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
 
     useEffect(() => {
         const initPlanDetailList: IPlace[] = dummyPlanDetailList.sort(
@@ -160,7 +163,7 @@ const Plan: FC = () => {
 
     return (
         <Container>
-            {/* header 삭제 예정 */}
+            {largeModalIsOpen && <PlanModal />}
             <div
                 className="header"
                 style={{

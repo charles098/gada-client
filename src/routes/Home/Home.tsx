@@ -3,7 +3,7 @@ import PlanModal from 'containers/plan/PlanModal';
 
 const Home: FC = () => {
     // modal test
-    return <PlanModal />;
+    return <div>Hi</div>;
 };
 
 export default Home;
