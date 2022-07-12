@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Header from 'components/Header';
 
 // containers
 import PlanInfo from 'containers/plan/PlanInfo';
@@ -162,26 +163,24 @@ const Plan: FC = () => {
     }, []);
 
     return (
-        <Container>
+        <Wrapper>
             {largeModalIsOpen && <PlanModal />}
-            <div
-                className="header"
-                style={{
-                    width: '100%',
-                    height: '60px',
-                    backgroundColor: '#60A5F8',
-                }}
-            />
-
-            <PlanInfo />
-            <OptionMaker />
-            <div className="bottom-section">
-                <Map />
-                <PlanMaker />
-            </div>
-        </Container>
+            <Header />
+            <Container>
+                <PlanInfo />
+                <OptionMaker />
+                <div className="bottom-section">
+                    <Map />
+                    <PlanMaker />
+                </div>
+            </Container>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    width: 100%;
+`;
 
 const Container = styled.div`
     width: 1440px;
