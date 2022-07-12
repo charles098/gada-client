@@ -14,8 +14,9 @@ import SearchIcon from './SearchIcon';
 import UnlockIcon from './UnlockIcon';
 import WonIcon from './WonIcon';
 import GoogleIcon from './GoogleIcon';
+import ResetIcon from './ResetIcon';
 
-export { 
+export {
     AddLocationIcon,
     CancelIcon,
     ChatIcon,
@@ -31,5 +32,6 @@ export {
     SearchIcon,
     UnlockIcon,
     WonIcon,
-    GoogleIcon
-} 
+    GoogleIcon,
+    ResetIcon,
+};
