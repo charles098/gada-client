@@ -108,6 +108,7 @@ const PlanCardContainer = styled(Slider)<styledProps>`
     }
 
     & > div > div > div {
+        border-radius: 10px;
         cursor: ${({ itemCursor }) => itemCursor};
     }
 
