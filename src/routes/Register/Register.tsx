@@ -11,6 +11,7 @@ const Register = () => {
         else if (!email.value) alert('이메일을 입력해주세요!');
         else if (!password.value) alert('비밀번호를 입력해주세요!');
         else if (!passwordCheck.value) alert('비밀번호 확인란을 입력해주세요!');
+        else if (password.value !== passwordCheck.value) alert('비밀번호가 일치하지 않습니다!');
         else {
             // 이거 그대로 post 보내면 된다.
             console.log(name.value);
