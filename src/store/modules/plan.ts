@@ -16,6 +16,8 @@ export interface IPlace {
 
 export interface IPlan {
     title: string;
+    startDate: Date;
+    lastDate: Date;
     setupDay: number;
     grabPlanId: number | null;
     grabPlaceOptionId: number | null;
@@ -25,6 +27,8 @@ export interface IPlan {
 
 const initialState: IPlan = {
     title: '부산 바캉스',
+    startDate: new Date(20, 11, 3),
+    lastDate: new Date(20, 11, 7),
     setupDay: 1,
     grabPlanId: null,
     grabPlaceOptionId: null,
