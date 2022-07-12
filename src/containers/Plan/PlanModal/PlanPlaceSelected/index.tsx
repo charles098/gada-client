@@ -15,10 +15,10 @@ const PlanPlaceSelected = () => {
         <SelectedContainer>
             <SlickSlider
                 width={970}
-                speed={700}
+                speed={450}
                 slidesToShow={9}
-                slidesToScroll={8}
-                arrowPadding={45}
+                slidesToScroll={3}
+                arrowPadding={40}
                 arrowSize={20}
                 itemCursor="default"
                 boxShadow
