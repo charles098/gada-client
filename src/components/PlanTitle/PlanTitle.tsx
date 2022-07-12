@@ -12,28 +12,39 @@ const PlanTitle: FC = () => {
     const title = useSelector(planTitleSelector);
     const container = useRef<HTMLDivElement>(null);
     const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [newTitle, setNewTitle] = useState<string>(title);
 
     useEffect(() => {
         document.addEventListener('mousedown', (e) => onClickOutside(e));
+    }, [newTitle]);
+
+    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setNewTitle(e.target.value);
+    }, []);
+
+    const onEnterKeyUp = useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.code !== 'Enter') return;
+
+            dispatch(setTitle({ newTitle }));
+            setIsEdit(false);
+        },
+        [newTitle],
+    );
+
+    const onStartEdit = useCallback(() => {
+        setIsEdit(true);
     }, []);
 
     const onClickOutside = useCallback(
         (e: React.MouseEvent | MouseEvent): void => {
-            if (!container.current?.contains(e.target as Node)) {
-                setIsEdit(false);
-            }
+            if (container.current?.contains(e.target as Node)) return;
+
+            dispatch(setTitle({ newTitle }));
+            setIsEdit(false);
         },
-        [],
+        [newTitle],
     );
-
-    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        const newTitle = e.target.value;
-        dispatch(setTitle({ newTitle }));
-    }, []);
-
-    const onClick = useCallback(() => {
-        setIsEdit(true);
-    }, []);
 
     return (
         <Container ref={container as React.RefObject<HTMLDivElement>}>
@@ -42,13 +53,14 @@ const PlanTitle: FC = () => {
                     type="text"
                     minLength={1}
                     maxLength={15}
-                    value={title}
+                    defaultValue={newTitle}
                     onChange={onChange}
+                    onKeyUp={onEnterKeyUp}
                 />
             ) : (
                 <Title>{title}</Title>
             )}
-            <EditButton type="button" onClick={onClick}>
+            <EditButton type="button" onClick={onStartEdit}>
                 <PencilIcon width="14px" height="12px" />
             </EditButton>
         </Container>
