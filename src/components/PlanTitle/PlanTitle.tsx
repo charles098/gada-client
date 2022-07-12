@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { PencilIcon } from 'components/icons';
+import { PencilIcon, ResetIcon } from 'components/icons';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTitle } from 'store/modules/plan';
@@ -36,10 +36,13 @@ const PlanTitle: FC = () => {
         setIsEdit(true);
     }, []);
 
+    const onResetTitle = useCallback(() => {
+        setNewTitle(title);
+    }, [title]);
+
     const onClickOutside = useCallback(
         (e: React.MouseEvent | MouseEvent): void => {
             if (container.current?.contains(e.target as Node)) return;
-
             dispatch(setTitle({ newTitle }));
             setIsEdit(false);
         },
@@ -53,15 +56,27 @@ const PlanTitle: FC = () => {
                     type="text"
                     minLength={1}
                     maxLength={15}
-                    defaultValue={newTitle}
+                    value={newTitle}
                     onChange={onChange}
                     onKeyUp={onEnterKeyUp}
                 />
             ) : (
                 <Title>{title}</Title>
             )}
-            <EditButton type="button" onClick={onStartEdit}>
-                <PencilIcon width="14px" height="12px" />
+            <EditButton type="button">
+                {isEdit ? (
+                    <ResetIcon
+                        width="15px"
+                        height="15px"
+                        onClick={onResetTitle}
+                    />
+                ) : (
+                    <PencilIcon
+                        width="14px"
+                        height="12px"
+                        onClick={onStartEdit}
+                    />
+                )}
             </EditButton>
         </Container>
     );
