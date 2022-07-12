@@ -65,4 +65,5 @@ const SubmitButton = styled.input`
   color: white;
   font-weight: bold;
   cursor: pointer;
+  margin-bottom: 30px;
 `
