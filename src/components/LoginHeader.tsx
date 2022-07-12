@@ -1,11 +1,29 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import EmailAuthForm from 'containers/login/EmailAuthForm';
 import { PlaneIcon } from 'components/icons';
 import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Modal from "components/Modal";
+import { RootState } from 'store/modules';
+
+
+const ModalSelector = (state: RootState) => state.modal
 
 const LoginHeader = () => {
+    const { largeModalIsOpen } = useSelector(ModalSelector);
+
     return (
         <Wrapper>
+            {largeModalIsOpen && (
+                <Modal
+                width={400}
+                height={400}
+                >
+                    {/* 모달 내부 - 여기서 커스텀 하면 됩니다 */}
+                    <EmailAuthForm />
+                </Modal>
+            )}
             <TitleContainer>
                 <Title>
                     <PlaneIcon
