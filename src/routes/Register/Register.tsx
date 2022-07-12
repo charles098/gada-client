@@ -1,23 +1,40 @@
 import React from "react";
+import axios from "axios";
 import styled from 'styled-components';
+import { useSearchParams } from 'react-router-dom';
 
 const Register = () => {
+    const [ searchParams ] = useSearchParams();
+    
+    const email: any = searchParams.get('email');
+    const authToken: any = searchParams.get('authToken');
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        const { name, email, password, passwordCheck } = e.target;
+        const { username, email, password, passwordCheck } = e.target;
 
-        if (!name.value) alert('이름을 입력해주세요!');
-        else if (!email.value) alert('이메일을 입력해주세요!');
+        if (!username.value) alert('이름을 입력해주세요!');
         else if (!password.value) alert('비밀번호를 입력해주세요!');
         else if (!passwordCheck.value) alert('비밀번호 확인란을 입력해주세요!');
         else if (password.value !== passwordCheck.value) alert('비밀번호가 일치하지 않습니다!');
         else {
-            // 이거 그대로 post 보내면 된다.
-            console.log(name.value);
-            console.log(email.value);
-            console.log(password.value);
-            console.log(passwordCheck.value);
+            const data = { 
+                username: username.value, 
+                email: email.value, 
+                password : password.value,
+            };
+
+            axios
+                .post('http://localhost:5000/api/users/register', data).then((response) => {
+                    alert('회원가입이 완료되었습니다!');
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    // 실패시
+                    alert(error.response.data.message);
+                    console.log(error.response);
+                })
         }
     }
 
@@ -26,12 +43,13 @@ const Register = () => {
             <UserName
             type="text"
             placeholder="Username"
-            name="name"
+            name="username"
             />
             <Email
             type="email"
-            placeholder="Email"
+            defaultValue={email}
             name="email"
+            disabled
             />
             <Password
             placeholder="Password"
@@ -76,10 +94,14 @@ const InputWrapper = styled.input`
     font-size: 15px;
 
     &::placeholder { color: #aaaaaa; }
-    &:focus { outline:none; }
+    &:focus { outline:none; bakcground-color: white;}
     :-webkit-autofill {
         -webkit-box-shadow: 0 0 0 1000px white inset;
         box-shadow: 0 0 0 1000px white inset;
+    }
+    &:disabled { 
+        background-color: white;
+        cursor: not-allowed;
     }
 `
 
@@ -105,3 +127,4 @@ const RegisterButton = styled(InputWrapper)`
     color: white !important;
     cursor: pointer;
 `
+

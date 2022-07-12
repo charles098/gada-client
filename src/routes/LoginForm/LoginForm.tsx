@@ -1,9 +1,14 @@
 import React from "react";
 import styled from 'styled-components';
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+import { largeModal } from 'store/modules/modal';
+
+const ModalSelector = (state: RootState) => state.modal
 
 const LoginForm = () => {
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { largeModalIsOpen } = useSelector(ModalSelector);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -20,7 +25,7 @@ const LoginForm = () => {
     }
     
     const handleRegisterClick = () => {
-        navigate("/register");
+        dispatch(largeModal(!largeModalIsOpen))
     }
 
     return (
