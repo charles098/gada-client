@@ -1,13 +1,12 @@
 import { SearchIcon } from 'components/icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchInput, setPlaceList, setMoving } from 'store/modules/search';
-import { pickByKeyword, searchByKeyword } from '../searchScenario';
+import { searchPlaces, searchForCoord } from 'store/modules/search';
+import { pickByKeyword } from '../searchScenario';
 
-const search = (state: RootState) => state.search.search;
 const state = (state: RootState) => state.search.state;
 const list = (state: RootState) => state.search.placeList;
 
@@ -17,7 +16,7 @@ interface searchType {
 }
 
 const PlanPlaceForm = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
 
     const [search, setSearch] = useState<searchType>({
         bySearch: '',
@@ -25,18 +24,16 @@ const PlanPlaceForm = () => {
     });
 
     const contentsType = useSelector(state);
-    const plist = useSelector(list);
     return (
         <PlaceForm
             onSubmit={async (e) => {
                 e.preventDefault();
                 if (contentsType) {
                     if (!search.bySearch) return;
-                    const places = await searchByKeyword(search.bySearch);
-                    dispatch(setPlaceList(places));
+                    dispatch(searchPlaces(search.bySearch));
                 } else {
-                    const movePoint = await pickByKeyword(search.byPick);
-                    dispatch(setMoving(movePoint));
+                    if (!search.byPick) return;
+                    dispatch(searchForCoord(search.byPick));
                 }
             }}
         >

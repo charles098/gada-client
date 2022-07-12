@@ -1,4 +1,13 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
+import {
+    createAsyncThunk,
+    createSlice,
+    nanoid,
+    PayloadAction,
+} from '@reduxjs/toolkit';
+import {
+    pickByKeyword,
+    searchByKeyword,
+} from 'containers/plan/PlanModal/searchScenario';
 // Types
 export interface PlaceInfo {
     name: string;
@@ -35,6 +44,30 @@ const initialState: searchState = {
     placeList: [],
     center: { lat: 33.450701, lng: 126.570667 },
 };
+// Thunk
+const searchPlaces = createAsyncThunk(
+    'place/searchPlacesBySearch',
+    async (keyword: string, { rejectWithValue }) => {
+        try {
+            const response = await searchByKeyword(keyword);
+            return response;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+const searchForCoord = createAsyncThunk(
+    'place/searchCoordByPick',
+    async (keyword: string, { rejectWithValue }) => {
+        try {
+            const response = await pickByKeyword(keyword);
+            return response;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
 
 // Reducer Slice
 const userSlice = createSlice({
@@ -66,9 +99,14 @@ const userSlice = createSlice({
         setCenter(state: searchState, action: PayloadAction<Position>) {
             state.center = action.payload;
         },
-        setMoving(state: searchState, action: PayloadAction<Position>) {
+    },
+    extraReducers: (builder) => {
+        builder.addCase(searchPlaces.fulfilled, (state, action) => {
+            state.placeList = action.payload;
+        });
+        builder.addCase(searchForCoord.fulfilled, (state, action) => {
             state.moving = action.payload;
-        },
+        });
     },
 });
 
@@ -81,6 +119,6 @@ export const {
     insertSelectedPlaces,
     deleteSelectedPlaces,
     setCenter,
-    setMoving,
 } = actions;
+export { searchPlaces, searchForCoord };
 export default reducer;
