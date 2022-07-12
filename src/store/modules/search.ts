@@ -26,7 +26,6 @@ export interface searchState {
     placeList: PlaceInfo[];
     center: Position;
     moving?: Position;
-    search: SearchInputs;
 }
 
 // InitialState
@@ -35,7 +34,6 @@ const initialState: searchState = {
     selectedPlaces: [],
     placeList: [],
     center: { lat: 33.450701, lng: 126.570667 },
-    search: { byPick: '', bySearch: '' },
 };
 
 // Reducer Slice
@@ -71,13 +69,6 @@ const userSlice = createSlice({
         setMoving(state: searchState, action: PayloadAction<Position>) {
             state.moving = action.payload;
         },
-        setSearchInput(state: searchState, action: PayloadAction<string>) {
-            if (state.state) {
-                state.search.bySearch = action.payload;
-            } else {
-                state.search.byPick = action.payload;
-            }
-        },
     },
 });
 
@@ -91,6 +82,5 @@ export const {
     deleteSelectedPlaces,
     setCenter,
     setMoving,
-    setSearchInput,
 } = actions;
 export default reducer;

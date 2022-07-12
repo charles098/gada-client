@@ -1,5 +1,5 @@
 import { SearchIcon } from 'components/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { RootState } from 'store/modules';
@@ -11,9 +11,19 @@ const search = (state: RootState) => state.search.search;
 const state = (state: RootState) => state.search.state;
 const list = (state: RootState) => state.search.placeList;
 
+interface searchType {
+    bySearch: string;
+    byPick: string;
+}
+
 const PlanPlaceForm = () => {
     const dispatch = useDispatch();
-    const searchInputs = useSelector(search);
+
+    const [search, setSearch] = useState<searchType>({
+        bySearch: '',
+        byPick: '',
+    });
+
     const contentsType = useSelector(state);
     const plist = useSelector(list);
     return (
@@ -21,12 +31,11 @@ const PlanPlaceForm = () => {
             onSubmit={async (e) => {
                 e.preventDefault();
                 if (contentsType) {
-                    if (!searchInputs.bySearch) return;
-                    const places = await searchByKeyword(searchInputs.bySearch);
+                    if (!search.bySearch) return;
+                    const places = await searchByKeyword(search.bySearch);
                     dispatch(setPlaceList(places));
-                    console.log(plist);
                 } else {
-                    const movePoint = await pickByKeyword(searchInputs.byPick);
+                    const movePoint = await pickByKeyword(search.byPick);
                     dispatch(setMoving(movePoint));
                 }
             }}
@@ -36,11 +45,19 @@ const PlanPlaceForm = () => {
                 placeholder="장소를 입력해주세요"
                 onChange={(e) => {
                     const { value } = e.target;
-                    dispatch(setSearchInput(value));
+                    if (contentsType) {
+                        setSearch((inputs: searchType) => ({
+                            ...inputs,
+                            bySearch: value,
+                        }));
+                    } else {
+                        setSearch((inputs: searchType) => ({
+                            ...inputs,
+                            byPick: value,
+                        }));
+                    }
                 }}
-                value={
-                    contentsType ? searchInputs.bySearch : searchInputs.byPick
-                }
+                value={contentsType ? search.bySearch : search.byPick}
             />
         </PlaceForm>
     );
