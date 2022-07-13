@@ -28,6 +28,25 @@ interface styledProps {
     boxShadow: boolean | undefined;
 }
 
+// 이렇게 안하면 오류남
+const SlickArrowLeft = ({ currentSlide, slideCount, ...props }: any) => (
+    <LeftIcon
+      {...props}
+      className={`
+        slick-prev slick-arrow ${(currentSlide === 0 ? " slick-disabled" : "")}`
+      }
+      aria-hidden="true"
+    />
+  );
+  const SlickArrowRight = ({ slidesToShow, currentSlide, slideCount, ...props }: any) => (
+    <RightIcon
+      {...props}
+      className={`
+        slick-next slick-arrow ${(currentSlide === slideCount - slidesToShow ? " slick-disabled" : "")}`
+      }
+    />
+  );
+
 const SlickSlider = ({
     width,
     infinite,
@@ -46,8 +65,8 @@ const SlickSlider = ({
         slidesToShow,
         slidesToScroll,
         arrow: false,
-        nextArrow: <RightIcon/>,
-        prevArrow: <LeftIcon/>
+        nextArrow: <SlickArrowRight slidesToShow={slidesToShow}/>,
+        prevArrow: <SlickArrowLeft />
     }
 
     return (
@@ -89,6 +108,7 @@ const PlanCardContainer = styled(Slider)<styledProps>`
     }
 
     & > div > div > div {
+        border-radius: 10px;
         cursor: ${({ itemCursor }) => itemCursor};
     }
 

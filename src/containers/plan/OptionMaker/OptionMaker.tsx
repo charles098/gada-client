@@ -2,12 +2,22 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import dragImg from 'images/drag2.png';
 import PlaceOption from 'components/SelectedOption/SelectedOption';
+import { useDispatch, useSelector } from 'react-redux';
+import { largeModal } from 'store/modules/modal';
+import { RootState } from 'store/modules';
 
 const OptionMaker: FC = () => {
+    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
+    const dispatch = useDispatch();
+
+    const handleClick = () => {
+        dispatch(largeModal(!largeModalIsOpen));
+    };
+
     return (
         <Container>
             <img className="drag-explanation" src={dragImg} alt="drag" />
-            <AddOptionButton>장소 추가</AddOptionButton>
+            <AddOptionButton onClick={handleClick}>장소 추가</AddOptionButton>
             <PlaceOption />
         </Container>
     );

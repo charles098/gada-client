@@ -16,7 +16,7 @@ const Main: FC = () => {
             {largeModalIsOpen && (
                 <Modal
                 width={524}
-                height={713}
+                height={733}
                 >
                     {/* 모달 내부 - 여기서 커스텀 하면 됩니다 */}
                     <NewPlanForm />

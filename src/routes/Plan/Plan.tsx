@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Header from 'components/Header';
 
 // containers
 import PlanInfo from 'containers/plan/PlanInfo';
@@ -10,6 +11,8 @@ import PlanMaker from 'containers/plan/PlanMaker';
 
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
+import { RootState } from 'store/modules';
+import PlanModal from 'containers/plan/PlanModal';
 
 // dummy data
 const dummyPlanDetailList: IPlace[][] = [
@@ -241,6 +244,7 @@ const dummyPlaceOptionList: IPlace[] = [
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
+    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
 
     useEffect(() => {
         const initPlanDetailList: IPlace[][] = dummyPlanDetailList;
@@ -249,26 +253,24 @@ const Plan: FC = () => {
     }, []);
 
     return (
-        <Container>
-            {/* header 삭제 예정 */}
-            <div
-                className="header"
-                style={{
-                    width: '100%',
-                    height: '60px',
-                    backgroundColor: '#60A5F8',
-                }}
-            />
-
-            <PlanInfo />
-            <OptionMaker />
-            <div className="bottom-section">
-                <Map />
-                <PlanMaker />
-            </div>
-        </Container>
+        <Wrapper>
+            {largeModalIsOpen && <PlanModal />}
+            <Header />
+            <Container>
+                <PlanInfo />
+                <OptionMaker />
+                <div className="bottom-section">
+                    <Map />
+                    <PlanMaker />
+                </div>
+            </Container>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    width: 100%;
+`;
 
 const Container = styled.div`
     width: 1440px;

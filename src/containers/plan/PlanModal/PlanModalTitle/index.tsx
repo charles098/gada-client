@@ -20,6 +20,7 @@ const TitleTrigger = ({ state, onClick }: Props) => {
 
 const Title = styled.p``;
 const ContentsTrigger = styled.button`
+    cursor: pointer;
     display: inline;
     border: 0px;
     background: none;

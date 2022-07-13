@@ -73,6 +73,7 @@ const DateInput = styled.input`
   border: none;
   border-radius: 10px;
   background-color: #dddddd;
+  cursor: not-allowed;
 
   &:focus {outline:none;}
 `
