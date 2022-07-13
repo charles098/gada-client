@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
+import PlaceBox from 'components/PlaceBox';
 import { RootState } from 'store/modules';
 import {
     IPlace,
@@ -35,12 +36,16 @@ const SetupRoute: FC = () => {
         }
     }, [planList]);
 
-    const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
-        enterCnt.current = 0;
-        dispatch(grabPlaceOption({ id: null }));
-        const id = parseInt(e.currentTarget.dataset.id as string, 10);
-        dispatch(grabPlan({ id }));
-    }, []);
+    const onDragStartPlace = useCallback(
+        (e: React.DragEvent<HTMLElement>): void => {
+            console.log('dragplacestart');
+            enterCnt.current = 0;
+            dispatch(grabPlaceOption({ id: null }));
+            const id = parseInt(e.currentTarget.dataset.id as string, 10);
+            dispatch(grabPlan({ id }));
+        },
+        [],
+    );
 
     const onDragEnterConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
@@ -96,25 +101,19 @@ const SetupRoute: FC = () => {
                 setList={onSort}
             >
                 {planList.map((plan: IPlace, index: number) => {
-                    if (index === planList.length - 1) {
-                        return (
-                            <Place
-                                ref={
-                                    droppedRef as React.RefObject<HTMLDivElement>
-                                }
-                                key={plan.id}
-                                onDragStart={onDragStartPlace}
-                            >
-                                <Name>{plan.name}</Name>
-                                <Location>{plan.address}</Location>
-                            </Place>
-                        );
-                    }
                     return (
-                        <Place key={plan.id} onDragStart={onDragStartPlace}>
-                            <Name>{plan.name}</Name>
-                            <Location>{plan.address}</Location>
-                        </Place>
+                        <PlaceBox
+                            focusRef={
+                                index === planList.length - 1
+                                    ? (droppedRef as React.RefObject<HTMLDivElement>)
+                                    : null
+                            }
+                            key={plan.id}
+                            dataId={plan.id}
+                            onDragStartPlace={onDragStartPlace}
+                            placename={plan.name}
+                            location={plan.address}
+                        />
                     );
                 })}
             </ReactSortable>
@@ -136,33 +135,6 @@ const Container = styled.div`
         border-radius: 20px;
         background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
     }
-`;
-
-const Place = styled.div`
-    cursor: grab;
-    width: 400px;
-    height: 80px;
-    margin-bottom: 35px;
-    border-radius: 13px;
-    box-shadow: 1px 1px 10px 1px #d9d9d9;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    &.focus {
-        background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
-    }
-`;
-
-const Name = styled.div`
-    font-size: 20px;
-    margin: 0 0 7px 15px;
-`;
-
-const Location = styled.div`
-    margin-left: 15px;
-    color: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 
 export default SetupRoute;
