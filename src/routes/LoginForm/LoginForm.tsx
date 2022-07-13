@@ -30,6 +30,10 @@ const LoginForm = () => {
                     alert('로그인이 완료되었습니다~!');
                     console.log(response.data);
                 })
+                .catch((err) => {
+                    console.log(err.response.data.message);
+                    alert(err.response.data.message);
+                })
         }
     }
     
