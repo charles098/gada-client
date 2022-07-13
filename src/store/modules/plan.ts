@@ -18,7 +18,7 @@ export interface IPlan {
     title: string;
     startDate: Date;
     lastDate: Date;
-    setupDay: number;
+    setDay: number;
     grabPlanId: number | null;
     grabPlaceOptionId: number | null;
     planList: IPlace[];
@@ -29,7 +29,7 @@ const initialState: IPlan = {
     title: '부산 바캉스',
     startDate: new Date(20, 11, 3),
     lastDate: new Date(20, 11, 18),
-    setupDay: 1,
+    setDay: 1,
     grabPlanId: null,
     grabPlaceOptionId: null,
     planList: [],
@@ -48,6 +48,10 @@ const planDetailSlice = createSlice({
         setTitle(state: IPlan, action) {
             const { newTitle } = action.payload;
             state.title = newTitle;
+        },
+        setUpDay(state: IPlan, action) {
+            const { selectedDay } = action.payload;
+            state.setDay = selectedDay;
         },
         sortPlanList(state: IPlan, action) {
             const { list } = action.payload;
@@ -91,6 +95,7 @@ const { reducer, actions } = planDetailSlice;
 export const {
     initializeData,
     setTitle,
+    setUpDay,
     sortPlanList,
     sortplaceOptionList,
     grabPlan,
