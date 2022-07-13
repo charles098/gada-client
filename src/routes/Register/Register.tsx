@@ -1,13 +1,14 @@
 import React from "react";
 import axios from "axios";
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 
 const Register = () => {
     const [ searchParams ] = useSearchParams();
+    const navigate = useNavigate();
     
     const email: any = searchParams.get('email');
-    const authToken: any = searchParams.get('authToken');
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -28,7 +29,7 @@ const Register = () => {
             axios
                 .post('http://localhost:5000/api/users/register', data).then((response) => {
                     alert('회원가입이 완료되었습니다!');
-                    console.log(response.data);
+                    navigate("/login-form");
                 })
                 .catch((error) => {
                     // 실패시
