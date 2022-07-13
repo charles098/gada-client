@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { largeModal } from 'store/modules/modal';
+import axios from 'axios';
 
 const ModalSelector = (state: RootState) => state.modal
 
@@ -19,8 +20,16 @@ const LoginForm = () => {
         else if (!password.value) alert('비밀번호를 입력해주세요!');
         else {
             // 이거 그대로 post 보내면 된다.
-            console.log(e.target.email.value);
-            console.log(e.target.password.value);    
+            const data = {
+                email: email.value,
+                password: password.value
+            }
+
+            axios
+                .post('http://localhost:5000/api/users/login', data).then((response) => {
+                    alert('로그인이 완료되었습니다~!');
+                    console.log(response.data);
+                })
         }
     }
     
