@@ -46,7 +46,6 @@ const SelectedOption: FC = () => {
     const onDragEnterConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
             if (!grabPlanId) return;
-
             enterCnt.current += 1;
             e.currentTarget.classList.add('drag-over');
         },

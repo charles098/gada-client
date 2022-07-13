@@ -38,6 +38,7 @@ const SetupRoute: FC = () => {
 
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
+            console.log('dragplacestart');
             enterCnt.current = 0;
             dispatch(grabPlaceOption({ id: null }));
             const id = parseInt(e.currentTarget.dataset.id as string, 10);
@@ -108,7 +109,8 @@ const SetupRoute: FC = () => {
                                     : null
                             }
                             key={plan.id}
-                            onDragStart={onDragStartPlace}
+                            dataId={plan.id}
+                            onDragStartPlace={onDragStartPlace}
                             placename={plan.name}
                             location={plan.address}
                         />

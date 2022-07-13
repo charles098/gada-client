@@ -4,20 +4,27 @@ import styled from 'styled-components';
 interface IProps {
     key: number;
     focusRef?: React.RefObject<HTMLDivElement> | null;
-    onDragStart: (e: React.DragEvent<HTMLElement>) => void;
+    onDragStartPlace: (e: React.DragEvent<HTMLElement>) => void;
     placename: string;
     location: string;
+    dataId: number;
 }
 
 const PlaceBox: FC<IProps> = ({
     key,
     focusRef,
-    onDragStart,
+    onDragStartPlace,
     placename,
     location,
+    dataId,
 }) => {
     return (
-        <Container key={key} onDragStart={onDragStart} ref={focusRef}>
+        <Container
+            key={key}
+            onDragStart={onDragStartPlace}
+            ref={focusRef}
+            data-id={dataId}
+        >
             <Name>{placename}</Name>
             <Location>{location}</Location>
         </Container>
