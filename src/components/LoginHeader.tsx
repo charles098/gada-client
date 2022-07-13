@@ -1,20 +1,11 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import EmailAuthModal from 'components/EmailAuthModal';
 import { PlaneIcon } from 'components/icons';
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/modules';
-
-
-const ModalSelector = (state: RootState) => state.modal
 
 const LoginHeader = () => {
-    const { largeModalIsOpen } = useSelector(ModalSelector);
-
     return (
         <Wrapper>
-            {largeModalIsOpen && <EmailAuthModal/>}
             <TitleContainer>
                 <Title>
                     <PlaneIcon

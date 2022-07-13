@@ -12,8 +12,11 @@ import GlobalFont from 'styles/global-font';
 // Store
 import { store } from 'store/config';
 
-// Pages
+// components
 import LoginHeader from 'components/LoginHeader';
+import PickModal from 'components/PickModal';
+
+// Pages
 import Home from './routes/Home';
 import Login from './routes/Login';
 import LoginForm from './routes/LoginForm';
@@ -32,6 +35,7 @@ const App: FC = () => {
             <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <GlobalFont />
+                <PickModal/>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Home />} />
