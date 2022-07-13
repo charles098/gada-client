@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { FC } from 'react';
+import { customAlphabet } from 'nanoid';
 import SlickSlider from 'components/SlickSlider';
-import { RootState } from 'store/modules';
 import styled from 'styled-components';
 
-const dayList = Array.from({ length: 8 }, (x, i) => i + 1);
+interface IProps {
+    planPeriod: number;
+}
 
-const startDateSelector = (state: RootState) => state.plan.startDate;
-const lastDateSelector = (state: RootState) => state.plan.lastDate;
-
-const DayPicker = () => {
-    const startDate = useSelector(startDateSelector);
-    const lastDate = useSelector(lastDateSelector);
-    const [planPeriod, setPlanPeriod] = useState<number | null>(null);
-
-    useEffect(() => {
-        setPlanPeriod(getPeriod(startDate, lastDate));
-    }, [startDate, lastDate]);
-
-    const getPeriod = (startDay: Date, lastDay: Date): number => {
-        const diffDate = startDay.getTime() - lastDay.getTime();
-        return Math.abs(diffDate / (1000 * 60 * 60 * 24));
-    };
+const DayPicker: FC<IProps> = ({ planPeriod }) => {
+    const nanoid = customAlphabet('01234567899abcedf', 6);
 
     return (
         <Container>
@@ -39,11 +26,9 @@ const DayPicker = () => {
                         All
                     </Button>
                 </ButtonCard>
-                {dayList.map((day) => (
-                    <ButtonCard>
-                        <Button key={day} type="button">
-                            Day{day}
-                        </Button>
+                {[...Array(planPeriod)].map((x, i: number) => (
+                    <ButtonCard key={nanoid()}>
+                        <Button type="button">Day{i + 1}</Button>
                     </ButtonCard>
                 ))}
             </SlickSlider>
