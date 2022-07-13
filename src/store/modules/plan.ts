@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface IPlace {
     id: number;
     day: number;
-    sequence: number;
     name: string;
     address: string;
     longitude: string;
@@ -21,18 +20,18 @@ export interface IPlan {
     setDay: number;
     grabPlanId: number | null;
     grabPlaceOptionId: number | null;
-    planList: IPlace[];
+    planList: IPlace[][];
     placeOptionList: IPlace[];
 }
 
 const initialState: IPlan = {
     title: '부산 바캉스',
     startDate: new Date(20, 11, 3),
-    lastDate: new Date(20, 11, 18),
+    lastDate: new Date(20, 11, 5),
     setDay: 1,
     grabPlanId: null,
     grabPlaceOptionId: null,
-    planList: [],
+    planList: [[]],
     placeOptionList: [],
 };
 
@@ -70,12 +69,12 @@ const planDetailSlice = createSlice({
             state.grabPlaceOptionId = id;
         },
         dropPlan(state: IPlan) {
-            const droppedPlan = state.planList.find(
+            const droppedPlan = state.planList[state.setDay].find(
                 (plan) => plan.id === state.grabPlanId,
             ) as IPlace;
 
-            const idx = state.planList.indexOf(droppedPlan);
-            state.planList.splice(idx, 1);
+            const idx = state.planList[state.setDay].indexOf(droppedPlan);
+            state.planList[state.setDay].splice(idx, 1);
             state.placeOptionList.push(droppedPlan);
         },
         dropPlaceOption(state: IPlan) {
@@ -85,7 +84,7 @@ const planDetailSlice = createSlice({
 
             const idx = state.placeOptionList.indexOf(droppedOption);
             state.placeOptionList.splice(idx, 1);
-            state.planList.push(droppedOption);
+            state.planList[state.setDay].push(droppedOption);
         },
     },
 });

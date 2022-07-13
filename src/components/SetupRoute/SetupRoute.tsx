@@ -12,16 +12,26 @@ import {
 } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
+const setDaySelector = (state: RootState) => state.plan.setDay;
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
 const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
+    const setDay = useSelector(setDaySelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
-    const enterCnt = useRef(0);
-    const droppedRef = useRef<HTMLElement | null>(null);
+
+    const [renderedPlanList, setRenderedPlanList] = useState<IPlace[]>([]);
     const [isDrop, setIsDrop] = useState(false);
+
+    const droppedRef = useRef<HTMLElement | null>(null);
+    const enterCnt = useRef(0);
+
+    useEffect(() => {
+        console.log(planList);
+        setRenderedPlanList([...planList[setDay]]);
+    }, [setDay, planList]);
 
     useEffect(() => {
         if (isDrop) {
@@ -92,10 +102,10 @@ const SetupRoute: FC = () => {
         >
             <ReactSortable
                 animation={150}
-                list={getSortableList(planList)}
-                setList={onSort}
+                list={renderedPlanList}
+                setList={setRenderedPlanList}
             >
-                {planList.map((plan: IPlace, index: number) => {
+                {renderedPlanList.map((plan: IPlace, index: number) => {
                     if (index === planList.length - 1) {
                         return (
                             <Place

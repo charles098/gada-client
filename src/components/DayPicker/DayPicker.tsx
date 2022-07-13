@@ -17,7 +17,7 @@ const DayPicker: FC<IProps> = ({ planPeriod }) => {
     const nanoid = customAlphabet('01234567899abcedf', 6);
     const setDay = useSelector(setDaySelector);
 
-    const onSetUpDay = (e: any) => {
+    const onSetUpDay = (e: React.MouseEvent<HTMLButtonElement>) => {
         const selectedDay = parseInt(e.currentTarget.dataset.day as string, 10);
         dispatch(setUpDay({ selectedDay }));
     };
