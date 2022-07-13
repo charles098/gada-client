@@ -4,16 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { largeModal } from 'store/modules/modal';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ModalSelector = (state: RootState) => state.modal
-
-const baseURL = 'http://localhost:5000';
-axios.defaults.baseURL = baseURL;
-axios.defaults.withCredentials = true;
 
 const LoginForm = () => {
     const dispatch = useDispatch();
     const { largeModalIsOpen } = useSelector(ModalSelector);
+    const navigate = useNavigate();
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -31,8 +29,7 @@ const LoginForm = () => {
 
             axios
                 .post('/api/users/login', data).then((response) => {
-                    alert('로그인이 완료되었습니다~!');
-                    console.log(response.data);
+                    navigate('/main');
                 })
                 .catch((err) => {
                     console.log(err.response.data.message);
