@@ -5,7 +5,7 @@ import Header from 'components/Header';
 import PlanList from 'containers/main/PlanList';
 import LocationList from 'containers/main/LocationList';
 import Modal from "components/Modal";
-import NewPlanForm from 'containers/main/NewPlanForm';
+import NewPlanModal from 'containers/main/NewPlanModal';
 import { RootState } from 'store/modules';
 
 const Main: FC = () => {
@@ -13,15 +13,7 @@ const Main: FC = () => {
 
     return (
         <Wrapper>
-            {largeModalIsOpen && (
-                <Modal
-                width={524}
-                height={733}
-                >
-                    {/* 모달 내부 - 여기서 커스텀 하면 됩니다 */}
-                    <NewPlanForm />
-                </Modal>
-            )}
+            {largeModalIsOpen && <NewPlanModal/>}
             <Header />
             <PlanList />
             <LocationList />
