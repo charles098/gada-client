@@ -8,12 +8,15 @@ const EmailAuthForm: FC = () => {
     const emailRef = useRef<any>();
 
     const handleClick = () => {
-        setSendEmail(!sendEmail);
-        console.log(emailRef.current.value);
         const data = { email: emailRef.current.value };
         axios
-            .post('http://localhost:5000/api/users/auth-email', data).then((response) => {
+            .post('/api/users/auth-email', data).then((response) => {
                 console.log(response.data);
+                setSendEmail(!sendEmail);
+            })
+            .catch((err) => {
+                alert('오류가 발생했습니다. 콘솔을 확인해주세요.');
+                console.log(err);
             })
     }
 
