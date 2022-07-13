@@ -1,16 +1,20 @@
 import React from "react";
 import styled from 'styled-components';
-import { 
-    ChatIcon,
-    GoogleIcon
-} from 'components/icons';
+import { ChatIcon, GoogleIcon } from 'components/icons';
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+import { largeModal } from 'store/modules/modal';
+
+const ModalSelector = (state: RootState) => state.modal
 
 const Login = () => {
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const { largeModalIsOpen } = useSelector(ModalSelector);
+    
     const handleLocalLoginClick = () => {navigate("/login-form")};
-    const handleRegisterClick = () => {navigate("/register")};
+    const handleRegisterClick = () => {dispatch(largeModal(!largeModalIsOpen))};
 
     return (
         <LoginContainer>

@@ -5,14 +5,24 @@ import { CancelIcon } from 'components/icons';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteSelectedPlaces, SelectedPlace } from 'store/modules/search';
+import SlickSlider from 'components/SlickSlider';
 
 const selectedPlaces = (state: RootState) => state.search.selectedPlaces;
 const PlanPlaceSelected = () => {
     const dispatch = useDispatch();
     const userPlaces = useSelector(selectedPlaces);
     return (
-        <PlaceSlider>
-            <Container>
+        <SelectedContainer>
+            <SlickSlider
+                width={970}
+                speed={450}
+                slidesToShow={9}
+                slidesToScroll={3}
+                arrowPadding={40}
+                arrowSize={20}
+                itemCursor="default"
+                boxShadow
+            >
                 {userPlaces.map((place: SelectedPlace) => (
                     <PlaceCard key={place.id}>
                         <button
@@ -29,27 +39,20 @@ const PlanPlaceSelected = () => {
                         <p>{place.name}</p>
                     </PlaceCard>
                 ))}
-            </Container>
-        </PlaceSlider>
+            </SlickSlider>
+        </SelectedContainer>
     );
 };
-const PlaceSlider = styled.div`
+const SelectedContainer = styled.div`
     margin: 28px 70px;
     width: 970px;
     height: 85px;
+    .slick-track {
+        margin-left: 0;
+    }
 `;
-const Container = styled.div`
-    width: 100%;
-    height: 100px;
-    border: solid 2px ${({ theme }) => theme.LIGHT_GRAY};
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    overflow: auto;
-`;
-
 const PlaceCard = styled.div`
-    width: 77px;
+    width: 45px;
     height: 90px;
     display: flex;
     flex-direction: column;
