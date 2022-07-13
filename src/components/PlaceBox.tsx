@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface IProps {
     key: number;
-    ref?: React.RefObject<HTMLDivElement> | null;
+    focusRef?: React.RefObject<HTMLDivElement> | null;
     onDragStart: (e: React.DragEvent<HTMLElement>) => void;
     placename: string;
     location: string;
@@ -11,13 +11,13 @@ interface IProps {
 
 const PlaceBox: FC<IProps> = ({
     key,
-    ref,
+    focusRef,
     onDragStart,
     placename,
     location,
 }) => {
     return (
-        <Container key={key} onDragStart={onDragStart} ref={ref}>
+        <Container key={key} onDragStart={onDragStart} ref={focusRef}>
             <Name>{placename}</Name>
             <Location>{location}</Location>
         </Container>
@@ -25,7 +25,7 @@ const PlaceBox: FC<IProps> = ({
 };
 
 PlaceBox.defaultProps = {
-    ref: null,
+    focusRef: null,
 };
 
 const Container = styled.div`

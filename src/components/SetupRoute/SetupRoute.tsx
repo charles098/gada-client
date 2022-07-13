@@ -102,7 +102,7 @@ const SetupRoute: FC = () => {
                 {planList.map((plan: IPlace, index: number) => {
                     return (
                         <PlaceBox
-                            ref={
+                            focusRef={
                                 index === planList.length - 1
                                     ? (droppedRef as React.RefObject<HTMLDivElement>)
                                     : null
@@ -133,33 +133,6 @@ const Container = styled.div`
         border-radius: 20px;
         background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
     }
-`;
-
-const Place = styled.div`
-    cursor: grab;
-    width: 400px;
-    height: 80px;
-    margin-bottom: 35px;
-    border-radius: 13px;
-    box-shadow: 1px 1px 10px 1px #d9d9d9;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    &.focus {
-        background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
-    }
-`;
-
-const Name = styled.div`
-    font-size: 20px;
-    margin: 0 0 7px 15px;
-`;
-
-const Location = styled.div`
-    margin-left: 15px;
-    color: ${({ theme }) => theme.LIGHT_GRAY};
 `;
 
 export default SetupRoute;
