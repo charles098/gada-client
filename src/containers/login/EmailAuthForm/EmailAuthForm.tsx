@@ -1,12 +1,23 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import welcomeImg from 'images/welcome.png';
 
 const EmailAuthForm: FC = () => {
     const [sendEmail, setSendEmail] = useState<boolean>(false);
+    const emailRef = useRef<any>();
+
     const handleClick = () => {
-        
-        setSendEmail(!sendEmail);
+        const data = { email: emailRef.current.value };
+        axios
+            .post('/api/users/auth-email', data).then((response) => {
+                console.log(response.data);
+                setSendEmail(!sendEmail);
+            })
+            .catch((err) => {
+                alert('오류가 발생했습니다. 콘솔을 확인해주세요.');
+                console.log(err);
+            })
     }
 
     return (
@@ -23,6 +34,7 @@ const EmailAuthForm: FC = () => {
                     <>
                         <InputContainer>
                             <Email
+                            ref={emailRef}
                             type="email"
                             placeholder="이메일을 입력해주세요."
                             />

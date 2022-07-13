@@ -18,7 +18,9 @@ const Login = () => {
 
     return (
         <LoginContainer>
-            <KakaoLogin>
+            <KakaoLogin
+            href='http://localhost:5000/api/users/login/kakao'
+            >
                 <ChatIcon style={LoginIconStyle} />
                 <LoginText>카카오 로그인</LoginText>
             </KakaoLogin>
@@ -52,7 +54,7 @@ const LoginContainer = styled.div`
     }
 `
 
-const LoginWrapper = styled.div`
+const LoginWrapper = styled.a`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,6 +63,7 @@ const LoginWrapper = styled.div`
     cursor: pointer;
     position: relative;
     border-radius: 5px;
+    text-decoration: none;
 `
 
 const KakaoLogin = styled(LoginWrapper)`
@@ -71,6 +74,7 @@ const KakaoLogin = styled(LoginWrapper)`
 const GoogleLogin = styled(LoginWrapper)`
     background-color: #ffffff;
     color: #666666;
+    margin: 10px 0;
 `
 
 const LocalLogin = styled(LoginWrapper)`

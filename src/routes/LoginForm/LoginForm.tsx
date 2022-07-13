@@ -3,12 +3,15 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { largeModal } from 'store/modules/modal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ModalSelector = (state: RootState) => state.modal
 
 const LoginForm = () => {
     const dispatch = useDispatch();
     const { largeModalIsOpen } = useSelector(ModalSelector);
+    const navigate = useNavigate();
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -19,8 +22,19 @@ const LoginForm = () => {
         else if (!password.value) alert('비밀번호를 입력해주세요!');
         else {
             // 이거 그대로 post 보내면 된다.
-            console.log(e.target.email.value);
-            console.log(e.target.password.value);    
+            const data = {
+                email: email.value,
+                password: password.value
+            }
+
+            axios
+                .post('/api/users/login', data).then((response) => {
+                    navigate('/main');
+                })
+                .catch((err) => {
+                    console.log(err.response.data.message);
+                    alert(err.response.data.message);
+                })
         }
     }
     
