@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from 'components/Header';
@@ -15,65 +15,162 @@ import { RootState } from 'store/modules';
 import PlanModal from 'containers/plan/PlanModal';
 
 // dummy data
-const dummyPlanDetailList: IPlace[] = [
-    {
-        id: 1,
-        day: 1,
-        sequence: 3,
-        name: 'busan trip - 3',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-        imgUrl: 'http',
-    },
-    {
-        id: 2,
-        day: 1,
-        sequence: 4,
-        name: 'busan trip - 4',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-        imgUrl: 'http',
-    },
-    {
-        id: 3,
-        day: 1,
-        sequence: 0,
-        name: 'busan trip - 0',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-        imgUrl: 'http',
-    },
-    {
-        id: 4,
-        day: 1,
-        sequence: 2,
-        name: 'busan trip - 2',
-        address: 'busan',
-        longitude: '3',
-        latitude: '4',
-        description: 'fsdf',
-        cost: 2333,
-        category: 'fsdf',
-        imgUrl: 'http',
-    },
+const dummyPlanList: IPlace[][] = [
+    [
+        {
+            id: 1,
+            day: 1,
+            name: 'day 1 - 3',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 1,
+            day: 1,
+            name: 'day 1 - 4',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 3,
+            day: 1,
+            name: 'day 1 - 0',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 4,
+            day: 1,
+            name: 'day 1 - 2',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+    ],
+    [
+        {
+            id: 1,
+            day: 1,
+            name: 'BUSAN - 1',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 2,
+            day: 1,
+            name: 'BUSAN - 2',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 3,
+            day: 1,
+            name: 'BUSAN - 3',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 4,
+            day: 1,
+            name: 'BUSAN - 4',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+    ],
+    [
+        {
+            id: 1,
+            day: 1,
+            name: 'JEJU - 1',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 2,
+            day: 1,
+            name: 'JEJU - 2',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 3,
+            day: 1,
+            name: 'JEJU - 3',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+        {
+            id: 4,
+            day: 1,
+            name: 'JEJU - 4',
+            address: 'busan',
+            longitude: '3',
+            latitude: '4',
+            description: 'fsdf',
+            cost: 2333,
+            category: 'fsdf',
+            imgUrl: 'http',
+        },
+    ],
 ];
 const dummyPlaceOptionList: IPlace[] = [
     {
         id: 33,
         day: 1,
-        sequence: 3,
         name: 'new plan - 3',
         address: 'jeju',
         longitude: '3',
@@ -86,7 +183,6 @@ const dummyPlaceOptionList: IPlace[] = [
     {
         id: 44,
         day: 1,
-        sequence: 4,
         name: 'new plan - 4',
         address: 'jeju',
         longitude: '3',
@@ -99,7 +195,6 @@ const dummyPlaceOptionList: IPlace[] = [
     {
         id: 1010,
         day: 1,
-        sequence: 0,
         name: 'new plan - 0',
         address: 'jeju',
         longitude: '3',
@@ -112,7 +207,6 @@ const dummyPlaceOptionList: IPlace[] = [
     {
         id: 888,
         day: 1,
-        sequence: 2,
         name: 'new plan - 8',
         address: 'jeju',
         longitude: '3',
@@ -125,7 +219,6 @@ const dummyPlaceOptionList: IPlace[] = [
     {
         id: 777,
         day: 1,
-        sequence: 2,
         name: 'new plan - 7',
         address: 'jeju',
         longitude: '3',
@@ -138,7 +231,6 @@ const dummyPlaceOptionList: IPlace[] = [
     {
         id: 666,
         day: 1,
-        sequence: 2,
         name: 'new plan - 6',
         address: 'jeju',
         longitude: '3',
@@ -150,30 +242,47 @@ const dummyPlaceOptionList: IPlace[] = [
     },
 ];
 
+const dropItemSelector = (state: RootState) => state.plan.dropItem;
+
 const Plan: FC = () => {
     const dispatch = useDispatch();
+    const dropItem = useSelector(dropItemSelector);
     const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
+    const [isInit, setIsInit] = useState(true);
+    const [planList, setPlanList] = useState<IPlace[][]>(dummyPlanList);
+
+    // useEffect(() => {
+    //     simulateAPI();
+    //     setIsInit(true);
+    // }, []);
+
+    // const simulateAPI = () => {
+    //     const initPlanList: IPlace[][] = dummyPlanList;
+    //     const initPlaceOptionList: IPlace[] = dummyPlaceOptionList;
+    //     dispatch(initializeData({ initPlanList, initPlaceOptionList }));
+    // };
 
     useEffect(() => {
-        const initPlanDetailList: IPlace[] = dummyPlanDetailList.sort(
-            (a, b) => a.sequence - b.sequence,
-        );
-        const initPlaceOptionList: IPlace[] = dummyPlaceOptionList;
-        dispatch(initializeData({ initPlanDetailList, initPlaceOptionList }));
-    }, []);
+        console.log('dropoption', dropItem);
+    }, [dropItem]);
 
     return (
         <Wrapper>
             {largeModalIsOpen && <PlanModal />}
             <Header />
-            <Container>
-                <PlanInfo />
-                <OptionMaker />
-                <div className="bottom-section">
-                    <Map />
-                    <PlanMaker />
-                </div>
-            </Container>
+            {isInit && (
+                <Container>
+                    <PlanInfo />
+                    <OptionMaker />
+                    <div className="bottom-section">
+                        <Map />
+                        <PlanMaker
+                            planList={planList}
+                            setPlanList={setPlanList}
+                        />
+                    </div>
+                </Container>
+            )}
         </Wrapper>
     );
 };
