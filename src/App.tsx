@@ -13,6 +13,7 @@ import GlobalFont from 'styles/global-font';
 import { store } from 'store/config';
 
 // components
+import Header from 'components/Header';
 import LoginHeader from 'components/LoginHeader';
 import PickModal from 'components/PickModal';
 
@@ -38,14 +39,16 @@ const App: FC = () => {
                 <PickModal/>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<Home />} />
                         <Route element={<LoginHeader/>}>
+                            <Route path="/" element={<Login />} />
                             <Route path="/login" element={<Login />}/>
                             <Route path="/login-form" element={<LoginForm />}/>
                             <Route path="/register" element={ <Register /> }/>
                         </Route>
-                        <Route path="/plan" element={<Plan />} />
-                        <Route path="/main" element={<Main />} />
+                        <Route element={<Header/>}>
+                            <Route path="/plan" element={<Plan />} />
+                            <Route path="/main" element={<Main />} />
+                        </Route>
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>

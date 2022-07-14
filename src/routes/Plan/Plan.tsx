@@ -160,23 +160,16 @@ const Plan: FC = () => {
     }, []);
 
     return (
-        <Wrapper>
-            <Header />
-            <Container>
-                <PlanInfo />
-                <OptionMaker />
-                <div className="bottom-section">
-                    <Map />
-                    <PlanMaker />
-                </div>
-            </Container>
-        </Wrapper>
+        <Container>
+            <PlanInfo />
+            <OptionMaker />
+            <div className="bottom-section">
+                <Map />
+                <PlanMaker />
+            </div>
+        </Container>
     );
 };
-
-const Wrapper = styled.div`
-    width: 100%;
-`;
 
 const Container = styled.div`
     width: 1440px;
