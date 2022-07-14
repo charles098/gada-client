@@ -16,14 +16,12 @@ import { store } from 'store/config';
 import Header from 'components/Header';
 import LoginHeader from 'components/LoginHeader';
 import PickModal from 'components/PickModal';
-
-// Pages
-import Home from './routes/Home';
-import Login from './routes/Login';
-import LoginForm from './routes/LoginForm';
-import Register from './routes/Register'
-import Plan from './routes/Plan';
-import Main from './routes/Main';
+import Home from 'routes/Home';
+import Login from 'routes/Login';
+import LoginForm from 'routes/LoginForm';
+import Register from 'routes/Register';
+import Plan from 'routes/Plan';
+import Main from 'routes/Main';
 
 // Axios
 const baseURL = 'http://localhost:5000';

@@ -15,11 +15,13 @@ import jejuImg from 'images/jeju.jpg';
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
 const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
+const dropItemSelector = (state: RootState) => state.plan.dropItem;
 
 const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
     const grabPlanId = useSelector(grabPlanIdSelector);
+    const dropItem = useSelector(dropItemSelector);
     const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
