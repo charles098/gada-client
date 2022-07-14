@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
-import PlanModal from 'containers/plan/PlanModal';
-import PlanDetailModal from 'containers/plan/PlanMaker/PlanDetailModal';
 
 const Home: FC = () => {
     // modal test
-    return <PlanDetailModal />;
+    return <div>Hi</div>;
 };
 
 export default Home;
