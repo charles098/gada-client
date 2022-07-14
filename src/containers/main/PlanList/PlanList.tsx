@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import AddCard from 'components/AddCard';
-import PlanCard from 'components/PlanCard';
+import AddCard from 'containers/main/PlanList/AddCard';
+import PlanCard from 'containers/main/PlanList/PlanCard';
 import jejuImg from 'images/jeju.jpg';
 import SlickSlider from 'components/SlickSlider';
 

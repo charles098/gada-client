@@ -4,17 +4,20 @@ import { ChatIcon, GoogleIcon } from 'components/icons';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
-import { largeModal } from 'store/modules/modal';
+import { changeOpenState, changeModalName } from 'store/modules/modal';
 
 const ModalSelector = (state: RootState) => state.modal
 
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { largeModalIsOpen } = useSelector(ModalSelector);
+    const { modalIsOpen } = useSelector(ModalSelector);
     
     const handleLocalLoginClick = () => {navigate("/login-form")};
-    const handleRegisterClick = () => {dispatch(largeModal(!largeModalIsOpen))};
+    const handleRegisterClick = () => {
+        dispatch(changeModalName("EmailAuthModal"));
+        dispatch(changeOpenState(!modalIsOpen));
+    };
 
     return (
         <LoginContainer>

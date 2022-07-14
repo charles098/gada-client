@@ -1,16 +1,16 @@
 import React from "react";
 import styled from 'styled-components';
+import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
-import { largeModal } from 'store/modules/modal';
-import axios from 'axios';
+import { changeOpenState, changeModalName } from 'store/modules/modal';
 import { useNavigate } from 'react-router-dom';
 
 const ModalSelector = (state: RootState) => state.modal
 
 const LoginForm = () => {
     const dispatch = useDispatch();
-    const { largeModalIsOpen } = useSelector(ModalSelector);
+    const { modalIsOpen } = useSelector(ModalSelector);
     const navigate = useNavigate();
 
     const handleSubmit = (e: any) => {
@@ -39,7 +39,8 @@ const LoginForm = () => {
     }
     
     const handleRegisterClick = () => {
-        dispatch(largeModal(!largeModalIsOpen))
+        dispatch(changeModalName("EmailAuthModal"));
+        dispatch(changeOpenState(!modalIsOpen));
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Header from 'components/Header';
 
@@ -11,8 +11,6 @@ import PlanMaker from 'containers/plan/PlanMaker';
 
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
-import { RootState } from 'store/modules';
-import PlanModal from 'containers/plan/PlanModal';
 
 // dummy data
 const dummyPlanDetailList: IPlace[] = [
@@ -152,7 +150,6 @@ const dummyPlaceOptionList: IPlace[] = [
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
-    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
 
     useEffect(() => {
         const initPlanDetailList: IPlace[] = dummyPlanDetailList.sort(
@@ -163,24 +160,16 @@ const Plan: FC = () => {
     }, []);
 
     return (
-        <Wrapper>
-            {largeModalIsOpen && <PlanModal />}
-            <Header />
-            <Container>
-                <PlanInfo />
-                <OptionMaker />
-                <div className="bottom-section">
-                    <Map />
-                    <PlanMaker />
-                </div>
-            </Container>
-        </Wrapper>
+        <Container>
+            <PlanInfo />
+            <OptionMaker />
+            <div className="bottom-section">
+                <Map />
+                <PlanMaker />
+            </div>
+        </Container>
     );
 };
-
-const Wrapper = styled.div`
-    width: 100%;
-`;
 
 const Container = styled.div`
     width: 1440px;

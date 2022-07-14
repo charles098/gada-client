@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { LocationIcon } from 'components/icons';
-import LocationCard from 'components/LocationCard';
+import LocationCard from 'containers/main/LocationList/LocationCard';
 import jejuImg from 'images/jeju.jpg';
 
 const PlanList : FC = () => {
