@@ -1,4 +1,12 @@
-import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
+import React, {
+    FC,
+    useEffect,
+    useRef,
+    useCallback,
+    useState,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
@@ -6,33 +14,30 @@ import PlaceBox from 'components/PlaceBox';
 import { RootState } from 'store/modules';
 import {
     IPlace,
-    sortPlanList,
     grabPlan,
     grabPlaceOption,
     dropPlaceOption,
 } from 'store/modules/plan';
 
-const planListSelector = (state: RootState) => state.plan.planList;
-const setDaySelector = (state: RootState) => state.plan.setDay;
+interface ISortablePlace extends IPlace {
+    s_id: number;
+    chosen: boolean;
+}
+
+interface IProps {
+    planListOfSetDay: ISortablePlace[];
+    setPlanListOfSetDay: Dispatch<SetStateAction<ISortablePlace[]>>;
+}
+
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
-const SetupRoute: FC = () => {
+const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
     const dispatch = useDispatch();
-    const planList = useSelector(planListSelector);
-    const setDay = useSelector(setDaySelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
-
-    const [renderedPlanList, setRenderedPlanList] = useState<IPlace[]>([]);
     const [isDrop, setIsDrop] = useState(false);
-
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
-
-    useEffect(() => {
-        console.log(planList);
-        setRenderedPlanList([...planList[setDay]]);
-    }, [setDay, planList]);
 
     useEffect(() => {
         if (isDrop) {
@@ -44,11 +49,10 @@ const SetupRoute: FC = () => {
                 node?.classList.remove('focus');
             }, 500);
         }
-    }, [planList]);
+    }, [planListOfSetDay]);
 
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
-            console.log('dragplacestart');
             enterCnt.current = 0;
             dispatch(grabPlaceOption({ id: null }));
             const id = parseInt(e.currentTarget.dataset.id as string, 10);
@@ -87,17 +91,6 @@ const SetupRoute: FC = () => {
         [grabPlaceOptionId],
     );
 
-    // util로 분리
-    const getSortableList = (list: IPlace[]): IPlace[] => {
-        return list.map((x) => ({
-            ...x,
-            chosen: true,
-        }));
-    };
-    const onSort = (list: IPlace[]): void => {
-        dispatch(sortPlanList({ list }));
-    };
-
     return (
         <Container
             onDragEnter={onDragEnterConainer}
@@ -107,18 +100,18 @@ const SetupRoute: FC = () => {
         >
             <ReactSortable
                 animation={150}
-                list={renderedPlanList}
-                setList={setRenderedPlanList}
+                list={planListOfSetDay}
+                setList={setPlanListOfSetDay}
             >
-                {renderedPlanList.map((plan: IPlace, index: number) => {
+                {planListOfSetDay.map((plan: ISortablePlace, index: number) => {
                     return (
                         <PlaceBox
                             focusRef={
-                                index === planList.length - 1
+                                index === planListOfSetDay.length - 1
                                     ? (droppedRef as React.RefObject<HTMLDivElement>)
                                     : null
                             }
-                            key={plan.id}
+                            key={plan.s_id}
                             dataId={plan.id}
                             onDragStartPlace={onDragStartPlace}
                             placename={plan.name}
