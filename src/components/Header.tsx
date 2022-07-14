@@ -18,6 +18,10 @@ const Header: FC = () => {
         setBoardIsOpen(!boardIsOpen);
         setmyPageIsOpen(false);
     };
+    const removeMenu = () => {
+        setBoardIsOpen(false);
+        setmyPageIsOpen(false);
+    }
     return (
         <>
             <HeaderContainer>
@@ -36,7 +40,9 @@ const Header: FC = () => {
                         ref={myPageRef}
                         myPageIsOpen={myPageIsOpen}
                         >
-                            <ul>
+                            <ul 
+                            onClick={removeMenu}
+                            onKeyDown={removeMenu}>
                                 <li>
                                     <LinkWrapper to="/">정보</LinkWrapper>
                                 </li>
@@ -54,7 +60,10 @@ const Header: FC = () => {
                         ref={boardRef}
                         myPageIsOpen={boardIsOpen}
                         >
-                            <ul>
+                            <ul
+                            onClick={removeMenu}
+                            onKeyDown={removeMenu}
+                            >
                                 <li>
                                     <LinkWrapper to="/">전체</LinkWrapper>
                                 </li>
@@ -64,7 +73,10 @@ const Header: FC = () => {
                             </ul>
                         </Nav>
                     </DropdownContainer>
-                    <DropdownContainer>
+                    <DropdownContainer
+                    onClick={removeMenu}
+                    onKeyDown={removeMenu}
+                    >
                         <LinkNoDropDown to="/">로그아웃</LinkNoDropDown>
                     </DropdownContainer>
                 </Menu>
