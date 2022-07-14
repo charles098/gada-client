@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import dragImg from 'images/drag2.png';
-import PlaceOption from 'components/SelectedOption/SelectedOption';
+import PlaceOption from 'components/SelectedOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOpenState, changeModalName } from 'store/modules/modal';
 import { RootState } from 'store/modules';
