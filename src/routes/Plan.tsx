@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import Header from 'components/Header';
 
 // containers
 import PlanInfo from 'containers/plan/PlanInfo';
@@ -12,6 +11,7 @@ import PlanMaker from 'containers/plan/PlanMaker';
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
 import { RootState } from 'store/modules';
+import Header from 'components/Header';
 import PlanModal from 'containers/plan/PlanModal';
 
 // dummy data
@@ -226,7 +226,6 @@ const dummyPlaceOptionList: IPlace[] = [
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
-    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
 
     useEffect(() => {
         dispatch(
@@ -250,7 +249,7 @@ const Plan: FC = () => {
 
     return (
         <Wrapper>
-            {largeModalIsOpen && <PlanModal />}
+            <PlanModal />
             <Header />
             <Container>
                 <PlanInfo />

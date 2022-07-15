@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { PlusIcon } from 'components/icons';
 import { RootState } from 'store/modules'
-import { largeModal } from 'store/modules/modal';
+import { changeOpenState, changeModalName } from 'store/modules/modal';
+
+const ModalSelector = (state: RootState) => state.modal
 
 const AddCard : FC = () => {
-    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
+    const { modalIsOpen } = useSelector(ModalSelector);
     const dispatch = useDispatch();
     
     const handleClick = () => {
-        dispatch(largeModal(!largeModalIsOpen))
+        dispatch(changeModalName("NewPlanModal"));
+        dispatch(changeOpenState(!modalIsOpen));
     }
 
     return (

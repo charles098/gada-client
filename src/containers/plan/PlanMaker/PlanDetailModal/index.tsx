@@ -2,16 +2,18 @@ import Modal from 'components/Modal';
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
-import { largeModal } from 'store/modules/modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { changeOpenState, changeModalName } from 'store/modules/modal';
 import jeju from 'images/jeju.jpg';
 import { PencilIcon, ClockIcon, WonIcon } from 'components/icons';
 import { theme } from 'styles/theme';
 import SubmitButton from 'components/StyledSmitButton';
 
+const ModalSelector = (state: RootState) => state.modal
+
 const PlanDetailModal: FC = ({ placeData }: any) => {
-    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
     const dispatch = useDispatch();
+    const { modalIsOpen } = useSelector(ModalSelector);
     const [details, setDetails] = useState({
         memo: '',
         time: '',
@@ -30,9 +32,8 @@ const PlanDetailModal: FC = ({ placeData }: any) => {
     const removeHandler = (e: React.MouseEvent) => {
         e.preventDefault();
 
-        if (largeModalIsOpen) {
-            dispatch(largeModal(!largeModalIsOpen));
-        }
+        dispatch(changeModalName("PlanModal"));
+        dispatch(changeOpenState(!modalIsOpen));
     };
 
     return (

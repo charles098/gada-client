@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import dragImg from 'images/drag2.png';
-import PlaceOption from 'components/SelectedOption/SelectedOption';
+import PlaceOption from 'components/SelectedOption';
 import { useDispatch, useSelector } from 'react-redux';
-import { largeModal } from 'store/modules/modal';
+import { changeOpenState, changeModalName } from 'store/modules/modal';
 import { RootState } from 'store/modules';
 
+const ModalSelector = (state: RootState) => state.modal
+
 const OptionMaker: FC = () => {
-    const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
+    const { modalIsOpen } = useSelector(ModalSelector);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(largeModal(!largeModalIsOpen));
+        dispatch(changeModalName("PlanModal"));
+        dispatch(changeOpenState(!modalIsOpen));
     };
 
     return (

@@ -1,17 +1,21 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PlaneIcon } from 'components/icons';
+import { Outlet } from 'react-router-dom';
 
 const Header: FC = () => {
     return (
-        <HeaderContainer>
-            <PlaneIcon
-            width="49px"
-            height="46px"
-            style={planeIconStyle}
-            />
-            <HeaderTitle>여행가다</HeaderTitle>
-        </HeaderContainer>
+        <>
+            <HeaderContainer>
+                <PlaneIcon
+                    width="49px"
+                    height="46px"
+                    style={planeIconStyle}
+                />
+                <HeaderTitle>여행가다</HeaderTitle>
+            </HeaderContainer>
+            <Outlet />
+        </>
     )
 }
 

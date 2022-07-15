@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Types
 interface InitialState {
-    largeModalIsOpen: boolean
+    modalIsOpen: boolean;
+    modalName: string;
 }
 
 // InitialState
 const initialState: InitialState = {
-    largeModalIsOpen: false,
+    modalIsOpen: false,
+    modalName: '',
 };
 
 // Reducer Slice
@@ -15,14 +17,18 @@ const modalSlice = createSlice({
     name: 'modal',
     initialState,
     reducers: {
-        largeModal(state, action: PayloadAction<boolean>) {
-            state.largeModalIsOpen = action.payload;
+        changeOpenState(state, action: PayloadAction<boolean>) {
+            state.modalIsOpen = action.payload;
         },
+        changeModalName(state, action:PayloadAction<string>) {
+            state.modalName = action.payload;
+        }
     },
 });
 
 export const {
-    largeModal
+    changeOpenState,
+    changeModalName
 } = modalSlice.actions;
 
 export default modalSlice.reducer
