@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Dispatch, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { customAlphabet } from 'nanoid';
@@ -7,12 +7,13 @@ import { RootState } from 'store/modules';
 import { setUpDay } from 'store/modules/plan';
 
 interface IProps {
+    setIsAllPlan: Dispatch<SetStateAction<boolean>>;
     planPeriod: number;
 }
 
 const setDaySelector = (state: RootState) => state.plan.setDay;
 
-const DayPicker: FC<IProps> = ({ planPeriod }) => {
+const DayPicker: FC<IProps> = ({ setIsAllPlan, planPeriod }) => {
     const dispatch = useDispatch();
     const nanoid = customAlphabet('01234567899abcedf', 6);
     const setDay = useSelector(setDaySelector);
@@ -34,7 +35,11 @@ const DayPicker: FC<IProps> = ({ planPeriod }) => {
                 itemCursor="default"
             >
                 <ButtonCard>
-                    <Button type="button" className="all-button">
+                    <Button
+                        type="button"
+                        className="all-button"
+                        onClick={() => setIsAllPlan(true)}
+                    >
                         All
                     </Button>
                 </ButtonCard>

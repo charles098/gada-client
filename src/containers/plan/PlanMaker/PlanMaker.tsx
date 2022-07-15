@@ -15,6 +15,7 @@ import SetupRoute from 'components/SetupRoute';
 import { IPlace } from 'store/modules/plan';
 
 interface IProps {
+    setIsAllPlan: Dispatch<SetStateAction<boolean>>;
     planList: IPlace[][];
     setPlanList: Dispatch<SetStateAction<IPlace[][]>>;
 }
@@ -28,7 +29,7 @@ const startDateSelector = (state: RootState) => state.plan.startDate;
 const lastDateSelector = (state: RootState) => state.plan.lastDate;
 const setDaySelector = (state: RootState) => state.plan.setDay;
 
-const PlanMaker: FC<IProps> = ({ planList, setPlanList }) => {
+const PlanMaker: FC<IProps> = ({ setIsAllPlan, planList, setPlanList }) => {
     const startDate = useSelector(startDateSelector);
     const lastDate = useSelector(lastDateSelector);
     const setDay = useSelector(setDaySelector);
@@ -63,7 +64,10 @@ const PlanMaker: FC<IProps> = ({ planList, setPlanList }) => {
 
     return (
         <Container>
-            <DayPicker planPeriod={planPeriod as number} />
+            <DayPicker
+                setIsAllPlan={setIsAllPlan}
+                planPeriod={planPeriod as number}
+            />
             <RouteContainer>
                 <ShowDistance />
                 <SetupRoute

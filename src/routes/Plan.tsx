@@ -247,7 +247,7 @@ const Plan: FC = () => {
     const dropItem = useSelector(dropItemSelector);
     const [isInit, setIsInit] = useState(true);
     const [planList, setPlanList] = useState<IPlace[][]>(dummyPlanList);
-    const [isAllPlan, setIsAllPlan] = useState<boolean>(true);
+    const [isAllPlan, setIsAllPlan] = useState<boolean>(false);
 
     // useEffect(() => {
     //     simulateAPI();
@@ -268,14 +268,12 @@ const Plan: FC = () => {
                     <OptionMaker />
                     <div className="bottom-section">
                         {isAllPlan ? (
-                            <AllPlan
-                                setIsAllPlan={setIsAllPlan}
-                                planList={planList}
-                            />
+                            <AllPlan setIsAllPlan={setIsAllPlan} />
                         ) : (
                             <>
                                 <Map />
                                 <PlanMaker
+                                    setIsAllPlan={setIsAllPlan}
                                     planList={planList}
                                     setPlanList={setPlanList}
                                 />
