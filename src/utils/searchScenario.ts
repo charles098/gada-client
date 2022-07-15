@@ -40,8 +40,8 @@ const searchByKeyword = async (
                             name: place.place_name,
                             imgUrl: placeImgUrl,
                             address: place.address_name,
-                            latitude: place.x,
-                            longitude: place.y,
+                            latitude: place.y,
+                            longitude: place.x,
                         };
                     },
                 );
