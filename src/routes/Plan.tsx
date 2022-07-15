@@ -7,6 +7,7 @@ import PlanInfo from 'containers/plan/PlanInfo';
 import OptionMaker from 'containers/plan/OptionMaker';
 import Map from 'containers/plan/Map';
 import PlanMaker from 'containers/plan/PlanMaker';
+import AllPlan from 'containers/plan/AllPlan';
 
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
@@ -246,6 +247,7 @@ const Plan: FC = () => {
     const dropItem = useSelector(dropItemSelector);
     const [isInit, setIsInit] = useState(true);
     const [planList, setPlanList] = useState<IPlace[][]>(dummyPlanList);
+    const [isAllPlan, setIsAllPlan] = useState<boolean>(true);
 
     // useEffect(() => {
     //     simulateAPI();
@@ -258,10 +260,6 @@ const Plan: FC = () => {
     //     dispatch(initializeData({ initPlanList, initPlaceOptionList }));
     // };
 
-    useEffect(() => {
-        console.log('dropoption', dropItem);
-    }, [dropItem]);
-
     return (
         <Wrapper>
             {isInit && (
@@ -269,11 +267,20 @@ const Plan: FC = () => {
                     <PlanInfo />
                     <OptionMaker />
                     <div className="bottom-section">
-                        <Map />
-                        <PlanMaker
-                            planList={planList}
-                            setPlanList={setPlanList}
-                        />
+                        {isAllPlan ? (
+                            <AllPlan
+                                setIsAllPlan={setIsAllPlan}
+                                planList={planList}
+                            />
+                        ) : (
+                            <>
+                                <Map />
+                                <PlanMaker
+                                    planList={planList}
+                                    setPlanList={setPlanList}
+                                />
+                            </>
+                        )}
                     </div>
                 </Container>
             )}
