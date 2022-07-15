@@ -14,10 +14,14 @@ import ShowDistance from 'components/ShowDistance';
 import SetupRoute from 'components/SetupRoute';
 import { createPlanListArray } from 'store/modules/plan';
 
+interface IProps {
+    setIsAllPlan: Dispatch<SetStateAction<boolean>>;
+}
+
 const startDateSelector = (state: RootState) => state.plan.startDate;
 const lastDateSelector = (state: RootState) => state.plan.lastDate;
 
-const PlanMaker: FC = () => {
+const PlanMaker: FC<IProps> = ({ setIsAllPlan }) => {
     const startDate = useSelector(startDateSelector);
     const dispatch = useDispatch();
     const lastDate = useSelector(lastDateSelector);
@@ -37,7 +41,10 @@ const PlanMaker: FC = () => {
 
     return (
         <Container>
-            <DayPicker planPeriod={planPeriod as number} />
+            <DayPicker
+                setIsAllPlan={setIsAllPlan}
+                planPeriod={planPeriod as number}
+            />
             <RouteContainer>
                 <ShowDistance />
                 <SetupRoute />

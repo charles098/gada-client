@@ -7,6 +7,7 @@ import PlanInfo from 'containers/plan/PlanInfo';
 import OptionMaker from 'containers/plan/OptionMaker';
 import Map from 'containers/plan/Map';
 import PlanMaker from 'containers/plan/PlanMaker';
+import AllPlan from 'containers/plan/AllPlan';
 
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
@@ -223,6 +224,8 @@ const dummyPlaceOptionList: IPlace[] = [
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
+    const [isInit, setIsInit] = useState(true);
+    const [isAllPlan, setIsAllPlan] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(
@@ -249,8 +252,14 @@ const Plan: FC = () => {
             <PlanInfo />
             <OptionMaker />
             <div className="bottom-section">
-                <Map />
-                <PlanMaker />
+                {isAllPlan ? (
+                    <AllPlan setIsAllPlan={setIsAllPlan} />
+                ) : (
+                    <>
+                        <Map />
+                        <PlanMaker setIsAllPlan={setIsAllPlan} />
+                    </>
+                )}
             </div>
         </Container>
     );
