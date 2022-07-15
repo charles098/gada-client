@@ -11,7 +11,7 @@ import {
 // Types
 export interface PlaceInfo {
     name: string;
-    imgUrl: string | undefined;
+    imgUrl?: string | undefined;
     address: string;
     latitude: string;
     longitude: string;
@@ -96,6 +96,10 @@ const userSlice = createSlice({
                 (place) => place.id !== id,
             );
         },
+        dropAllSelectedPlaces(state: searchState) {
+            state.selectedPlaces = [];
+        },
+
         setCenter(state: searchState, action: PayloadAction<Position>) {
             state.center = action.payload;
         },
@@ -118,6 +122,7 @@ export const {
     setPlaceList,
     insertSelectedPlaces,
     deleteSelectedPlaces,
+    dropAllSelectedPlaces,
     setCenter,
 } = actions;
 export { searchPlaces, searchForCoord };

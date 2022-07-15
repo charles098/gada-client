@@ -8,20 +8,18 @@ import {
     sortplaceOptionList,
     grabPlan,
     grabPlaceOption,
-    dropPlan,
+    movePlanToPlaceOption,
 } from 'store/modules/plan';
 import jejuImg from 'images/jeju.jpg';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
 const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
-const dropItemSelector = (state: RootState) => state.plan.dropItem;
 
 const SelectedOption: FC = () => {
     const dispatch = useDispatch();
     const placeOptionList = useSelector(placeOptionListSelector);
     const grabPlanId = useSelector(grabPlanIdSelector);
-    const dropItem = useSelector(dropItemSelector);
     const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
@@ -41,8 +39,7 @@ const SelectedOption: FC = () => {
     const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
         enterCnt.current = 0;
         dispatch(grabPlan({ id: null }));
-        const id = parseInt(e.currentTarget.dataset.id as string, 10);
-        dispatch(grabPlaceOption({ id }));
+        dispatch(grabPlaceOption({ id: e.currentTarget.dataset.id }));
     }, []);
 
     const onDragEnterConainer = useCallback(
@@ -71,7 +68,7 @@ const SelectedOption: FC = () => {
             if (!grabPlanId) return;
 
             e.currentTarget.classList.remove('drag-over');
-            dispatch(dropPlan());
+            dispatch(movePlanToPlaceOption());
             setIsDrop(true);
         },
         [grabPlanId],
@@ -133,7 +130,7 @@ const SelectedOption: FC = () => {
                         >
                             <div className="img-container">
                                 <img
-                                    src={jejuImg}
+                                    src={option.imgUrl ?? jejuImg}
                                     alt="img"
                                     draggable="false"
                                 />
