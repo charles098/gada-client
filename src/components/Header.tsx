@@ -8,13 +8,13 @@ const Header: FC = () => {
     const myPageRef = useRef<any>(null);
     const boardRef = useRef<any>(null);
     const [myPageIsOpen, setmyPageIsOpen] = useDetectClose(myPageRef, false);
-    const [boardIsOpen, setBoardIsOpen] = useDetectClose(boardRef,false);
+    const [boardIsOpen, setBoardIsOpen] = useDetectClose(boardRef, false);
 
-    const myPageHandler = () => { 
+    const myPageHandler = () => {
         setmyPageIsOpen(!myPageIsOpen);
         setBoardIsOpen(false);
     };
-    const boardHandler = () => { 
+    const boardHandler = () => {
         setBoardIsOpen(!boardIsOpen);
         setmyPageIsOpen(false);
     };
@@ -32,17 +32,17 @@ const Header: FC = () => {
                 />
                 <HeaderTitle>여행가다</HeaderTitle>
                 <Menu>
-                    <DropdownContainer>
+                    <MyPageContainer>
                         <DropdownButton onClick={myPageHandler}>
                             마이페이지
                         </DropdownButton>
                         <Nav
-                        ref={myPageRef}
-                        myPageIsOpen={myPageIsOpen}
+                            ref={myPageRef}
+                            myPageIsOpen={myPageIsOpen}
                         >
-                            <ul 
-                            onClick={removeMenu}
-                            onKeyDown={removeMenu}>
+                            <ul
+                                onClick={removeMenu}
+                                onKeyDown={removeMenu}>
                                 <li>
                                     <LinkWrapper to="/">정보</LinkWrapper>
                                 </li>
@@ -51,18 +51,18 @@ const Header: FC = () => {
                                 </li>
                             </ul>
                         </Nav>
-                    </DropdownContainer>
-                    <DropdownContainer>
+                    </MyPageContainer>
+                    <BoardContainer>
                         <DropdownButton onClick={boardHandler}>
                             게시판
                         </DropdownButton>
                         <Nav
-                        ref={boardRef}
-                        myPageIsOpen={boardIsOpen}
+                            ref={boardRef}
+                            myPageIsOpen={boardIsOpen}
                         >
                             <ul
-                            onClick={removeMenu}
-                            onKeyDown={removeMenu}
+                                onClick={removeMenu}
+                                onKeyDown={removeMenu}
                             >
                                 <li>
                                     <LinkWrapper to="/">전체</LinkWrapper>
@@ -72,10 +72,10 @@ const Header: FC = () => {
                                 </li>
                             </ul>
                         </Nav>
-                    </DropdownContainer>
+                    </BoardContainer>
                     <DropdownContainer
-                    onClick={removeMenu}
-                    onKeyDown={removeMenu}
+                        onClick={removeMenu}
+                        onKeyDown={removeMenu}
                     >
                         <LinkNoDropDown to="/">로그아웃</LinkNoDropDown>
                     </DropdownContainer>
@@ -114,24 +114,27 @@ const Menu = styled.div`
     margin-left: auto;
     margin-right: 50px;
     display: flex;
-    align-items: center;
-    width: 320px;
     color: white;
     font-size: 19px;
 `
 
 const DropdownContainer = styled.div`
-  margin-left: auto;
-  position: relative;
-  width: 100px;
-  text-align: center;
+    position: relative;
+    width: 100px;
+    text-align: center;
+`
+
+const MyPageContainer = styled(DropdownContainer)``
+
+const BoardContainer = styled(DropdownContainer)`
+    margin-left: 10px;
 `
 
 const DropdownButton = styled.div`
     cursor: pointer;
 `
 
-const Nav = styled.nav<{myPageIsOpen: any}>`
+const Nav = styled.nav<{ myPageIsOpen: any }>`
     background: #60A5F8;
     position: absolute;
     top: 52px;
@@ -160,7 +163,7 @@ const Nav = styled.nav<{myPageIsOpen: any}>`
 
 
 
-    ${({ myPageIsOpen }) => 
+    ${({ myPageIsOpen }) =>
         myPageIsOpen &&
         css`
             opacity: 1;
