@@ -16,7 +16,7 @@ import WonIcon from './WonIcon';
 import GoogleIcon from './GoogleIcon';
 import ResetIcon from './ResetIcon';
 import LikeIcon from './LikeIcon';
-import UnlikeIcon from './UnlikeIcon';
+import UnlikeIcon from './UnLikeIcon';
 import ErrorIcon from './ErrorIcon';
 import SpeechIcon from './SpeechIcon';
 
