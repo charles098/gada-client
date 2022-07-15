@@ -17,6 +17,8 @@ import GoogleIcon from './GoogleIcon';
 import ResetIcon from './ResetIcon';
 import LikeIcon from './LikeIcon';
 import UnlikeIcon from './UnlikeIcon';
+import ErrorIcon from './ErrorIcon';
+import SpeechIcon from './SpeechIcon';
 
 export {
     UnlikeIcon,
@@ -38,4 +40,6 @@ export {
     WonIcon,
     GoogleIcon,
     ResetIcon,
+    ErrorIcon,
+    SpeechIcon,
 };

@@ -23,6 +23,7 @@ import Register from 'routes/Register';
 import Plan from 'routes/Plan';
 import Main from 'routes/Main';
 import Board from 'routes/Board';
+import NotFound from 'routes/NotFound';
 
 // Axios
 const baseURL = 'http://localhost:5000';
@@ -35,20 +36,21 @@ const App: FC = () => {
             <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <GlobalFont />
-                <PickModal/>
+                <PickModal />
                 <BrowserRouter>
                     <Routes>
-                        <Route element={<LoginHeader/>}>
+                        <Route element={<LoginHeader />}>
                             <Route path="/" element={<Login />} />
-                            <Route path="/login" element={<Login />}/>
-                            <Route path="/login-form" element={<LoginForm />}/>
-                            <Route path="/register" element={ <Register /> }/>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/login-form" element={<LoginForm />} />
+                            <Route path="/register" element={<Register />} />
                         </Route>
-                        <Route element={<Header/>}>
+                        <Route element={<Header />}>
                             <Route path="/plan" element={<Plan />} />
                             <Route path="/main" element={<Main />} />
                             <Route path="/board" element={<Board />} />
                         </Route>
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>
