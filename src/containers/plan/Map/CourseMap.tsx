@@ -19,18 +19,18 @@ const CourseMap = () => {
     useEffect(() => {
         console.log(placeList);
     }, []);
-    // const nodeDistance = useMemo(
-    //     () => changePosition2DistanceArray(planedPlaces),
-    //     [planedPlaces],
-    // );
-    // const nodeCenter = useMemo(
-    //     () => changePosition2DistanceCenter(planedPlaces),
-    //     [planedPlaces],
-    // );
-    // const setBound = useMemo(
-    //     () => getPosition2bound(planedPlaces),
-    //     [placeList],
-    // );
+    const nodeDistance = useMemo(
+        () => changePosition2DistanceArray(placeList[setDay]),
+        [placeList],
+    );
+    const nodeCenter = useMemo(
+        () => changePosition2DistanceCenter(placeList[setDay]),
+        [placeList],
+    );
+    const setBound = useMemo(
+        () => getPosition2bound(placeList[setDay]),
+        [placeList],
+    );
 
     return (
         <Container>
@@ -41,7 +41,8 @@ const CourseMap = () => {
                     height: '100%',
                 }}
             >
-                {/* { placeList[setDay].length > 0 &&
+                {placeList.length > 0 &&
+                    placeList[setDay].length > 0 &&
                     placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
@@ -79,7 +80,7 @@ const CourseMap = () => {
                                 />
                             </>
                         );
-                    })} */}
+                    })}
             </Map>
         </Container>
     );

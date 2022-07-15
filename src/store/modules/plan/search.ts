@@ -4,10 +4,7 @@ import {
     nanoid,
     PayloadAction,
 } from '@reduxjs/toolkit';
-import {
-    pickByKeyword,
-    searchByKeyword,
-} from 'containers/plan/PlanModal/searchScenario';
+import { pickByKeyword, searchByKeyword } from 'utils/searchScenario';
 import { Position, SearchedPlaceInfo, SelectedPlace } from '.';
 // Types
 

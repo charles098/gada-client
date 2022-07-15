@@ -25,37 +25,43 @@ export function getDistance(pos1: Place, pos2: Place) {
 
 export function changePosition2DistanceArray(positions: Place[]) {
     const distance: number[] = [];
-    positions.reduce((pre, cur) => {
-        const result = getDistance(pre, cur);
-        distance.push(result);
-        return cur;
-    });
+    if (positions && positions.length > 0) {
+        positions.reduce((pre, cur) => {
+            const result = getDistance(pre, cur);
+            distance.push(result);
+            return cur;
+        });
+    }
     return distance;
 }
 
 export function changePosition2DistanceCenter(positions: Place[]) {
     const nodeCenter: { lng: number; lat: number }[] = [];
-    positions.reduce((pre, cur) => {
-        const preLat = Number(pre.latitude);
-        const preLng = Number(pre.longitude);
-        const curLat = Number(cur.latitude);
-        const curLng = Number(cur.longitude);
-        const lat: number = (preLat + preLng) / 2;
-        const lng: number = (curLat + curLng) / 2;
-        const result: { lng: number; lat: number } = { lat, lng };
-        nodeCenter.push(result);
-        return cur;
-    });
+    if (positions && positions.length > 0) {
+        positions.reduce((pre, cur) => {
+            const preLat = Number(pre.latitude);
+            const preLng = Number(pre.longitude);
+            const curLat = Number(cur.latitude);
+            const curLng = Number(cur.longitude);
+            const lat: number = (preLat + preLng) / 2;
+            const lng: number = (curLat + curLng) / 2;
+            const result: { lng: number; lat: number } = { lat, lng };
+            nodeCenter.push(result);
+            return cur;
+        });
+    }
 
     return nodeCenter;
 }
 
 export function getPosition2bound(place: Place[]) {
     const bound = new kakao.maps.LatLngBounds();
-    place.forEach((value) => {
-        const lat = Number(value.latitude);
-        const lng = Number(value.longitude);
-        bound.extend(new kakao.maps.LatLng(lat, lng));
-    });
+    if (place) {
+        place.forEach((value) => {
+            const lat = Number(value.latitude);
+            const lng = Number(value.longitude);
+            bound.extend(new kakao.maps.LatLng(lat, lng));
+        });
+    }
     return bound;
 }
