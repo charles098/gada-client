@@ -56,23 +56,31 @@ const NewPlanDate: FC = () => {
 
 export default NewPlanDate;
 
-const DateWrapper = styled.div``
+const DateWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
 const DateLabel = styled.label`
-  display: block;
+  display: inline-block;
+  width: 62.56px;
   color: #60A5F8;
   font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 17px;
+  margin-right: 26px;
+  letter-spacing: 10px;
+  text-align: center;
+
 `
 const DateInput = styled.input`
-  width: 270px;
+  width: 180px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   border: none;
-  border-radius: 10px;
-  background-color: #dddddd;
+  border-radius: 5px;
+  background-color: #ECF3FD;
   cursor: not-allowed;
 
   &:focus {outline:none;}

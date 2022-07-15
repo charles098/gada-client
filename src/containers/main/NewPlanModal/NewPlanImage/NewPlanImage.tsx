@@ -38,6 +38,7 @@ const Wrapper = styled.div<{ src : string }>`
   width: 120px;
   height: 120px;
   margin-top: 10px;
+  margin-bottom: 15px;
   border-radius: 50%;
   position: relative;
   background-color: #ECF3FD;
