@@ -8,7 +8,7 @@ import {
     sortplaceOptionList,
     grabPlan,
     grabPlaceOption,
-    dropPlan,
+    movePlanToPlaceOption,
 } from 'store/modules/plan';
 import jejuImg from 'images/jeju.jpg';
 
@@ -39,8 +39,7 @@ const SelectedOption: FC = () => {
     const onDragStartPlace = useCallback((e: React.DragEvent<HTMLElement>) => {
         enterCnt.current = 0;
         dispatch(grabPlan({ id: null }));
-        const id = parseInt(e.currentTarget.dataset.id as string, 10);
-        dispatch(grabPlaceOption({ id }));
+        dispatch(grabPlaceOption({ id: e.currentTarget.dataset.id }));
     }, []);
 
     const onDragEnterConainer = useCallback(
@@ -69,7 +68,7 @@ const SelectedOption: FC = () => {
             if (!grabPlanId) return;
 
             e.currentTarget.classList.remove('drag-over');
-            dispatch(dropPlan());
+            dispatch(movePlanToPlaceOption());
             setIsDrop(true);
         },
         [grabPlanId],

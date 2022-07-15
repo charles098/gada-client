@@ -63,20 +63,24 @@ const planDetailSlice = createSlice({
             const { id } = action.payload;
             state.grabPlaceOptionId = id;
         },
-        dropPlan(state: IPlan) {
+        movePlanToPlaceOption(state: IPlan) {
+            // dropPlan
             const droppedPlan = state.planList[state.setDay].find(
                 (plan) => plan.id === state.grabPlanId,
             ) as IPlace;
             const idx = state.planList[state.setDay].indexOf(droppedPlan);
+            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
             state.planList[state.setDay].splice(idx, 1);
             state.placeOptionList.push(droppedPlan);
         },
-        dropPlaceOption(state: IPlan) {
+        movePlaceOptionToPlan(state: IPlan) {
+            // dropPlaceOption
             const droppedPlaceOption = state.placeOptionList.find(
                 (option) => option.id === state.grabPlaceOptionId,
             ) as IPlace;
 
             const idx = state.placeOptionList.indexOf(droppedPlaceOption);
+            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
             state.placeOptionList.splice(idx, 1);
             state.planList[state.setDay].push(droppedPlaceOption);
         },
@@ -93,8 +97,8 @@ export const {
     grabPlan,
     sortPlanList,
     grabPlaceOption,
-    dropPlan,
-    dropPlaceOption,
+    movePlanToPlaceOption,
+    movePlaceOptionToPlan,
 } = actions;
 
 export default reducer;

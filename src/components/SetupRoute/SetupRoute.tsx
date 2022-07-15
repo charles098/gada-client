@@ -16,7 +16,7 @@ import {
     IPlace,
     grabPlan,
     grabPlaceOption,
-    dropPlaceOption,
+    movePlaceOptionToPlan,
     sortPlanList,
 } from 'store/modules/plan';
 
@@ -80,7 +80,7 @@ const SetupRoute: FC = () => {
         (e: React.DragEvent<HTMLElement>) => {
             if (!grabPlaceOptionId) return;
             e.currentTarget.classList.remove('drag-over');
-            dispatch(dropPlaceOption());
+            dispatch(movePlaceOptionToPlan());
             setIsDrop(true);
         },
         [grabPlaceOptionId],
@@ -88,7 +88,7 @@ const SetupRoute: FC = () => {
 
     const getSortableList = (list: IPlace[][]): IPlace[] => {
         if (list.length < 1) return [];
-        return list.flatMap((x) => ({
+        return list[setDay].map((x) => ({
             ...x,
             chosen: true,
         }));
@@ -111,22 +111,23 @@ const SetupRoute: FC = () => {
                 list={getSortableList(planList)}
                 setList={onSort}
             >
-                {/* {planList[setDay].map((plan: IPlace, index: number) => {
-                    return (
-                        <PlaceBox
-                            focusRef={
-                                index === planList[setDay].length - 1
-                                    ? (droppedRef as React.RefObject<HTMLDivElement>)
-                                    : null
-                            }
-                            key={plan.id}
-                            dataId={plan.id}
-                            onDragStartPlace={onDragStartPlace}
-                            placename={plan.name}
-                            location={plan.address}
-                        />
-                    );
-                })} */}
+                {planList.length > 0 &&
+                    planList[setDay].map((plan: IPlace, index: number) => {
+                        return (
+                            <PlaceBox
+                                focusRef={
+                                    index === planList[setDay].length - 1
+                                        ? (droppedRef as React.RefObject<HTMLDivElement>)
+                                        : null
+                                }
+                                key={plan.id}
+                                dataId={plan.id}
+                                onDragStartPlace={onDragStartPlace}
+                                placename={plan.name}
+                                location={plan.address}
+                            />
+                        );
+                    })}
             </ReactSortable>
         </Container>
     );
