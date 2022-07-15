@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import styled from 'styled-components';
-import { LikeIcon } from 'components/icons';
+import React, { useState, useEffect } from "react";
+import styled, { css } from 'styled-components';
+import { LikeIcon, UnlikeIcon } from 'components/icons';
 import Select from 'react-select';
 
 const selectOptions = [
+    "전체",
     "전국",
     "강원",
     "제주",
@@ -44,6 +45,7 @@ const customStyles = {
     }),
     menuList: (base: any) => ({
         ...base,
+        transition: "all .2s",
         "::-webkit-scrollbar": {
             width: "6px",
             height: "0px"
@@ -73,7 +75,53 @@ const customStyles = {
     }),
 };
 
-const tagOptions = [
+const initDatas = [
+    {
+        id: '12f',
+        tag: '맛집',
+        location: '제주',
+        title: '제주도 맛집 여행 코스 강추합니다!',
+        username: '뚱인데요',
+        likeCount: 14,
+        clickedLike: true,
+    }, {
+        id: '1fq',
+        tag: '맛집',
+        location: '경북',
+        title: '경북 맛집 여행 코스 강추합니다!',
+        username: '어둠을부르는',
+        likeCount: 5,
+        clickedLike: true,
+    }, {
+        id: 'ber1',
+        tag: '맛집',
+        location: '울산',
+        title: '울산 맛집 여행 코스 강추합니다!',
+        username: '김하나',
+        likeCount: 1,
+        clickedLike: false,
+    },
+    {
+        id: 'baswer',
+        tag: '맛집',
+        location: '부산',
+        title: '부산 맛집 여행 코스 강추합니다!',
+        username: '니머하노',
+        likeCount: 4,
+        clickedLike: true,
+    },{
+        id: 'srtw',
+        tag: '맛집',
+        location: '강원',
+        title: '강원 맛집 여행 코스 강추합니다!',
+        username: '서른마흔다섯',
+        likeCount: 0,
+        clickedLike: false,
+    }
+
+]
+
+const tags = [
     "전체",
     "맛집",
     "힐링",
@@ -83,25 +131,51 @@ const tagOptions = [
 ]
 
 const Board = () => {
-    const [ location, setLocation ] = useState<string>("");
-    const options = selectOptions.map((x) => ({ value: x, label: x }));
+    const [clickedTag, setClickedTag] = useState<string>("전체");
+    const [datas, setDatas] = useState<any>(initDatas);
 
-    const handleChange = (value: any) => {
-        setLocation(value.value);
+    const options = selectOptions.map((option) => ({ value: option, label: option }));
+
+    const changeLocationHandler = (value: any) => {
+        console.log(value.value);
     }
 
-    const clickhandler = () => {
+    const clickCardHandler = () => {
         console.log('카드 클릭');
     }
 
-    const handleCancel = (e: any) => {
+    const cancelCardHandler = (e: any) => {
         e.stopPropagation();
         console.log('취소 버튼 클릭')
     }
 
-    const handleLike = (e: any) => {
+    const clickLikeHandler = (e: any, index: number) => {
         e.stopPropagation();
         console.log('좋아요 버튼 클릭');
+
+        setDatas((prev: any) => {
+            return prev.map((data: any, prevIndex: any) => {
+                const prevClickedLike = data.clickedLike;
+                const prevLikeCount = data.likeCount;
+                if (index === prevIndex) {
+                    const newLikeCount = prevClickedLike ? 
+                                         prevLikeCount - 1 : 
+                                         prevLikeCount + 1;
+                    return {
+                        ...data, 
+                        likeCount: newLikeCount,
+                        clickedLike: !prevClickedLike
+                    }
+                }
+                return data;
+            })
+        })
+    }
+
+    const clickTagHandler = (e: any) => {
+        console.log('태그 클릭');
+        console.log(e.target.value);
+        setClickedTag(e.target.value);
     }
 
     return (
@@ -116,42 +190,51 @@ const Board = () => {
             <Main>
                 <MainContainer>
                     <ButtonContainer>
-                        <Button>전체</Button>
-                        <Button>맛집</Button>
-                        <Button>힐링</Button>
-                        <Button>포토</Button>
-                        <Button>명소</Button>
-                        <Button>자연</Button>
+                        {tags.map((tag) => (
+                            <TagButton 
+                            key={tag}
+                            onClick={clickTagHandler}
+                            value={tag}
+                            isClicked={clickedTag === tag}>
+                                {tag}
+                            </TagButton>
+                        ))}
                         <SelectWrapper>
                             <Select
                                 options={options}
                                 styles={customStyles}
                                 placeholder="지역"
-                                onChange={handleChange} />
+                                onChange={changeLocationHandler} />
                         </SelectWrapper>
                     </ButtonContainer>
                     <CardListContainer>
-                        <BoardCardWrapper>
-                            <BoardCard onClick={clickhandler}>
-                                <CardHeader>
-                                    <Tag>맛집</Tag>
-                                    <Location>제주도</Location>
-                                </CardHeader>
-                                <CardTitle>제주도 맛집 여행 코스 강추합니다!!</CardTitle>
-                                <CardButtons>
-                                    <CancelButton
-                                    onClick={handleCancel}
-                                    >공유취소</CancelButton>
-                                    <LikeButton
-                                        onClick={handleLike}
-                                    />
-                                </CardButtons>
-                                <CardInfo>
-                                    <UserName>유저이름</UserName>
-                                    <LikeCount>좋아요 1개</LikeCount>
-                                </CardInfo>
-                            </BoardCard>
-                        </BoardCardWrapper>
+                        {datas.map((data: any, index: number) => (
+                            <BoardCardWrapper key={data.id}>
+                                <BoardCard onClick={clickCardHandler}>
+                                    <CardHeader>
+                                        <Tag>{data.tag}</Tag>
+                                        <Location>{data.location}</Location>
+                                    </CardHeader>
+                                    <CardTitle>{data.title}</CardTitle>
+                                    <CardButtons>
+                                        <CancelButton
+                                            onClick={cancelCardHandler}
+                                        >공유취소</CancelButton>
+                                        {data.clickedLike ?
+                                        <LikeButton
+                                        onClick={(e) => clickLikeHandler(e, index)}/> :
+                                        <UnlikeButton
+                                        onClick={(e) => clickLikeHandler(e, index)}/>
+                                        }
+                                        
+                                    </CardButtons>
+                                    <CardInfo>
+                                        <UserName>{data.username}</UserName>
+                                        <LikeCount>좋아요 {data.likeCount}개</LikeCount>
+                                    </CardInfo>
+                                </BoardCard>
+                            </BoardCardWrapper>
+                        ))}
                     </CardListContainer>
                 </MainContainer>
             </Main>
@@ -221,15 +304,31 @@ const ButtonContainer = styled.div`
     border-bottom: solid #ccc 1px;
 `
 
-const Button = styled.button`
+const TagButton = styled.button<{ isClicked: boolean }>`
     cursor: pointer;
     border: none;
-    background-color: #60A5F8;
+    font-weight: bold;
     padding: 6px 23px;
     border-radius: 50px;
-    color: white;
-    font-weight: bold;
     font-size: 16px;
+    transition: all .2s;
+
+    :hover {
+        background-color: #60A5F8;
+        color: white;
+    }
+
+    ${({ isClicked }) => 
+        isClicked ?
+        css`
+            background-color: #60A5F8;
+            color: white;
+        ` :
+        css`
+            background-color: #E4F0FF;
+            color: #60A5F8;
+        `
+    }
 `
 
 const SelectWrapper = styled.div`
@@ -346,14 +445,17 @@ const LikeButton = styled(LikeIcon)`
         transform: translate(0, -3px);
     }
 `
-const likeStyle = {
-    cursor: "pointer",
-    display: "inline-block",
-    marginRight: "7px",
-    transition: "all ease 2s",
-}
 
+const UnlikeButton = styled(UnlikeIcon)`
+    cursor: cursor;
+    display: inline-block;
+    margin-right: 7px;
+    transition: all ease .2s;
 
+    &:hover {
+        transform: translate(0, -3px);
+    }
+`
 
 const CardInfo = styled.div`
     width: 100%;
@@ -366,6 +468,7 @@ const CardInfo = styled.div`
 `
 const UserName = styled.div`
     margin-left: 7px;
+    overflow: hidden;
 `
 const LikeCount = styled.div`
     margin-right: 7px;
