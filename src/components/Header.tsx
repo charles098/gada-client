@@ -40,16 +40,16 @@ const Header: FC = () => {
                             ref={myPageRef}
                             myPageIsOpen={myPageIsOpen}
                         >
-                            <ul
+                            <Ul
                                 onClick={removeMenu}
                                 onKeyDown={removeMenu}>
-                                <li>
+                                <Li>
                                     <LinkWrapper to="/">정보</LinkWrapper>
-                                </li>
-                                <li>
+                                </Li>
+                                <Li>
                                     <LinkWrapper to="/main">내 계획</LinkWrapper>
-                                </li>
-                            </ul>
+                                </Li>
+                            </Ul>
                         </Nav>
                     </MyPageContainer>
                     <BoardContainer>
@@ -60,17 +60,17 @@ const Header: FC = () => {
                             ref={boardRef}
                             myPageIsOpen={boardIsOpen}
                         >
-                            <ul
+                            <Ul
                                 onClick={removeMenu}
                                 onKeyDown={removeMenu}
                             >
-                                <li>
+                                <Li>
                                     <LinkWrapper to="/">전체</LinkWrapper>
-                                </li>
-                                <li>
+                                </Li>
+                                <Li>
                                     <LinkWrapper to="/">공유내역</LinkWrapper>
-                                </li>
-                            </ul>
+                                </Li>
+                            </Ul>
                         </Nav>
                     </BoardContainer>
                     <DropdownContainer
@@ -141,8 +141,8 @@ const Nav = styled.nav<{ myPageIsOpen: any }>`
     left: 0;
     width: 100px;
     text-align: center;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
@@ -173,9 +173,16 @@ const Nav = styled.nav<{ myPageIsOpen: any }>`
     };
 `
 
+const Ul = styled.ul`
+    & > li:last-of-type {
+        margin-bottom: 13px;
+    }
+`
+const Li = styled.li``
+
 const LinkWrapper = styled(Link)`
     font-size: 16px;
-    padding: 13px 0;
+    margin-top: 13px;
     display: block;
     text-decoration: none;
     color: white;
