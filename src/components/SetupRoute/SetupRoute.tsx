@@ -17,23 +17,19 @@ import {
     grabPlan,
     grabPlaceOption,
     dropPlaceOption,
+    sortPlanList,
 } from 'store/modules/plan';
 
-interface ISortablePlace extends IPlace {
-    s_id: number;
-    chosen: boolean;
-}
-
-interface IProps {
-    planListOfSetDay: ISortablePlace[];
-    setPlanListOfSetDay: Dispatch<SetStateAction<ISortablePlace[]>>;
-}
+const planListSelector = (state: RootState) => state.plan.planList;
+const setDaySelector = (state: RootState) => state.plan.setDay;
 
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
-const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
+const SetupRoute: FC = () => {
     const dispatch = useDispatch();
+    const planList = useSelector(planListSelector);
+    const setDay = useSelector(setDaySelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
     const [isDrop, setIsDrop] = useState(false);
     const droppedRef = useRef<HTMLElement | null>(null);
@@ -49,14 +45,13 @@ const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
                 node?.classList.remove('focus');
             }, 500);
         }
-    }, [planListOfSetDay]);
+    }, [planList]);
 
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
             enterCnt.current = 0;
             dispatch(grabPlaceOption({ id: null }));
-            const id = parseInt(e.currentTarget.dataset.id as string, 10);
-            dispatch(grabPlan({ id }));
+            dispatch(grabPlan({ id: e.currentTarget.dataset.id }));
         },
         [],
     );
@@ -91,6 +86,18 @@ const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
         [grabPlaceOptionId],
     );
 
+    const getSortableList = (list: IPlace[][]): IPlace[] => {
+        if (list.length < 1) return [];
+        return list.flatMap((x) => ({
+            ...x,
+            chosen: true,
+        }));
+    };
+    const onSort = (list: IPlace[]): void => {
+        if (list.length < 1) return;
+        dispatch(sortPlanList({ list }));
+    };
+
     return (
         <Container
             onDragEnter={onDragEnterConainer}
@@ -98,27 +105,28 @@ const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
             onDrop={onDropContainer}
             onDragOver={(e) => e.preventDefault()}
         >
+            {setDay}
             <ReactSortable
                 animation={150}
-                list={planListOfSetDay}
-                setList={setPlanListOfSetDay}
+                list={getSortableList(planList)}
+                setList={onSort}
             >
-                {planListOfSetDay.map((plan: ISortablePlace, index: number) => {
+                {/* {planList[setDay].map((plan: IPlace, index: number) => {
                     return (
                         <PlaceBox
                             focusRef={
-                                index === planListOfSetDay.length - 1
+                                index === planList[setDay].length - 1
                                     ? (droppedRef as React.RefObject<HTMLDivElement>)
                                     : null
                             }
-                            key={plan.s_id}
+                            key={plan.id}
                             dataId={plan.id}
                             onDragStartPlace={onDragStartPlace}
                             placename={plan.name}
                             location={plan.address}
                         />
                     );
-                })}
+                })} */}
             </ReactSortable>
         </Container>
     );
