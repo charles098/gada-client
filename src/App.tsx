@@ -22,6 +22,7 @@ import LoginForm from 'routes/LoginForm';
 import Register from 'routes/Register';
 import Plan from 'routes/Plan';
 import Main from 'routes/Main';
+import Board from 'routes/Board';
 
 // Axios
 const baseURL = 'http://localhost:5000';
@@ -46,6 +47,7 @@ const App: FC = () => {
                         <Route element={<Header/>}>
                             <Route path="/plan" element={<Plan />} />
                             <Route path="/main" element={<Main />} />
+                            <Route path="/board" element={<Board />} />
                         </Route>
                     </Routes>
                 </BrowserRouter>
