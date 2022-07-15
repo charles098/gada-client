@@ -104,15 +104,3 @@ const LocationLabel = styled.label`
 const InputWrapper = styled.div`
     width: 220px;
 `
-const LocationInput = styled.input`
-  width: 180px;
-  padding: 10px 20px;
-  font-size: 15px;
-  font-weight: 500;
-  border: none;
-  border-radius: 5px;
-  background-color: #ECF3FD;
-  color: #444;
-  
-  &:focus {outline:none;}
-`
