@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 interface IProps {
-    key: number;
+    key: string;
     focusRef?: React.RefObject<HTMLDivElement> | null;
     onDragStartPlace: (e: React.DragEvent<HTMLElement>) => void;
     placename: string;
     location: string;
-    dataId: number;
+    dataId: string;
 }
 
 const PlaceBox: FC<IProps> = ({

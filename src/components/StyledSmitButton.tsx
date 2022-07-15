@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const CustomModalSubmitButton = ({ width, height, children }: any) => {
+const CustomModalSubmitButton = ({
+    width,
+    height,
+    children,
+    ...props
+}: any) => {
     return (
-        <SubmitButton width={width} height={height}>
+        <SubmitButton width={width} height={height} {...props}>
             {children}
         </SubmitButton>
     );
