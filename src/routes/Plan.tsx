@@ -7,12 +7,14 @@ import PlanInfo from 'containers/plan/PlanInfo';
 import OptionMaker from 'containers/plan/OptionMaker';
 import Map from 'containers/plan/Map';
 import PlanMaker from 'containers/plan/PlanMaker';
+import AllPlan from 'containers/plan/AllPlan';
 
 // redux (type, reducer)
-import { IPlace, initializeData } from 'store/modules/plan';
+import { initializeData } from 'store/modules/plan/plan';
+import { Place } from 'store/modules/plan';
 
 // dummy data
-const dummyPlanList: IPlace[][] = [
+const dummyPlanList: Place[][] = [
     [
         {
             id: '1',
@@ -152,7 +154,7 @@ const dummyPlanList: IPlace[][] = [
         },
     ],
 ];
-const dummyPlaceOptionList: IPlace[] = [
+const dummyPlaceOptionList: Place[] = [
     {
         id: '33',
         day: 1,
@@ -223,6 +225,8 @@ const dummyPlaceOptionList: IPlace[] = [
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
+    const [isInit, setIsInit] = useState(true);
+    const [isAllPlan, setIsAllPlan] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(
@@ -239,8 +243,8 @@ const Plan: FC = () => {
     // }, []);
 
     // const simulateAPI = () => {
-    //     const initPlanList: IPlace[][] = dummyPlanList;
-    //     const initPlaceOptionList: IPlace[] = dummyPlaceOptionList;
+    //     const initPlanList: Place[][] = dummyPlanList;
+    //     const initPlaceOptionList: Place[] = dummyPlaceOptionList;
     //     dispatch(initializeData({ initPlanList, initPlaceOptionList }));
     // };
 

@@ -8,22 +8,9 @@ import {
     pickByKeyword,
     searchByKeyword,
 } from 'containers/plan/PlanModal/searchScenario';
+import { Position, SearchedPlaceInfo, SelectedPlace } from '.';
 // Types
-export interface PlaceInfo {
-    name: string;
-    imgUrl?: string | undefined;
-    address: string;
-    latitude: string;
-    longitude: string;
-}
-export interface SelectedPlace extends PlaceInfo {
-    id: string;
-}
 
-export interface Position {
-    lat: number;
-    lng: number;
-}
 export interface SearchInputs {
     bySearch: string;
     byPick: string;
@@ -32,7 +19,7 @@ export interface SearchInputs {
 export interface searchState {
     state: boolean;
     selectedPlaces: SelectedPlace[];
-    placeList: PlaceInfo[];
+    placeList: SearchedPlaceInfo[];
     center: Position;
     moving?: Position;
 }
@@ -77,12 +64,15 @@ const userSlice = createSlice({
         changeState(state: searchState) {
             state.state = !state.state;
         },
-        setPlaceList(state: searchState, action: PayloadAction<PlaceInfo[]>) {
+        setPlaceList(
+            state: searchState,
+            action: PayloadAction<SearchedPlaceInfo[]>,
+        ) {
             state.placeList = action.payload;
         },
         insertSelectedPlaces(
             state: searchState,
-            action: PayloadAction<PlaceInfo>,
+            action: PayloadAction<SearchedPlaceInfo>,
         ) {
             const place: SelectedPlace = { ...action.payload, id: nanoid() };
             state.selectedPlaces = [...state.selectedPlaces, place];

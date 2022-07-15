@@ -1,7 +1,6 @@
-import { IPlace } from 'store/modules/plan';
-import { Position } from 'store/modules/search';
+import { Place } from 'store/modules/plan';
 
-export function getDistance(pos1: IPlace, pos2: IPlace) {
+export function getDistance(pos1: Place, pos2: Place) {
     const lat1 = Number(pos1.latitude);
     const lng1 = Number(pos1.longitude);
     const lat2 = Number(pos2.latitude);
@@ -24,7 +23,7 @@ export function getDistance(pos1: IPlace, pos2: IPlace) {
     return Math.round(d * 1000);
 }
 
-export function changePosition2DistanceArray(positions: IPlace[]) {
+export function changePosition2DistanceArray(positions: Place[]) {
     const distance: number[] = [];
     positions.reduce((pre, cur) => {
         const result = getDistance(pre, cur);
@@ -34,7 +33,7 @@ export function changePosition2DistanceArray(positions: IPlace[]) {
     return distance;
 }
 
-export function changePosition2DistanceCenter(positions: IPlace[]) {
+export function changePosition2DistanceCenter(positions: Place[]) {
     const nodeCenter: { lng: number; lat: number }[] = [];
     positions.reduce((pre, cur) => {
         const preLat = Number(pre.latitude);
@@ -51,7 +50,7 @@ export function changePosition2DistanceCenter(positions: IPlace[]) {
     return nodeCenter;
 }
 
-export function getPosition2bound(place: IPlace[]) {
+export function getPosition2bound(place: Place[]) {
     const bound = new kakao.maps.LatLngBounds();
     place.forEach((value) => {
         const lat = Number(value.latitude);

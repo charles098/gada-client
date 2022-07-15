@@ -3,10 +3,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeState, dropAllSelectedPlaces } from 'store/modules/search';
+import { changeState, dropAllSelectedPlaces } from 'store/modules/plan/search';
 
 import SubmitButton from 'components/StyledSmitButton';
-import { insertPlaceOptionList } from 'store/modules/plan';
+import { insertPlaceOptionList } from 'store/modules/plan/plan';
 import PlanModalTitle from './PlanModalTitle';
 import PlanPlaceForm from './PlanPlaceForm';
 import PlanModalContents from './PlanModalContents';

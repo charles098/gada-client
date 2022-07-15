@@ -1,29 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SelectedPlace } from './search';
+import { Place } from '.';
 
-export interface IPlace extends SelectedPlace {
-    day?: number;
-    description?: string;
-    cost?: number;
-    category?: string;
-}
-
-export interface IPlan {
+export interface planState {
     title: string;
     startDate: Date;
     lastDate: Date;
+    period: number;
     setDay: number;
     grabPlanId: string | null;
     grabPlaceOptionId: string | null;
-    planList: IPlace[][];
-    placeOptionList: IPlace[];
+    planList: Place[][];
+    placeOptionList: Place[];
 }
 
-const initialState: IPlan = {
+const initialState: planState = {
     title: '부산 바캉스',
     startDate: new Date(20, 11, 3),
     lastDate: new Date(20, 11, 10),
-    setDay: 1,
+    period: 1,
+    setDay: 0,
     grabPlanId: null,
     grabPlaceOptionId: null,
     planList: [],
@@ -34,12 +29,15 @@ const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
     reducers: {
-        initializeData(state: IPlan, action) {
+        initializeData(state: planState, action) {
             const { initPlaceOptionList, initPlanDetailList } = action.payload;
             state.placeOptionList = [...initPlaceOptionList];
             // state.planList = [...initPlanDetailList];
         },
-        insertPlaceOptionList(state: IPlan, action: PayloadAction<IPlace[]>) {
+        insertPlaceOptionList(
+            state: planState,
+            action: PayloadAction<Place[]>,
+        ) {
             const selectedPlaces = action.payload;
             console.log('CustomLog', selectedPlaces);
             state.placeOptionList = [
@@ -47,51 +45,51 @@ const planDetailSlice = createSlice({
                 ...selectedPlaces,
             ];
         },
-        createPlanListArray(state: IPlan, action) {
+        createPlanListArray(state: planState, action) {
             const days = action.payload.days ?? 1;
-            const arr = new Array<IPlace[]>(days).fill([]);
+            const arr = new Array<Place[]>(days).fill([]);
             console.log('CUSTOM LOG', arr, days);
             state.planList = arr;
         },
-        setTitle(state: IPlan, action) {
+        setTitle(state: planState, action) {
             const { newTitle } = action.payload;
             state.title = newTitle;
         },
-        setUpDay(state: IPlan, action) {
+        setUpDay(state: planState, action) {
             const { selectedDay } = action.payload;
             state.setDay = selectedDay;
         },
-        sortPlanList(state: IPlan, action) {
+        sortPlanList(state: planState, action) {
             const { list } = action.payload;
             state.planList[state.setDay] = [...list];
         },
-        sortplaceOptionList(state: IPlan, action) {
+        sortplaceOptionList(state: planState, action) {
             const { list } = action.payload;
             state.placeOptionList = [...list];
         },
-        grabPlan(state: IPlan, action) {
+        grabPlan(state: planState, action) {
             const { id } = action.payload;
             state.grabPlanId = id;
         },
-        grabPlaceOption(state: IPlan, action) {
+        grabPlaceOption(state: planState, action) {
             const { id } = action.payload;
             state.grabPlaceOptionId = id;
         },
-        movePlanToPlaceOption(state: IPlan) {
+        movePlanToPlaceOption(state: planState) {
             // dropPlan
             const droppedPlan = state.planList[state.setDay].find(
                 (plan) => plan.id === state.grabPlanId,
-            ) as IPlace;
+            ) as Place;
             const idx = state.planList[state.setDay].indexOf(droppedPlan);
             console.log('CUSTOM LOG: ', state.grabPlanId, idx);
             state.planList[state.setDay].splice(idx, 1);
             state.placeOptionList.push(droppedPlan);
         },
-        movePlaceOptionToPlan(state: IPlan) {
+        movePlaceOptionToPlan(state: planState) {
             // dropPlaceOption
             const droppedPlaceOption = state.placeOptionList.find(
                 (option) => option.id === state.grabPlaceOptionId,
-            ) as IPlace;
+            ) as Place;
 
             const idx = state.placeOptionList.indexOf(droppedPlaceOption);
             console.log('CUSTOM LOG: ', state.grabPlanId, idx);

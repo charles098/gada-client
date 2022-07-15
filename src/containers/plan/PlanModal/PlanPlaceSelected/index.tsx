@@ -4,8 +4,9 @@ import { CancelIcon } from 'components/icons';
 
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteSelectedPlaces, SelectedPlace } from 'store/modules/search';
+import { deleteSelectedPlaces } from 'store/modules/plan/search';
 import SlickSlider from 'components/SlickSlider';
+import { SelectedPlace } from 'store/modules/plan';
 
 const selectedPlaces = (state: RootState) => state.search.selectedPlaces;
 const PlanPlaceSelected = () => {

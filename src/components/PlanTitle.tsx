@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { PencilIcon, ResetIcon } from 'components/icons';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTitle } from 'store/modules/plan';
+import { setTitle } from 'store/modules/plan/plan';
 
 const planTitleSelector = (state: RootState) => state.plan.title;
 
@@ -52,14 +52,19 @@ const PlanTitle: FC = () => {
     return (
         <Container ref={container as React.RefObject<HTMLDivElement>}>
             {isEdit ? (
-                <Input
-                    type="text"
-                    minLength={1}
-                    maxLength={15}
-                    value={newTitle}
-                    onChange={onChange}
-                    onKeyUp={onEnterKeyUp}
-                />
+                <InputContainer>
+                    <div className="input-info">
+                        나만의 특별한 여행 제목을 만들어보세요.
+                    </div>
+                    <Input
+                        type="text"
+                        maxLength={15}
+                        value={newTitle}
+                        onChange={onChange}
+                        onKeyUp={onEnterKeyUp}
+                    />
+                    <FocusBorder />
+                </InputContainer>
             ) : (
                 <Title>{title}</Title>
             )}
@@ -82,6 +87,15 @@ const PlanTitle: FC = () => {
     );
 };
 
+const mount = keyframes`
+    from {
+        transform: translateY(-90%);
+    }
+    to {
+        transform: translateY(0%);
+    }
+`;
+
 const Container = styled.div`
     margin-left: 15px;
     display: flex;
@@ -91,9 +105,47 @@ const Title = styled.div`
     font-size: 28px;
 `;
 
+const InputContainer = styled.div`
+    position: relative;
+    width: 300px;
+
+    & > .input-info {
+        font-size: 12px;
+        color: #ff0000;
+        margin-bottom: 3px;
+        animation: ${mount} 0.5s ease-in-out 0s 1 normal;
+    }
+`;
+
 const Input = styled.input`
     font-size: 28px;
     margin-right: 5px;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: none;
+    }
+    &:focus ~ span {
+        width: 100%;
+    }
+    &:focus::placeholder {
+        color: transparent;
+    }
+`;
+
+const FocusBorder = styled.span`
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    background-color: #999999;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: 0.5s;
 `;
 
 const EditButton = styled.button`

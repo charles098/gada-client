@@ -12,7 +12,7 @@ import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
 import ShowDistance from 'components/ShowDistance';
 import SetupRoute from 'components/SetupRoute';
-import { createPlanListArray } from 'store/modules/plan';
+import { createPlanListArray } from 'store/modules/plan/plan';
 
 const startDateSelector = (state: RootState) => state.plan.startDate;
 const lastDateSelector = (state: RootState) => state.plan.lastDate;

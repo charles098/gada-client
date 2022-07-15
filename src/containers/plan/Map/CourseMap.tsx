@@ -3,8 +3,8 @@ import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
-import { IPlace } from 'store/modules/plan';
 import PlanList from 'containers/main/PlanList';
+import { Place } from 'store/modules/plan';
 import {
     changePosition2DistanceArray,
     changePosition2DistanceCenter,
@@ -14,8 +14,11 @@ import {
 const placeListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
 const CourseMap = () => {
-    const placeList: IPlace[][] = useSelector(placeListSelector);
+    const placeList: Place[][] = useSelector(placeListSelector);
     const setDay = useSelector(setDaySelector);
+    useEffect(() => {
+        console.log(placeList);
+    }, []);
     // const nodeDistance = useMemo(
     //     () => changePosition2DistanceArray(planedPlaces),
     //     [planedPlaces],
@@ -38,7 +41,7 @@ const CourseMap = () => {
                     height: '100%',
                 }}
             >
-                {placeList[setDay].length > 0 &&
+                {/* { placeList[setDay].length > 0 &&
                     placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
@@ -76,13 +79,13 @@ const CourseMap = () => {
                                 />
                             </>
                         );
-                    })}
+                    })} */}
             </Map>
         </Container>
     );
 };
 
-const getPositionByIPlace = (data: IPlace) => ({
+const getPositionByIPlace = (data: Place) => ({
     lat: Number(data.latitude),
     lng: Number(data.longitude),
 });

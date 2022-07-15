@@ -15,6 +15,8 @@ import UnlockIcon from './UnlockIcon';
 import WonIcon from './WonIcon';
 import GoogleIcon from './GoogleIcon';
 import ResetIcon from './ResetIcon';
+import ErrorIcon from './ErrorIcon';
+import SpeechIcon from './SpeechIcon';
 
 export {
     AddLocationIcon,
@@ -34,4 +36,6 @@ export {
     WonIcon,
     GoogleIcon,
     ResetIcon,
+    ErrorIcon,
+    SpeechIcon,
 };

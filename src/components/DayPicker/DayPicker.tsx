@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, Dispatch, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { customAlphabet } from 'nanoid';
 import SlickSlider from 'components/SlickSlider';
 import { RootState } from 'store/modules';
-import { setUpDay } from 'store/modules/plan';
+import { setUpDay } from 'store/modules/plan/plan';
 
 interface IProps {
     planPeriod: number;
@@ -34,7 +34,11 @@ const DayPicker: FC<IProps> = ({ planPeriod }) => {
                 itemCursor="default"
             >
                 <ButtonCard>
-                    <Button type="button" className="all-button">
+                    <Button
+                        type="button"
+                        className="all-button"
+                        // onClick={() => setIsAllPlan(true)}
+                    >
                         All
                     </Button>
                 </ButtonCard>
