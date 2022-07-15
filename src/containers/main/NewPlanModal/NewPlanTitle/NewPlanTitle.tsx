@@ -15,6 +15,7 @@ const NewPlanTitle : FC = () => {
             <TitleInput
                 type='text'
                 value={title}
+                id="title"
                 name="title"
                 onChange={handleChange}
             />
@@ -26,24 +27,28 @@ export default NewPlanTitle;
 
 const TitleWrapper = styled.div`
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 const TitleLabel = styled.label`
-  display: block;
+  display: inline-block;
   color: #60A5F8;
   font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 17px;
+  margin-right: 28px;
 `
 const TitleInput = styled.input`
-  width: 270px;
+  width: 180px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   border: none;
-  border-radius: 10px;
-  background-color: #dddddd;
+  border-radius: 5px;
+  background-color: #ECF3FD;
+  color: #444;
 
   &:focus {outline:none;}
 `

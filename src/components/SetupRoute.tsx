@@ -16,24 +16,20 @@ import {
     IPlace,
     grabPlan,
     grabPlaceOption,
-    dropPlaceOption,
+    movePlaceOptionToPlan,
+    sortPlanList,
 } from 'store/modules/plan';
 
-interface ISortablePlace extends IPlace {
-    s_id: number;
-    chosen: boolean;
-}
-
-interface IProps {
-    planListOfSetDay: ISortablePlace[];
-    setPlanListOfSetDay: Dispatch<SetStateAction<ISortablePlace[]>>;
-}
+const planListSelector = (state: RootState) => state.plan.planList;
+const setDaySelector = (state: RootState) => state.plan.setDay;
 
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
-const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
+const SetupRoute: FC = () => {
     const dispatch = useDispatch();
+    const planList = useSelector(planListSelector);
+    const setDay = useSelector(setDaySelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
     const [isDrop, setIsDrop] = useState(false);
     const droppedRef = useRef<HTMLElement | null>(null);
@@ -49,14 +45,13 @@ const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
                 node?.classList.remove('focus');
             }, 500);
         }
-    }, [planListOfSetDay]);
+    }, [planList]);
 
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
             enterCnt.current = 0;
             dispatch(grabPlaceOption({ id: null }));
-            const id = parseInt(e.currentTarget.dataset.id as string, 10);
-            dispatch(grabPlan({ id }));
+            dispatch(grabPlan({ id: e.currentTarget.dataset.id }));
         },
         [],
     );
@@ -85,11 +80,24 @@ const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
         (e: React.DragEvent<HTMLElement>) => {
             if (!grabPlaceOptionId) return;
             e.currentTarget.classList.remove('drag-over');
-            dispatch(dropPlaceOption());
+            dispatch(movePlaceOptionToPlan());
             setIsDrop(true);
         },
         [grabPlaceOptionId],
     );
+
+    const getSortableList = (list: IPlace[][]): IPlace[] => {
+        if (!(list.length > 1)) return [];
+
+        return list[setDay].map((x) => ({
+            ...x,
+            chosen: true,
+        }));
+    };
+    const onSort = (list: IPlace[]): void => {
+        if (!(list.length > 0)) return;
+        dispatch(sortPlanList({ list }));
+    };
 
     return (
         <Container
@@ -98,27 +106,29 @@ const SetupRoute: FC<IProps> = ({ planListOfSetDay, setPlanListOfSetDay }) => {
             onDrop={onDropContainer}
             onDragOver={(e) => e.preventDefault()}
         >
+            {setDay}
             <ReactSortable
                 animation={150}
-                list={planListOfSetDay}
-                setList={setPlanListOfSetDay}
+                list={getSortableList(planList)}
+                setList={onSort}
             >
-                {planListOfSetDay.map((plan: ISortablePlace, index: number) => {
-                    return (
-                        <PlaceBox
-                            focusRef={
-                                index === planListOfSetDay.length - 1
-                                    ? (droppedRef as React.RefObject<HTMLDivElement>)
-                                    : null
-                            }
-                            key={plan.s_id}
-                            dataId={plan.id}
-                            onDragStartPlace={onDragStartPlace}
-                            placename={plan.name}
-                            location={plan.address}
-                        />
-                    );
-                })}
+                {planList.length > 1 &&
+                    planList[setDay].map((plan: IPlace, index: number) => {
+                        return (
+                            <PlaceBox
+                                focusRef={
+                                    index === planList[setDay].length - 1
+                                        ? (droppedRef as React.RefObject<HTMLDivElement>)
+                                        : null
+                                }
+                                key={plan.id}
+                                dataId={plan.id}
+                                onDragStartPlace={onDragStartPlace}
+                                placename={plan.name}
+                                location={plan.address}
+                            />
+                        );
+                    })}
             </ReactSortable>
         </Container>
     );
@@ -131,7 +141,32 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     padding-top: 15px;
-    overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll !important;
+
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #eee;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px white;
+    }
+
+    &.drag-over {
+        border: solid 2px ${({ theme }) => theme.PRIMARY};
+        border-radius: 20px;
+        background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
+    }
 
     &.drag-over {
         border: solid 2px ${({ theme }) => theme.PRIMARY};

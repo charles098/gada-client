@@ -1,12 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import styled from 'styled-components';
 import NewPlanImage from 'containers/main/NewPlanModal/NewPlanImage';
 import NewPlanTitle from 'containers/main/NewPlanModal/NewPlanTitle';
+import NewPlanLocation from 'containers/main/NewPlanModal/NewPlanLocation';
 import NewPlanDate from 'containers/main/NewPlanModal/NewPlanDate';
 
 const NewPlanForm: FC = () => {
     const [imageData, setImageData] = useState<any>(null);
-
+    const [location, setLocation] = useState<string>("");
+    
     const handleSubmit = (e: any) => {
         e.preventDefault();
         let { image } = e.target;
@@ -26,10 +28,14 @@ const NewPlanForm: FC = () => {
         else if (!title.value) {
             alert('제목을 입력해 주세요!');
         }
+        else if (!location) {
+            alert('지역을 선택해주세요!');
+        }
         else {
             // 이거 그대로 서버에 post
             console.log(image);
             console.log(title.value);
+            console.log(location);
             console.log(date.value);
         }
     }
@@ -38,6 +44,8 @@ const NewPlanForm: FC = () => {
         <Form onSubmit={handleSubmit}>
             <NewPlanImage />
             <NewPlanTitle />
+            <NewPlanLocation
+            setLocation={setLocation} />
             <NewPlanDate />
             <SubmitButton
                 type='submit'

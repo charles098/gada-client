@@ -47,10 +47,8 @@ const DayPicker: FC<IProps> = ({ setIsAllPlan, planPeriod }) => {
                     <ButtonCard key={nanoid()}>
                         <Button
                             type="button"
-                            className={
-                                i === setDay - 1 ? 'selected-button' : ''
-                            }
-                            data-day={i + 1}
+                            className={i === setDay ? 'selected-button' : ''}
+                            data-day={i}
                             onClick={onSetUpDay}
                         >
                             Day{i + 1}
