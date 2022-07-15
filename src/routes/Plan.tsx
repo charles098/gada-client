@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // containers
@@ -10,9 +10,6 @@ import PlanMaker from 'containers/plan/PlanMaker';
 
 // redux (type, reducer)
 import { IPlace, initializeData } from 'store/modules/plan';
-import { RootState } from 'store/modules';
-import Header from 'components/Header';
-import PlanModal from 'containers/plan/PlanModal';
 
 // dummy data
 const dummyPlanList: IPlace[][] = [
@@ -248,24 +245,16 @@ const Plan: FC = () => {
     // };
 
     return (
-        <Wrapper>
-            <PlanModal />
-            <Header />
-            <Container>
-                <PlanInfo />
-                <OptionMaker />
-                <div className="bottom-section">
-                    <Map />
-                    <PlanMaker />
-                </div>
-            </Container>
-        </Wrapper>
+        <Container>
+            <PlanInfo />
+            <OptionMaker />
+            <div className="bottom-section">
+                <Map />
+                <PlanMaker />
+            </div>
+        </Container>
     );
 };
-
-const Wrapper = styled.div`
-    width: 100%;
-`;
 
 const Container = styled.div`
     width: 1440px;
