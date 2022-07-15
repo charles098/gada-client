@@ -15,8 +15,10 @@ import UnlockIcon from './UnlockIcon';
 import WonIcon from './WonIcon';
 import GoogleIcon from './GoogleIcon';
 import ResetIcon from './ResetIcon';
+import LikeIcon from './LikeIcon';
 
 export {
+    LikeIcon,
     AddLocationIcon,
     CancelIcon,
     ChatIcon,
