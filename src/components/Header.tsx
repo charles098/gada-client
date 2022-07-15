@@ -65,10 +65,10 @@ const Header: FC = () => {
                                 onKeyDown={removeMenu}
                             >
                                 <Li>
-                                    <LinkWrapper to="/">전체</LinkWrapper>
+                                    <LinkWrapper to="/board">전체</LinkWrapper>
                                 </Li>
                                 <Li>
-                                    <LinkWrapper to="/">공유내역</LinkWrapper>
+                                    <LinkWrapper to="/board">공유내역</LinkWrapper>
                                 </Li>
                             </Ul>
                         </Nav>
@@ -94,6 +94,7 @@ const planeIconStyle = {
 }
 
 const HeaderContainer = styled.header`
+    min-width: 1287px;
     width: 100%;
     height: 60px;
     display: flex;
