@@ -16,8 +16,10 @@ import WonIcon from './WonIcon';
 import GoogleIcon from './GoogleIcon';
 import ResetIcon from './ResetIcon';
 import LikeIcon from './LikeIcon';
+import UnlikeIcon from './UnlikeIcon';
 
 export {
+    UnlikeIcon,
     LikeIcon,
     AddLocationIcon,
     CancelIcon,
