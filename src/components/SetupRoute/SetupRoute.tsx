@@ -87,14 +87,15 @@ const SetupRoute: FC = () => {
     );
 
     const getSortableList = (list: IPlace[][]): IPlace[] => {
-        if (list.length < 1) return [];
+        if (!(list.length > 1)) return [];
+
         return list[setDay].map((x) => ({
             ...x,
             chosen: true,
         }));
     };
     const onSort = (list: IPlace[]): void => {
-        if (list.length < 1) return;
+        if (!(list.length > 0)) return;
         dispatch(sortPlanList({ list }));
     };
 
@@ -111,7 +112,7 @@ const SetupRoute: FC = () => {
                 list={getSortableList(planList)}
                 setList={onSort}
             >
-                {planList.length > 0 &&
+                {planList.length > 1 &&
                     planList[setDay].map((plan: IPlace, index: number) => {
                         return (
                             <PlaceBox

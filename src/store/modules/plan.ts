@@ -37,7 +37,13 @@ const planDetailSlice = createSlice({
         initializeData(state: IPlan, action) {
             const { initPlaceOptionList, initPlanDetailList } = action.payload;
             state.placeOptionList = [...initPlaceOptionList];
-            state.planList = [...initPlanDetailList];
+            // state.planList = [...initPlanDetailList];
+        },
+        createPlanListArray(state: IPlan, action) {
+            const days = action.payload.days ?? 1;
+            const arr = new Array<IPlace[]>(days).fill([]);
+            console.log('CUSTOM LOG', arr, days);
+            state.planList = arr;
         },
         setTitle(state: IPlan, action) {
             const { newTitle } = action.payload;
@@ -91,6 +97,7 @@ const { reducer, actions } = planDetailSlice;
 
 export const {
     initializeData,
+    createPlanListArray,
     setTitle,
     setUpDay,
     sortplaceOptionList,

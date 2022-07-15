@@ -12,17 +12,22 @@ import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
 import ShowDistance from 'components/ShowDistance';
 import SetupRoute from 'components/SetupRoute';
+import { createPlanListArray } from 'store/modules/plan';
 
 const startDateSelector = (state: RootState) => state.plan.startDate;
 const lastDateSelector = (state: RootState) => state.plan.lastDate;
 
 const PlanMaker: FC = () => {
     const startDate = useSelector(startDateSelector);
+    const dispatch = useDispatch();
     const lastDate = useSelector(lastDateSelector);
     const [planPeriod, setPlanPeriod] = useState<number | null>(null);
 
     useEffect(() => {
-        setPlanPeriod(getPeriod(startDate, lastDate));
+        const period = getPeriod(startDate, lastDate);
+        console.log('CUSTOM', period);
+        setPlanPeriod(period);
+        dispatch(createPlanListArray({ days: period }));
     }, [startDate, lastDate]);
 
     const getPeriod = (startDay: Date, lastDay: Date): number => {
