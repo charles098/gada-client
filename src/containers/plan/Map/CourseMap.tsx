@@ -4,15 +4,18 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { IPlace } from 'store/modules/plan';
+import PlanList from 'containers/main/PlanList';
 import {
     changePosition2DistanceArray,
     changePosition2DistanceCenter,
     getPosition2bound,
 } from './CourseMap.controller';
 
-const placeList = (state: RootState) => state.plan.placeOptionList;
+const placeListSelector = (state: RootState) => state.plan.planList;
+const setDaySelector = (state: RootState) => state.plan.setDay;
 const CourseMap = () => {
-    const planedPlaces: IPlace[] = useSelector(placeList);
+    const placeList: IPlace[][] = useSelector(placeListSelector);
+    const setDay = useSelector(setDaySelector);
     // const nodeDistance = useMemo(
     //     () => changePosition2DistanceArray(planedPlaces),
     //     [planedPlaces],
@@ -35,8 +38,8 @@ const CourseMap = () => {
                     height: '100%',
                 }}
             >
-                {planedPlaces &&
-                    planedPlaces.map((placeDetail, index) => {
+                {placeList[setDay].length > 0 &&
+                    placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
                             <>
@@ -58,7 +61,9 @@ const CourseMap = () => {
                                         index > 0
                                             ? [
                                                   getPositionByIPlace(
-                                                      planedPlaces[index - 1],
+                                                      placeList[setDay][
+                                                          index - 1
+                                                      ],
                                                   ),
                                                   position,
                                               ]
