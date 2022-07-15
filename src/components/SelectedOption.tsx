@@ -152,7 +152,23 @@ const Container = styled.div`
         border-radius: 18px;
         display: flex;
         align-items: center;
-        overflow: scroll;
+        overflow-y: hidden;
+
+        &::-webkit-scrollbar {
+            height: 10px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 10px;
+            background-clip: padding-box;
+            border: 2px solid transparent;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: #eee;
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
     }
 
     &.drag-over {
