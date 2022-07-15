@@ -39,6 +39,14 @@ const planDetailSlice = createSlice({
             state.placeOptionList = [...initPlaceOptionList];
             // state.planList = [...initPlanDetailList];
         },
+        insertPlaceOptionList(state: IPlan, action: PayloadAction<IPlace[]>) {
+            const selectedPlaces = action.payload;
+            console.log('CustomLog', selectedPlaces);
+            state.placeOptionList = [
+                ...state.placeOptionList,
+                ...selectedPlaces,
+            ];
+        },
         createPlanListArray(state: IPlan, action) {
             const days = action.payload.days ?? 1;
             const arr = new Array<IPlace[]>(days).fill([]);
@@ -98,6 +106,7 @@ const { reducer, actions } = planDetailSlice;
 export const {
     initializeData,
     createPlanListArray,
+    insertPlaceOptionList,
     setTitle,
     setUpDay,
     sortplaceOptionList,

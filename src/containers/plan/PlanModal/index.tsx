@@ -3,19 +3,22 @@ import React from 'react';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeState } from 'store/modules/search';
+import { changeState, dropAllSelectedPlaces } from 'store/modules/search';
 
 import SubmitButton from 'components/StyledSmitButton';
+import { insertPlaceOptionList } from 'store/modules/plan';
+import { largeModal } from 'store/modules/modal';
 import PlanModalTitle from './PlanModalTitle';
 import PlanPlaceForm from './PlanPlaceForm';
 import PlanModalContents from './PlanModalContents';
 import PlanPlaceSelected from './PlanPlaceSelected';
 
 const state = (state: RootState) => state.search.state;
-const selectedList = (state: RootState) => state.search.selectedPlaces;
+const selectedListSelector = (state: RootState) => state.search.selectedPlaces;
 
 const PlanModal = () => {
     const contentsType = useSelector(state);
+    const selectedList = useSelector(selectedListSelector);
     const dispatch = useDispatch();
     return (
         <Modal width={1111} height={884}>
@@ -29,7 +32,16 @@ const PlanModal = () => {
                 <PlanPlaceSelected />
                 <PlanPlaceForm />
                 <PlanModalContents />
-                <SubmitButton width={430} height={56}>
+                <SubmitButton
+                    width={430}
+                    height={56}
+                    onClick={() => {
+                        console.log('Model confirm Execute!!!');
+                        dispatch(dropAllSelectedPlaces());
+                        dispatch(insertPlaceOptionList(selectedList));
+                        dispatch(largeModal(false));
+                    }}
+                >
                     등록완료
                 </SubmitButton>
             </Container>

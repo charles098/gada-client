@@ -27,7 +27,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '2',
@@ -39,7 +38,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '3',
@@ -51,7 +49,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '4',
@@ -63,7 +60,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
     ],
     [
@@ -77,7 +73,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '2',
@@ -89,7 +84,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '3',
@@ -101,7 +95,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '4',
@@ -113,7 +106,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
     ],
     [
@@ -127,7 +119,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '2',
@@ -139,7 +130,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '3',
@@ -151,7 +141,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
         {
             id: '4',
@@ -163,7 +152,6 @@ const dummyPlanList: IPlace[][] = [
             description: 'fsdf',
             cost: 2333,
             category: 'fsdf',
-            imgUrl: 'http',
         },
     ],
 ];
@@ -178,7 +166,6 @@ const dummyPlaceOptionList: IPlace[] = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
-        imgUrl: 'http',
     },
     {
         id: '44',
@@ -190,7 +177,6 @@ const dummyPlaceOptionList: IPlace[] = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
-        imgUrl: 'http',
     },
     {
         id: '1010',
@@ -202,7 +188,6 @@ const dummyPlaceOptionList: IPlace[] = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
-        imgUrl: 'http',
     },
     {
         id: '888',
@@ -214,7 +199,6 @@ const dummyPlaceOptionList: IPlace[] = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
-        imgUrl: 'http',
     },
     {
         id: '777',
@@ -226,7 +210,6 @@ const dummyPlaceOptionList: IPlace[] = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
-        imgUrl: 'http',
     },
     {
         id: '666',
@@ -238,14 +221,12 @@ const dummyPlaceOptionList: IPlace[] = [
         description: 'fsdf',
         cost: 2333,
         category: 'fsdf',
-        imgUrl: 'http',
     },
 ];
 
 const Plan: FC = () => {
     const dispatch = useDispatch();
     const { largeModalIsOpen } = useSelector((state: RootState) => state.modal);
-    const [isInit, setIsInit] = useState(true);
 
     useEffect(() => {
         dispatch(
@@ -271,16 +252,14 @@ const Plan: FC = () => {
         <Wrapper>
             {largeModalIsOpen && <PlanModal />}
             <Header />
-            {isInit && (
-                <Container>
-                    <PlanInfo />
-                    <OptionMaker />
-                    <div className="bottom-section">
-                        <Map />
-                        <PlanMaker />
-                    </div>
-                </Container>
-            )}
+            <Container>
+                <PlanInfo />
+                <OptionMaker />
+                <div className="bottom-section">
+                    <Map />
+                    <PlanMaker />
+                </div>
+            </Container>
         </Wrapper>
     );
 };

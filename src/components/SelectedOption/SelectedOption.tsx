@@ -130,7 +130,7 @@ const SelectedOption: FC = () => {
                         >
                             <div className="img-container">
                                 <img
-                                    src={jejuImg}
+                                    src={option.imgUrl ?? jejuImg}
                                     alt="img"
                                     draggable="false"
                                 />
