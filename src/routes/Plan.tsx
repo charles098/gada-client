@@ -229,12 +229,12 @@ const Plan: FC = () => {
     const [isAllPlan, setIsAllPlan] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(
-            initializeData({
-                initPlanDetailList: dummyPlanList,
-                initPlaceOptionList: dummyPlaceOptionList,
-            }),
-        );
+        // dispatch(
+        //     initializeData({
+        //         initPlanDetailList: dummyPlanList,
+        //         initPlaceOptionList: dummyPlaceOptionList,
+        //     }),
+        // );
     }, []);
 
     // useEffect(() => {

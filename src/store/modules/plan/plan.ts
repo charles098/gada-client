@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Place } from '.';
+import {
+    changePosition2DistanceArray,
+    changePosition2DistanceCenter,
+    getPosition2bound,
+} from 'utils/mapPointHelper';
+import { Place, Position } from '.';
 
 export interface planState {
     title: string;
@@ -11,6 +16,9 @@ export interface planState {
     grabPlaceOptionId: string | null;
     planList: Place[][];
     placeOptionList: Place[];
+    placeDistance: number[];
+    placeDistanceCenter: Position[];
+    mapCenterBound: kakao.maps.LatLngBounds | null;
 }
 
 const initialState: planState = {
@@ -23,6 +31,21 @@ const initialState: planState = {
     grabPlaceOptionId: null,
     planList: [],
     placeOptionList: [],
+    placeDistance: [],
+    placeDistanceCenter: [],
+    mapCenterBound: null,
+};
+const setPointRelatedOptions = (state: planState) => {
+    state.placeDistance = changePosition2DistanceArray(
+        state.planList[state.setDay],
+    );
+    state.placeDistanceCenter = changePosition2DistanceCenter(
+        state.planList[state.setDay],
+    );
+    state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
+    console.log('CUSTOM DIS', state.placeDistance);
+    console.log('CUSTOM DIS', state.placeDistanceCenter);
+    console.log('CUSTOM DIS', state.mapCenterBound);
 };
 
 const planDetailSlice = createSlice({
@@ -62,6 +85,8 @@ const planDetailSlice = createSlice({
         sortPlanList(state: planState, action) {
             const { list } = action.payload;
             state.planList[state.setDay] = [...list];
+            // calc distance
+            setPointRelatedOptions(state);
         },
         sortplaceOptionList(state: planState, action) {
             const { list } = action.payload;
@@ -95,6 +120,7 @@ const planDetailSlice = createSlice({
             console.log('CUSTOM LOG: ', state.grabPlanId, idx);
             state.placeOptionList.splice(idx, 1);
             state.planList[state.setDay].push(droppedPlaceOption);
+            setPointRelatedOptions(state);
         },
     },
 });

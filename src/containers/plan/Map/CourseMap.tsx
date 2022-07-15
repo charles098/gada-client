@@ -1,36 +1,29 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
-import PlanList from 'containers/main/PlanList';
 import { Place } from 'store/modules/plan';
-import {
-    changePosition2DistanceArray,
-    changePosition2DistanceCenter,
-    getPosition2bound,
-} from './CourseMap.controller';
 
 const placeListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
+const placeDistanceSelector = (state: RootState) => state.plan.placeDistance;
+const placeDistanceCenterSelector = (state: RootState) =>
+    state.plan.placeDistanceCenter;
+const mapCenterBoundSelector = (state: RootState) => state.plan.mapCenterBound;
+
 const CourseMap = () => {
     const placeList: Place[][] = useSelector(placeListSelector);
     const setDay = useSelector(setDaySelector);
+    const placeDistance = useSelector(placeDistanceSelector);
+    const placeDistanceCenter = useSelector(placeDistanceCenterSelector);
+    const mapCenterBound = useSelector(mapCenterBoundSelector);
+
+    const mapRef = useRef<kakao.maps.Map>(null);
     useEffect(() => {
-        console.log(placeList);
-    }, []);
-    const nodeDistance = useMemo(
-        () => changePosition2DistanceArray(placeList[setDay]),
-        [placeList],
-    );
-    const nodeCenter = useMemo(
-        () => changePosition2DistanceCenter(placeList[setDay]),
-        [placeList],
-    );
-    const setBound = useMemo(
-        () => getPosition2bound(placeList[setDay]),
-        [placeList],
-    );
+        const map = mapRef.current;
+        if (map && mapCenterBound) map.setBounds(mapCenterBound);
+    }, [mapCenterBound]);
 
     return (
         <Container>
@@ -40,6 +33,7 @@ const CourseMap = () => {
                     width: '100%',
                     height: '100%',
                 }}
+                ref={mapRef}
             >
                 {placeList.length > 0 &&
                     placeList[setDay].length > 0 &&
