@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
 import {
-    IPlace,
     sortplaceOptionList,
     grabPlan,
     grabPlaceOption,
     movePlanToPlaceOption,
-} from 'store/modules/plan';
+} from 'store/modules/plan/plan';
 import jejuImg from 'images/jeju.jpg';
+import { Place } from 'store/modules/plan';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
@@ -75,13 +75,13 @@ const SelectedOption: FC = () => {
     );
 
     // util로 분리
-    const getSortableList = (list: IPlace[]): IPlace[] => {
+    const getSortableList = (list: Place[]): Place[] => {
         return list.map((x) => ({
             ...x,
             chosen: true,
         }));
     };
-    const onSort = (list: IPlace[]): void => {
+    const onSort = (list: Place[]): void => {
         dispatch(sortplaceOptionList({ list }));
     };
 
@@ -98,10 +98,10 @@ const SelectedOption: FC = () => {
                 list={getSortableList(placeOptionList)}
                 setList={onSort}
             >
-                {placeOptionList.map((option: IPlace, index: number) => {
+                {placeOptionList.map((option: Place, index: number) => {
                     if (index === placeOptionList.length - 1) {
                         return (
-                            <Place
+                            <PlaceItem
                                 ref={
                                     droppedRef as React.RefObject<HTMLDivElement>
                                 }
@@ -112,17 +112,17 @@ const SelectedOption: FC = () => {
                             >
                                 <div className="img-container">
                                     <img
-                                        src={jejuImg}
+                                        src={option.imgUrl ?? jejuImg}
                                         alt="img"
                                         draggable="false"
                                     />
                                 </div>
                                 <div className="place-name">{option.name}</div>
-                            </Place>
+                            </PlaceItem>
                         );
                     }
                     return (
-                        <Place
+                        <PlaceItem
                             key={option.id}
                             data-id={option.id}
                             draggable="true"
@@ -136,7 +136,7 @@ const SelectedOption: FC = () => {
                                 />
                             </div>
                             <div className="place-name">{option.name}</div>
-                        </Place>
+                        </PlaceItem>
                     );
                 })}
             </ReactSortable>
@@ -157,7 +157,7 @@ const Container = styled.div`
         &::-webkit-scrollbar {
             height: 10px;
         }
-        
+
         &::-webkit-scrollbar-thumb {
             background-color: #ccc;
             border-radius: 10px;
@@ -178,7 +178,7 @@ const Container = styled.div`
     }
 `;
 
-const Place = styled.div`
+const PlaceItem = styled.div`
     margin-left: 20px;
     cursor: move;
 

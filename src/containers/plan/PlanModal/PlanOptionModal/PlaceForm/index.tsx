@@ -4,8 +4,7 @@ import styled from 'styled-components';
 
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { searchPlaces, searchForCoord } from 'store/modules/search';
-import { pickByKeyword } from '../searchScenario';
+import { searchPlaces, searchForCoord } from 'store/modules/plan/search';
 
 const state = (state: RootState) => state.search.state;
 const list = (state: RootState) => state.search.placeList;

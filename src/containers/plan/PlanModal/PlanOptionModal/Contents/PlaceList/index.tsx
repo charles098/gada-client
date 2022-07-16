@@ -1,7 +1,7 @@
 import React from 'react';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { insertSelectedPlaces } from 'store/modules/search';
+import { insertSelectedPlaces } from 'store/modules/plan/search';
 
 import PlaceListItem from './PlaceListItem';
 

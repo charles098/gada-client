@@ -1,27 +1,16 @@
-import React, {
-    FC,
-    useCallback,
-    useEffect,
-    useState,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
-import ShowDistance from 'components/ShowDistance';
-import SetupRoute from 'components/SetupRoute';
-import { createPlanListArray } from 'store/modules/plan';
-
-interface IProps {
-    setIsAllPlan: Dispatch<SetStateAction<boolean>>;
-}
+import ShowDistance from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/ShowDistance';
+import { createPlanListArray } from 'store/modules/plan/plan';
+import SetupRoute from './SetupRoute';
 
 const startDateSelector = (state: RootState) => state.plan.startDate;
 const lastDateSelector = (state: RootState) => state.plan.lastDate;
 
-const PlanMaker: FC<IProps> = ({ setIsAllPlan }) => {
+const PlanMaker: FC = () => {
     const startDate = useSelector(startDateSelector);
     const dispatch = useDispatch();
     const lastDate = useSelector(lastDateSelector);
@@ -29,7 +18,7 @@ const PlanMaker: FC<IProps> = ({ setIsAllPlan }) => {
 
     useEffect(() => {
         const period = getPeriod(startDate, lastDate);
-        console.log('CUSTOM', period);
+        // console.log('CUSTOM', period);
         setPlanPeriod(period);
         dispatch(createPlanListArray({ days: period }));
     }, [startDate, lastDate]);
@@ -41,10 +30,7 @@ const PlanMaker: FC<IProps> = ({ setIsAllPlan }) => {
 
     return (
         <Container>
-            <DayPicker
-                setIsAllPlan={setIsAllPlan}
-                planPeriod={planPeriod as number}
-            />
+            <DayPicker planPeriod={planPeriod as number} />
             <RouteContainer>
                 <ShowDistance />
                 <SetupRoute />

@@ -10,15 +10,15 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
-import PlaceBox from 'components/PlaceBox';
+import PlaceBox from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/PlaceBox';
 import { RootState } from 'store/modules';
 import {
-    IPlace,
     grabPlan,
     grabPlaceOption,
     movePlaceOptionToPlan,
     sortPlanList,
-} from 'store/modules/plan';
+} from 'store/modules/plan/plan';
+import { Place } from 'store/modules/plan';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -86,7 +86,7 @@ const SetupRoute: FC = () => {
         [grabPlaceOptionId],
     );
 
-    const getSortableList = (list: IPlace[][]): IPlace[] => {
+    const getSortableList = (list: Place[][]): Place[] => {
         if (!(list.length > 1)) return [];
 
         return list[setDay].map((x) => ({
@@ -94,7 +94,7 @@ const SetupRoute: FC = () => {
             chosen: true,
         }));
     };
-    const onSort = (list: IPlace[]): void => {
+    const onSort = (list: Place[]): void => {
         if (!(list.length > 0)) return;
         dispatch(sortPlanList({ list }));
     };
@@ -113,7 +113,7 @@ const SetupRoute: FC = () => {
                 setList={onSort}
             >
                 {planList.length > 1 &&
-                    planList[setDay].map((plan: IPlace, index: number) => {
+                    planList[setDay].map((plan: Place, index: number) => {
                         return (
                             <PlaceBox
                                 focusRef={
@@ -144,11 +144,10 @@ const Container = styled.div`
     overflow-x: hidden;
     overflow-y: scroll !important;
 
-
     &::-webkit-scrollbar {
         width: 10px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
         background-color: #ccc;
         border-radius: 10px;

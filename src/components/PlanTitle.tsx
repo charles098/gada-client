@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { PencilIcon, ResetIcon } from 'components/icons';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTitle } from 'store/modules/plan';
+import { setTitle } from 'store/modules/plan/plan';
 
 const planTitleSelector = (state: RootState) => state.plan.title;
 

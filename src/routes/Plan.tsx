@@ -3,17 +3,19 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // containers
-import PlanInfo from 'containers/plan/PlanInfo';
-import OptionMaker from 'containers/plan/OptionMaker';
-import Map from 'containers/plan/Map';
-import PlanMaker from 'containers/plan/PlanMaker';
-import AllPlan from 'containers/plan/AllPlan';
+import PlanInfo from 'containers/plan/PlanHeader';
+import OptionMaker from 'containers/plan/PlaceOptionMaker';
+import Map from 'containers/plan/PlanContents/EachPlan/CourseMap';
+import PlanMaker from 'containers/plan/PlanContents/EachPlan/EachPlanEditor';
+import AllPlan from 'containers/plan/PlanContents/AllPlan';
 
 // redux (type, reducer)
-import { IPlace, initializeData } from 'store/modules/plan';
+import { initializeData } from 'store/modules/plan/plan';
+import { Place } from 'store/modules/plan';
+import EachPlan from 'containers/plan/PlanContents/EachPlan';
 
 // dummy data
-const dummyPlanList: IPlace[][] = [
+const dummyPlanList: Place[][] = [
     [
         {
             id: '1',
@@ -153,7 +155,7 @@ const dummyPlanList: IPlace[][] = [
         },
     ],
 ];
-const dummyPlaceOptionList: IPlace[] = [
+const dummyPlaceOptionList: Place[] = [
     {
         id: '33',
         day: 1,
@@ -228,12 +230,12 @@ const Plan: FC = () => {
     const [isAllPlan, setIsAllPlan] = useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(
-            initializeData({
-                initPlanDetailList: dummyPlanList,
-                initPlaceOptionList: dummyPlaceOptionList,
-            }),
-        );
+        // dispatch(
+        //     initializeData({
+        //         initPlanDetailList: dummyPlanList,
+        //         initPlaceOptionList: dummyPlaceOptionList,
+        //     }),
+        // );
     }, []);
 
     // useEffect(() => {
@@ -242,8 +244,8 @@ const Plan: FC = () => {
     // }, []);
 
     // const simulateAPI = () => {
-    //     const initPlanList: IPlace[][] = dummyPlanList;
-    //     const initPlaceOptionList: IPlace[] = dummyPlaceOptionList;
+    //     const initPlanList: Place[][] = dummyPlanList;
+    //     const initPlaceOptionList: Place[] = dummyPlaceOptionList;
     //     dispatch(initializeData({ initPlanList, initPlaceOptionList }));
     // };
 
@@ -252,14 +254,7 @@ const Plan: FC = () => {
             <PlanInfo />
             <OptionMaker />
             <div className="bottom-section">
-                {isAllPlan ? (
-                    <AllPlan setIsAllPlan={setIsAllPlan} />
-                ) : (
-                    <>
-                        <Map />
-                        <PlanMaker setIsAllPlan={setIsAllPlan} />
-                    </>
-                )}
+                <EachPlan />
             </div>
         </Container>
     );

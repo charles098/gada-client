@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import dragImg from 'images/drag2.png';
-import PlaceOption from 'components/SelectedOption';
+import SelectedPlaceOption from 'containers/plan/PlaceOptionMaker/SelectedPlaceOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOpenState, changeModalName } from 'store/modules/modal';
 import { RootState } from 'store/modules';
 
-const ModalSelector = (state: RootState) => state.modal
+const ModalSelector = (state: RootState) => state.modal;
 
 const OptionMaker: FC = () => {
     const { modalIsOpen } = useSelector(ModalSelector);
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(changeModalName("PlanModal"));
+        dispatch(changeModalName('PlanModal'));
         dispatch(changeOpenState(!modalIsOpen));
     };
 
@@ -21,7 +21,7 @@ const OptionMaker: FC = () => {
         <Container>
             <img className="drag-explanation" src={dragImg} alt="drag" />
             <AddOptionButton onClick={handleClick}>장소 추가</AddOptionButton>
-            <PlaceOption />
+            <SelectedPlaceOption />
         </Container>
     );
 };

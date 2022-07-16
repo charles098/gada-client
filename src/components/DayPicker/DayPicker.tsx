@@ -4,16 +4,15 @@ import styled from 'styled-components';
 import { customAlphabet } from 'nanoid';
 import SlickSlider from 'components/SlickSlider';
 import { RootState } from 'store/modules';
-import { setUpDay } from 'store/modules/plan';
+import { setUpDay } from 'store/modules/plan/plan';
 
 interface IProps {
-    setIsAllPlan: Dispatch<SetStateAction<boolean>>;
     planPeriod: number;
 }
 
 const setDaySelector = (state: RootState) => state.plan.setDay;
 
-const DayPicker: FC<IProps> = ({ setIsAllPlan, planPeriod }) => {
+const DayPicker: FC<IProps> = ({ planPeriod }) => {
     const dispatch = useDispatch();
     const nanoid = customAlphabet('01234567899abcedf', 6);
     const setDay = useSelector(setDaySelector);
@@ -34,15 +33,15 @@ const DayPicker: FC<IProps> = ({ setIsAllPlan, planPeriod }) => {
                 arrowSize={13}
                 itemCursor="default"
             >
-                <ButtonCard>
+                {/* <ButtonCard>
                     <Button
                         type="button"
                         className="all-button"
-                        onClick={() => setIsAllPlan(true)}
+                        // onClick={() => setIsAllPlan(true)}
                     >
                         All
                     </Button>
-                </ButtonCard>
+                </ButtonCard> */}
                 {[...Array(planPeriod)].map((x, i: number) => (
                     <ButtonCard key={nanoid()}>
                         <Button

@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    Position,
-    PlaceInfo,
-    insertSelectedPlaces,
-} from 'store/modules/search';
+import { insertSelectedPlaces } from 'store/modules/plan/search';
+import { Position, SearchedPlaceInfo } from 'store/modules/plan';
 import PickMapPlace from './PickMapPlace';
 
 const movePoint = (state: RootState) => state.search.moving;
@@ -36,7 +33,7 @@ const CustomPlace = () => {
             {position && (
                 <PickMapPlace
                     position={position}
-                    callback={(customPlace: PlaceInfo) => {
+                    callback={(customPlace: SearchedPlaceInfo) => {
                         dispatch(insertSelectedPlaces(customPlace));
                     }}
                 />

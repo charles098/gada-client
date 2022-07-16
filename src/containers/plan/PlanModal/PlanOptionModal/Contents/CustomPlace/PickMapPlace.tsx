@@ -1,7 +1,7 @@
-import { position2DetailAddressByGeocoder } from 'containers/plan/PlanModal/searchScenario';
+import { position2DetailAddressByGeocoder } from 'utils/searchScenario';
 import React, { useEffect, useRef, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
-import { PlaceInfo } from 'store/modules/search';
+import { SearchedPlaceInfo } from 'store/modules/plan';
 import styled from 'styled-components';
 
 const emptyImage =
@@ -33,7 +33,7 @@ const PickMapPlace = ({ position, callback }: Props) => {
                     const address = await position2DetailAddressByGeocoder(
                         position,
                     );
-                    const place: PlaceInfo = {
+                    const place: SearchedPlaceInfo = {
                         name,
                         imgUrl: emptyImage,
                         address,
