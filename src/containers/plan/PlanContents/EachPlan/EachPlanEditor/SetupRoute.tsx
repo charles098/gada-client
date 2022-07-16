@@ -10,7 +10,7 @@ import React, {
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
-import PlaceBox from 'components/PlaceBox';
+import PlaceBox from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/PlaceBox';
 import { RootState } from 'store/modules';
 import {
     grabPlan,

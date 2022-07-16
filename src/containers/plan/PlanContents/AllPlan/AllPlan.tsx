@@ -6,8 +6,8 @@ import React, {
     SetStateAction,
 } from 'react';
 import styled, { keyframes } from 'styled-components';
-import ShowDistance from 'containers/plan/PlanContents/EachPlan/ShowDistance';
-import SetupRoute from 'containers/plan/PlanContents/EachPlan/SetupRoute';
+import ShowDistance from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/ShowDistance';
+import SetupRoute from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/SetupRoute';
 
 interface IProps {
     setIsAllPlan: Dispatch<SetStateAction<boolean>>;

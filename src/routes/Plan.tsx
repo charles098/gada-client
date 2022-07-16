@@ -4,9 +4,9 @@ import styled from 'styled-components';
 
 // containers
 import PlanInfo from 'containers/plan/PlanHeader';
-import OptionMaker from 'containers/plan/OptionMaker';
-import Map from 'containers/plan/PlanContents/EachPlan/Map';
-import PlanMaker from 'containers/plan/PlanContents/EachPlan/PlanMaker';
+import OptionMaker from 'containers/plan/PlaceOptionMaker';
+import Map from 'containers/plan/PlanContents/EachPlan/CourseMap';
+import PlanMaker from 'containers/plan/PlanContents/EachPlan/EachPlanEditor';
 import AllPlan from 'containers/plan/PlanContents/AllPlan';
 
 // redux (type, reducer)

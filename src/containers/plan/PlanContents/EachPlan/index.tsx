@@ -1,12 +1,12 @@
 import React from 'react';
-import Map from './Map';
-import PlanMaker from './PlanMaker';
+import Map from './CourseMap';
+import EachPlanEditor from './EachPlanEditor';
 
 const EachPlan = () => {
     return (
         <>
             <Map />
-            <PlanMaker />
+            <EachPlanEditor />
         </>
     );
 };

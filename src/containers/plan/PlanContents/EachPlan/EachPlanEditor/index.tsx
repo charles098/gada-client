@@ -1,18 +1,11 @@
-import React, {
-    FC,
-    useCallback,
-    useEffect,
-    useState,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
-import ShowDistance from 'containers/plan/PlanContents/EachPlan/ShowDistance';
-import SetupRoute from 'containers/plan/PlanContents/EachPlan/SetupRoute';
+import ShowDistance from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/ShowDistance';
 import { createPlanListArray } from 'store/modules/plan/plan';
+import SetupRoute from './SetupRoute';
 
 const startDateSelector = (state: RootState) => state.plan.startDate;
 const lastDateSelector = (state: RootState) => state.plan.lastDate;
@@ -25,7 +18,7 @@ const PlanMaker: FC = () => {
 
     useEffect(() => {
         const period = getPeriod(startDate, lastDate);
-        console.log('CUSTOM', period);
+        // console.log('CUSTOM', period);
         setPlanPeriod(period);
         dispatch(createPlanListArray({ days: period }));
     }, [startDate, lastDate]);
