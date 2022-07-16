@@ -14,12 +14,15 @@ const ShowDistance: FC = () => {
         if (planList && planList.length > 0)
             return planList[setDay].length ?? 0;
         return 0;
-    }, [planList]);
+    }, [planList, setDay]);
 
     return (
         <Container>
-            {[...new Array(length)].map(() => (
-                <LocationPointBox />
+            {[...new Array(length)].map((value, index) => (
+                <LocationPointBox>
+                    <Circle />
+                    {index < length - 1 && <DistanceLine />}
+                </LocationPointBox>
             ))}
         </Container>
     );
@@ -33,8 +36,27 @@ const Container = styled.div`
 `;
 const LocationPointBox = styled.div`
     background: red;
-    height: 80px;
-    margin-bottom: 35px;
+    height: 115px;
+`;
+
+const Circle = styled.div`
+    width: 40px;
+    height: 40px;
+    background: pink;
+    border: 0px;
+    border-radius: 50%;
+    margin: 0 auto;
+    z-index: 3;
+    position: relative;
+`;
+
+const DistanceLine = styled.div`
+    width: 2px;
+    height: 100%;
+    background: black;
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
 `;
 
 export default ShowDistance;
