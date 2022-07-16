@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { Place } from 'store/modules/plan';
+import jeju from 'images/jeju.jpg';
+import TooltipMarker from './TooltipMarker';
 
 const placeListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -11,7 +13,11 @@ const placeDistanceSelector = (state: RootState) => state.plan.placeDistance;
 const placeDistanceCenterSelector = (state: RootState) =>
     state.plan.placeDistanceCenter;
 const mapCenterBoundSelector = (state: RootState) => state.plan.mapCenterBound;
-
+const data = [
+    { position: { lat: 33.450707, lng: 126.570678 }, name: '본사' },
+    { position: { lat: 37.402054, lng: 127.108209 }, name: '판교 오피스' },
+    { position: { lat: 37.402827, lng: 127.107292 }, name: '고객 센터' },
+];
 const CourseMap = () => {
     const placeList: Place[][] = useSelector(placeListSelector);
     const setDay = useSelector(setDaySelector);
@@ -35,23 +41,25 @@ const CourseMap = () => {
                 }}
                 ref={mapRef}
             >
+                {/* {data.map((markerData) => (
+                    <TooltipMarker
+                        key={`TooltipMarker-${markerData.name}`}
+                        position={markerData.position}
+                        name={markerData.name}
+                        img={jeju}
+                    />
+                ))} */}
                 {placeList.length > 0 &&
                     placeList[setDay].length > 0 &&
                     placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
                             <>
-                                <MapMarker
+                                <TooltipMarker
                                     key={`marker-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     position={position}
-                                    image={{
-                                        src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png', // 마커이미지의 주소입니다
-                                        size: {
-                                            width: 24,
-                                            height: 35,
-                                        },
-                                    }}
-                                    title={placeDetail.name}
+                                    name={placeDetail.name}
+                                    img={placeDetail.imgUrl ?? jeju}
                                 />
                                 <Polyline
                                     key={`line-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}

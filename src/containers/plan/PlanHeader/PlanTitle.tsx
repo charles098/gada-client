@@ -14,9 +14,9 @@ const PlanTitle: FC = () => {
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [newTitle, setNewTitle] = useState<string>(title);
 
-    useEffect(() => {
-        document.addEventListener('mousedown', (e) => onClickOutside(e));
-    }, [newTitle]);
+    // useEffect(() => {
+    //     document.addEventListener('mousedown', (e) => onClickOutside(e));
+    // }, [newTitle]);
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setNewTitle(e.target.value);
@@ -40,14 +40,14 @@ const PlanTitle: FC = () => {
         setNewTitle(title);
     }, [title]);
 
-    const onClickOutside = useCallback(
-        (e: React.MouseEvent | MouseEvent): void => {
-            if (container.current?.contains(e.target as Node)) return;
-            dispatch(setTitle({ newTitle }));
-            setIsEdit(false);
-        },
-        [newTitle],
-    );
+    // const onClickOutside = useCallback(
+    //     (e: React.MouseEvent | MouseEvent): void => {
+    //         if (container.current?.contains(e.target as Node)) return;
+    //         dispatch(setTitle({ newTitle }));
+    //         setIsEdit(false);
+    //     },
+    //     [newTitle],
+    // );
 
     return (
         <Container ref={container as React.RefObject<HTMLDivElement>}>
