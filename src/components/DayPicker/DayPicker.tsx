@@ -33,7 +33,7 @@ const DayPicker: FC<IProps> = ({ planPeriod }) => {
                 arrowSize={13}
                 itemCursor="default"
             >
-                <ButtonCard>
+                {/* <ButtonCard>
                     <Button
                         type="button"
                         className="all-button"
@@ -41,7 +41,7 @@ const DayPicker: FC<IProps> = ({ planPeriod }) => {
                     >
                         All
                     </Button>
-                </ButtonCard>
+                </ButtonCard> */}
                 {[...Array(planPeriod)].map((x, i: number) => (
                     <ButtonCard key={nanoid()}>
                         <Button
