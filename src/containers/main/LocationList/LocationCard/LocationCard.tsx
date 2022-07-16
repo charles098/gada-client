@@ -18,12 +18,19 @@ export default LocationCard;
 
 const Wrapper = styled.div<{ src : string }>`
     position: relative;
-    width: 232.5px;
-    height: 232.5px;
+    width: 235px;
+    height: 235px;
     background-image: url('${({src}) => src}');
     background-repeat : no-repeat;
     background-size : cover;
     border-radius: 10px;
+
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        transform: translate(0, -5px);
+        box-shadow: 0 8px 18px -5px rgb(0,0,0,10%);
+    }
 `
 
 const LocationCardOpacity = styled.div`
@@ -39,11 +46,4 @@ const LocationCardOpacity = styled.div`
     position: absolute;
     top: 0;
     border-radius: 10px;
-
-    transition: background-color 0.2s, font-size 0.2s;
-
-    &:hover {
-        background-color: rgba(0, 0, 0, 0.5);
-        font-size: 28px;
-    }
 `

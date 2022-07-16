@@ -57,11 +57,12 @@ const locationStyle =  {
 
 const LocationContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(5, 232.5px);
-    grid-column-gap: 30px;
-    grid-row-gap: 30px;
+    grid-template-columns: repeat(5, 235px);
+    grid-column-gap: 27px;
+    grid-row-gap: 27px;
     border-radius: 10px;
-
+    place-content: center;
+    
     > div:hover {
         cursor: pointer;
     }
