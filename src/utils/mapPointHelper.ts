@@ -1,5 +1,6 @@
 import { Place } from 'store/modules/plan';
 
+// https://genius3k.tistory.com/entry/%EA%B5%AC%EC%97%90%EC%84%9C-%EB%91%90-%EC%A2%8C%ED%91%9C%EC%9D%98-%EA%B1%B0%EB%A6%AC-%EA%B5%AC%ED%95%98%EA%B8%B0
 export function getDistance(pos1: Place, pos2: Place) {
     const lat1 = Number(pos1.latitude);
     const lng1 = Number(pos1.longitude);
