@@ -44,6 +44,8 @@ const Container = styled.div`
     background-color: #f2fbcb;
     width: 80px;
     margin-left: 40px;
+
+    overflow: hidden;
 `;
 const LocationPointBox = styled.div`
     width: 70%;
