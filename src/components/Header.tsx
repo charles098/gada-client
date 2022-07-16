@@ -33,13 +33,13 @@ const Header: FC = () => {
                 <HeaderTitle>여행가다</HeaderTitle>
                 <Menu>
                     <MyPageContainer>
-                        <DropdownButton onClick={myPageHandler}>
+                        <DropdownButton
+                            onClick={myPageHandler}
+                            ref={myPageRef}>
                             마이페이지
                         </DropdownButton>
                         <Nav
-                            ref={myPageRef}
-                            myPageIsOpen={myPageIsOpen}
-                        >
+                            myPageIsOpen={myPageIsOpen}>
                             <Ul
                                 onClick={removeMenu}
                                 onKeyDown={removeMenu}>
@@ -53,11 +53,12 @@ const Header: FC = () => {
                         </Nav>
                     </MyPageContainer>
                     <BoardContainer>
-                        <DropdownButton onClick={boardHandler}>
+                        <DropdownButton
+                            onClick={boardHandler}
+                            ref={boardRef}>
                             게시판
                         </DropdownButton>
                         <Nav
-                            ref={boardRef}
                             myPageIsOpen={boardIsOpen}
                         >
                             <Ul

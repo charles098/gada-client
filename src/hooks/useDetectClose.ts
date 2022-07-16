@@ -6,8 +6,7 @@ const useDetectClose: any = (elem: any, initialState: any) => {
   useEffect(() => {
     const onClick = (e: any) => {
       if (elem.current !== null && !elem.current.contains(e.target)) {
-        setIsOpen(isOpen)
-        // 원래 setIsOpen(!isOpen) 이 맞지 않나..?
+        setIsOpen(!isOpen)
       } 
     };
     
