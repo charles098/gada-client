@@ -10,7 +10,7 @@ const Main: FC = () => {
             <PlanList />
             <LocationList />
         </>
-    )
+    );
 };
 
 export default Main;

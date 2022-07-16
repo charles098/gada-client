@@ -8,9 +8,12 @@ import {
     grabPlan,
     grabPlaceOption,
     movePlanToPlaceOption,
+    deletePlaceOptionList,
 } from 'store/modules/plan/plan';
 import jejuImg from 'images/jeju.jpg';
 import { Place } from 'store/modules/plan';
+import { CancelIcon } from 'components/icons';
+import { deleteSelectedPlaces } from 'store/modules/plan/search';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
@@ -117,6 +120,18 @@ const SelectedOption: FC = () => {
                                         draggable="false"
                                     />
                                 </div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        dispatch(
+                                            deletePlaceOptionList(option.id),
+                                        );
+                                    }}
+                                >
+                                    <span>
+                                        <CancelIcon width="15px" />
+                                    </span>
+                                </button>
                                 <div className="place-name">{option.name}</div>
                             </PlaceItem>
                         );
@@ -135,6 +150,16 @@ const SelectedOption: FC = () => {
                                     draggable="false"
                                 />
                             </div>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    dispatch(deletePlaceOptionList(option.id));
+                                }}
+                            >
+                                <span>
+                                    <CancelIcon width="15px" />
+                                </span>
+                            </button>
                             <div className="place-name">{option.name}</div>
                         </PlaceItem>
                     );
@@ -143,7 +168,33 @@ const SelectedOption: FC = () => {
         </Container>
     );
 };
-
+// {/* <SlickSlider
+//                 width={970}
+//                 speed={450}
+//                 slidesToShow={9}
+//                 slidesToScroll={3}
+//                 arrowPadding={40}
+//                 arrowSize={20}
+//                 itemCursor="default"
+//                 boxShadow
+//             >
+//                 {userPlaces.map((place: SelectedPlace) => (
+//                     <PlaceCard key={place.id}>
+//                         <button
+//                             type="button"
+//                             onClick={() =>
+//                                 dispatch(deleteSelectedPlaces(place.id))
+//                             }
+//                         >
+//                             <span>
+//                                 <CancelIcon width="15px" />
+//                             </span>
+//                         </button>
+//                         <img src={place.imgUrl} alt={place.name} />
+//                         <p>{place.name}</p>
+//                     </PlaceCard>
+//                 ))}
+//             </SlickSlider> */}
 const Container = styled.div`
     & > .sortable-container {
         width: 100%;
@@ -181,6 +232,7 @@ const Container = styled.div`
 const PlaceItem = styled.div`
     margin-left: 20px;
     cursor: move;
+    position: relative;
 
     & > .img-container {
         width: 70px;
@@ -196,8 +248,18 @@ const PlaceItem = styled.div`
 
     & > .place-name {
         text-align: center;
-        font-size: 13px;
         margin-top: 3px;
+
+        width: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 19px;
     }
 
     &.grab-item {
@@ -210,6 +272,17 @@ const PlaceItem = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+    & > button {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        right: -10%;
+        border: 0px;
+        background: none;
+        &:hover {
+            background: grey;
+        }
     }
 
     &.focus {
