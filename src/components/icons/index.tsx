@@ -15,10 +15,14 @@ import UnlockIcon from './UnlockIcon';
 import WonIcon from './WonIcon';
 import GoogleIcon from './GoogleIcon';
 import ResetIcon from './ResetIcon';
+import LikeIcon from './LikeIcon';
+import UnlikeIcon from './UnLikeIcon';
 import ErrorIcon from './ErrorIcon';
 import SpeechIcon from './SpeechIcon';
 
 export {
+    UnlikeIcon,
+    LikeIcon,
     AddLocationIcon,
     CancelIcon,
     ChatIcon,
