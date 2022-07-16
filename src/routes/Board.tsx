@@ -109,7 +109,7 @@ const initDatas = [
         username: '니머하노',
         likeCount: 4,
         clickedLike: true,
-    },{
+    }, {
         id: 'srtw',
         tag: '맛집',
         location: '강원',
@@ -158,11 +158,11 @@ const Board = () => {
                 const prevClickedLike = data.clickedLike;
                 const prevLikeCount = data.likeCount;
                 if (index === prevIndex) {
-                    const newLikeCount = prevClickedLike ? 
-                                         prevLikeCount - 1 : 
-                                         prevLikeCount + 1;
+                    const newLikeCount = prevClickedLike ?
+                        prevLikeCount - 1 :
+                        prevLikeCount + 1;
                     return {
-                        ...data, 
+                        ...data,
                         likeCount: newLikeCount,
                         clickedLike: !prevClickedLike
                     }
@@ -191,11 +191,11 @@ const Board = () => {
                 <MainContainer>
                     <ButtonContainer>
                         {tags.map((tag) => (
-                            <TagButton 
-                            key={tag}
-                            onClick={clickTagHandler}
-                            value={tag}
-                            isClicked={clickedTag === tag}>
+                            <TagButton
+                                key={tag}
+                                onClick={clickTagHandler}
+                                value={tag}
+                                isClicked={clickedTag === tag}>
                                 {tag}
                             </TagButton>
                         ))}
@@ -209,31 +209,31 @@ const Board = () => {
                     </ButtonContainer>
                     <CardListContainer>
                         {datas.map((data: any, index: number) => (
-                            <BoardCardWrapper key={data.id}>
-                                <BoardCard onClick={clickCardHandler}>
-                                    <CardHeader>
-                                        <Tag>{data.tag}</Tag>
-                                        <Location>{data.location}</Location>
-                                    </CardHeader>
-                                    <CardTitle>{data.title}</CardTitle>
-                                    <CardButtons>
-                                        <CancelButton
-                                            onClick={cancelCardHandler}
-                                        >공유취소</CancelButton>
-                                        {data.clickedLike ?
+                            <BoardCard
+                                key={data.id}
+                                onClick={clickCardHandler}>
+                                <CardHeader>
+                                    <Tag>{data.tag}</Tag>
+                                    <Location>{data.location}</Location>
+                                </CardHeader>
+                                <CardTitle>{data.title}</CardTitle>
+                                <CardButtons>
+                                    <CancelButton
+                                        onClick={cancelCardHandler}
+                                    >공유취소</CancelButton>
+                                    {data.clickedLike ?
                                         <LikeButton
-                                        onClick={(e) => clickLikeHandler(e, index)}/> :
+                                            onClick={(e) => clickLikeHandler(e, index)} /> :
                                         <UnlikeButton
-                                        onClick={(e) => clickLikeHandler(e, index)}/>
-                                        }
-                                        
-                                    </CardButtons>
-                                    <CardInfo>
-                                        <UserName>{data.username}</UserName>
-                                        <LikeCount>좋아요 {data.likeCount}개</LikeCount>
-                                    </CardInfo>
-                                </BoardCard>
-                            </BoardCardWrapper>
+                                            onClick={(e) => clickLikeHandler(e, index)} />
+                                    }
+
+                                </CardButtons>
+                                <CardInfo>
+                                    <UserName>{data.username}</UserName>
+                                    <LikeCount>좋아요 {data.likeCount}개</LikeCount>
+                                </CardInfo>
+                            </BoardCard>
                         ))}
                     </CardListContainer>
                 </MainContainer>
@@ -318,13 +318,13 @@ const TagButton = styled.button<{ isClicked: boolean }>`
         color: white;
     }
 
-    ${({ isClicked }) => 
+    ${({ isClicked }) =>
         isClicked ?
-        css`
+            css`
             background-color: #60A5F8;
             color: white;
         ` :
-        css`
+            css`
             background-color: #E4F0FF;
             color: #60A5F8;
         `
@@ -342,12 +342,6 @@ const CardListContainer = styled.div`
     grid-column-gap: 30px;
     grid-row-gap: 30px;
     place-content: center;
-`
-
-const BoardCardWrapper = styled.div`
-    width: 233px;
-    height: 300px;
-    padding-top: 5px;
 `
 
 const BoardCard = styled.div`
