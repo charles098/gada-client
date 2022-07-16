@@ -3,15 +3,16 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 // containers
-import PlanInfo from 'containers/plan/PlanInfo';
+import PlanInfo from 'containers/plan/PlanHeader';
 import OptionMaker from 'containers/plan/OptionMaker';
-import Map from 'containers/plan/Map';
-import PlanMaker from 'containers/plan/PlanMaker';
-import AllPlan from 'containers/plan/AllPlan';
+import Map from 'containers/plan/PlanContents/EachPlan/Map';
+import PlanMaker from 'containers/plan/PlanContents/EachPlan/PlanMaker';
+import AllPlan from 'containers/plan/PlanContents/AllPlan';
 
 // redux (type, reducer)
 import { initializeData } from 'store/modules/plan/plan';
 import { Place } from 'store/modules/plan';
+import EachPlan from 'containers/plan/PlanContents/EachPlan';
 
 // dummy data
 const dummyPlanList: Place[][] = [
@@ -253,8 +254,7 @@ const Plan: FC = () => {
             <PlanInfo />
             <OptionMaker />
             <div className="bottom-section">
-                <Map />
-                <PlanMaker />
+                <EachPlan />
             </div>
         </Container>
     );
