@@ -71,6 +71,12 @@ const CourseMap = () => {
                                     strokeColor="#db4040" // 선의 색깔입니다
                                     strokeOpacity={0.5} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
                                     strokeStyle="solid" // 선의 스타일입니다
+                                    onCreate={(data) =>
+                                        console.log(
+                                            'CUSTOM LENGTH',
+                                            data.getLength(),
+                                        )
+                                    }
                                 />
                             </>
                         );
@@ -81,8 +87,8 @@ const CourseMap = () => {
 };
 
 const getPositionByIPlace = (data: Place) => ({
-    lat: Number(data.latitude),
     lng: Number(data.longitude),
+    lat: Number(data.latitude),
 });
 
 const Container = styled.div`
