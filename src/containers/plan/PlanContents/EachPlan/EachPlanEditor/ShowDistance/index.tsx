@@ -1,12 +1,28 @@
-import React, { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { FC, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import styled from 'styled-components';
 
 const planListSelector = (state: RootState) => state.plan.planList;
+const setDaySelector = (state: RootState) => state.plan.setDay;
 
 const ShowDistance: FC = () => {
-    return <Container>hi</Container>;
+    const planList = useSelector(planListSelector);
+    const setDay = useSelector(setDaySelector);
+
+    const length = useMemo(() => {
+        if (planList && planList.length > 0)
+            return planList[setDay].length ?? 0;
+        return 0;
+    }, [planList]);
+
+    return (
+        <Container>
+            {[...new Array(length)].map(() => (
+                <LocationPointBox />
+            ))}
+        </Container>
+    );
 };
 
 const Container = styled.div`
@@ -15,7 +31,8 @@ const Container = styled.div`
     width: 80px;
     margin-left: 40px;
 `;
-const PlacePointBox = styled.div`
+const LocationPointBox = styled.div`
+    background: red;
     height: 80px;
     margin-bottom: 35px;
 `;
