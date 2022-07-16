@@ -43,9 +43,6 @@ const setPointRelatedOptions = (state: planState) => {
         state.planList[state.setDay],
     );
     state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
-    console.log('CUSTOM DIS', state.placeDistance);
-    console.log('CUSTOM DIS', state.placeDistanceCenter);
-    console.log('CUSTOM DIS', state.mapCenterBound);
 };
 
 const planDetailSlice = createSlice({
@@ -62,16 +59,20 @@ const planDetailSlice = createSlice({
             action: PayloadAction<Place[]>,
         ) {
             const selectedPlaces = action.payload;
-            console.log('CustomLog', selectedPlaces);
             state.placeOptionList = [
                 ...state.placeOptionList,
                 ...selectedPlaces,
             ];
         },
+        deletePlaceOptionList(state: planState, action: PayloadAction<string>) {
+            const optionPlaceId = action.payload;
+            state.placeOptionList = state.placeOptionList.filter(
+                (place) => place.id !== optionPlaceId,
+            );
+        },
         createPlanListArray(state: planState, action) {
             const days = action.payload.days ?? 1;
             const arr = new Array<Place[]>(days).fill([]);
-            console.log('CUSTOM LOG', arr, days);
             state.planList = arr;
         },
         setTitle(state: planState, action) {
@@ -131,6 +132,7 @@ export const {
     initializeData,
     createPlanListArray,
     insertPlaceOptionList,
+    deletePlaceOptionList,
     setTitle,
     setUpDay,
     sortplaceOptionList,

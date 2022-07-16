@@ -20,16 +20,12 @@ const ShowDistance: FC = () => {
     return (
         <Container>
             {[...new Array(length)].map((value, index) => (
-                <LocationPointBox>
+                <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
                     <PlacePicker color="grey" />
                     {index < length - 1 && (
                         <DistanceLine>
                             <DistanceText>
-                                {placeDistance[index] < 1000
-                                    ? `${placeDistance[index]}m`
-                                    : `${(placeDistance[index] / 1000).toFixed(
-                                          2,
-                                      )}km`}
+                                {setDistanceText(placeDistance[index])}
                             </DistanceText>
                         </DistanceLine>
                     )}
@@ -39,13 +35,17 @@ const ShowDistance: FC = () => {
     );
 };
 
+const setDistanceText = (meter: number): string => {
+    if (meter < 1000) return `${meter}m`;
+    if (meter < 100000) return `${(meter / 1000).toFixed(1)}km`;
+    return `${Math.round(meter / 1000)}km`;
+};
+
 const Container = styled.div`
     padding-top: 15px;
     background-color: #f2fbcb;
     width: 80px;
     margin-left: 40px;
-
-    overflow: hidden;
 `;
 const LocationPointBox = styled.div`
     width: 70%;
