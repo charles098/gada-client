@@ -26,7 +26,8 @@ export default LoginHeader;
 
 const Wrapper = styled.div`
     background-color: #60A5F8;
-    width: 100vw;
+    min-width: 1287px;
+    width: 100%;
     height: 100vh;
 `
 
