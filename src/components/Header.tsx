@@ -1,14 +1,17 @@
 import React, { FC, useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { PlaneIcon } from 'components/icons';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import useDetectClose from 'hooks/useDetectClose';
 
 const Header: FC = () => {
+    const navigate = useNavigate();
     const myPageRef = useRef<any>(null);
     const boardRef = useRef<any>(null);
     const [myPageIsOpen, setmyPageIsOpen] = useDetectClose(myPageRef, false);
     const [boardIsOpen, setBoardIsOpen] = useDetectClose(boardRef, false);
+
+    const navigateHandler = () => { navigate("/main") }
 
     const myPageHandler = () => {
         setmyPageIsOpen(!myPageIsOpen);
@@ -29,8 +32,13 @@ const Header: FC = () => {
                     width="49px"
                     height="46px"
                     style={planeIconStyle}
+                    onClick={navigateHandler}
                 />
-                <HeaderTitle>여행가다</HeaderTitle>
+                <HeaderTitle
+                onClick={navigateHandler}
+                >
+                    여행가다
+                </HeaderTitle>
                 <Menu>
                     <MyPageContainer>
                         <DropdownButton
@@ -91,7 +99,8 @@ export default Header;
 
 const planeIconStyle = {
     marginBottom: '10px',
-    marginLeft: '30px'
+    marginLeft: '30px',
+    cursor: "pointer",
 }
 
 const HeaderContainer = styled.header`
@@ -109,7 +118,7 @@ const HeaderContainer = styled.header`
 const HeaderTitle = styled.h1`
     font-size: 30px;
     color: white;
-    cursor: default;
+    cursor: pointer;
 `;
 
 const Menu = styled.div`

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 interface CardProps {
     dday: string;
@@ -16,8 +17,11 @@ const PlanCard = ( {
     title,
     date
 } : CardProps) => {
+    const navigate = useNavigate();
+    const navigateHandler = () => {navigate("/plan")};
+
     return (
-        <Wrapper>
+        <Wrapper onClick={navigateHandler}>
             <Dday>{dday}</Dday>
             <PlanImage src={src}>
                 <PlanImageName>{imageName}</PlanImageName>

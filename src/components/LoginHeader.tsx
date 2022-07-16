@@ -29,6 +29,7 @@ const Wrapper = styled.div`
     min-width: 1287px;
     width: 100%;
     height: 100vh;
+    cursor: default;
 `
 
 const TitleContainer = styled.header`
