@@ -52,6 +52,26 @@ const RouteContainer = styled.div`
     width: 100%;
     height: 560px;
     display: flex;
+
+    overflow-x: hidden;
+    overflow-y: scroll !important;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        border-radius: 10px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #eee;
+        border-radius: 10px;
+        box-shadow: inset 0px 0px 5px white;
+    }
 `;
 
 export default PlanMaker;

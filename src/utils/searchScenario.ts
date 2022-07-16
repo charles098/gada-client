@@ -67,7 +67,7 @@ const pickByKeyword = async (
         ps.keywordSearch(`${keyword}`, async (data, status) => {
             if (status === kakao.maps.services.Status.OK) {
                 const place = data[0];
-                resolve({ lat: Number(place.y), lng: Number(place.x) });
+                resolve({ lat: Number(place.x), lng: Number(place.y) });
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                 reject(new Error('검색 결과가 존재하지 않습니다.'));
             } else if (status === kakao.maps.services.Status.ERROR) {

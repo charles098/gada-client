@@ -132,27 +132,10 @@ const Container = styled.div`
     flex-direction: column;
     align-items: center;
     padding-top: 15px;
-    overflow-x: hidden;
-    overflow-y: scroll !important;
-
-    &::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: #ccc;
-        border-radius: 10px;
-        background-clip: padding-box;
-        border: 2px solid transparent;
-    }
-
-    &::-webkit-scrollbar-track {
-        background-color: #eee;
-        border-radius: 10px;
-        box-shadow: inset 0px 0px 5px white;
-    }
+    position: relative;
 
     &.drag-over {
+        width: 450px;
         border: solid 2px ${({ theme }) => theme.PRIMARY};
         border-radius: 20px;
         background-color: ${({ theme }) => theme.PRIMARY_LIGHT};
