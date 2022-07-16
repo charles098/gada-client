@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
-import ShowDistance from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/ShowDistance';
 import { createPlanListArray } from 'store/modules/plan/plan';
+import ShowDistance from './ShowDistance';
 import SetupRoute from './SetupRoute';
 
 const startDateSelector = (state: RootState) => state.plan.startDate;

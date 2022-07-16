@@ -1,16 +1,7 @@
-import React, {
-    FC,
-    useEffect,
-    useRef,
-    useCallback,
-    useState,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import React, { FC, useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
-import PlaceBox from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/PlaceBox';
 import { RootState } from 'store/modules';
 import {
     grabPlan,
@@ -19,6 +10,7 @@ import {
     sortPlanList,
 } from 'store/modules/plan/plan';
 import { Place } from 'store/modules/plan';
+import RoutItem from './RoutItem';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -106,7 +98,6 @@ const SetupRoute: FC = () => {
             onDrop={onDropContainer}
             onDragOver={(e) => e.preventDefault()}
         >
-            {setDay}
             <ReactSortable
                 animation={150}
                 list={getSortableList(planList)}
@@ -115,7 +106,7 @@ const SetupRoute: FC = () => {
                 {planList.length > 1 &&
                     planList[setDay].map((plan: Place, index: number) => {
                         return (
-                            <PlaceBox
+                            <RoutItem
                                 focusRef={
                                     index === planList[setDay].length - 1
                                         ? (droppedRef as React.RefObject<HTMLDivElement>)
