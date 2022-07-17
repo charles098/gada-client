@@ -9,6 +9,7 @@ const Register = () => {
     const navigate = useNavigate();
     
     const email: any = searchParams.get('email');
+    const authToken: any = searchParams.get('authToken');
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -24,10 +25,11 @@ const Register = () => {
                 username: username.value, 
                 email: email.value, 
                 password : password.value,
+                authToken
             };
 
             axios
-                .post('http://localhost:5000/api/users/register', data).then((response) => {
+                .post('/api/users/register', data).then((response) => {
                     alert('회원가입이 완료되었습니다!');
                     navigate("/login-form");
                 })
@@ -43,7 +45,7 @@ const Register = () => {
         <Form onSubmit={handleSubmit}>
             <UserName
             type="text"
-            placeholder="Username"
+            placeholder="Nickname"
             name="username"
             />
             <Email
