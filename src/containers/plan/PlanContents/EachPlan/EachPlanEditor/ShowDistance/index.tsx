@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import styled from 'styled-components';
+import { setDistanceText } from 'utils/mapPointHelper';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -33,12 +34,6 @@ const ShowDistance: FC = () => {
             ))}
         </Container>
     );
-};
-
-const setDistanceText = (meter: number): string => {
-    if (meter < 1000) return `${meter}m`;
-    if (meter < 100000) return `${(meter / 1000).toFixed(1)}km`;
-    return `${Math.round(meter / 1000)}km`;
 };
 
 const Container = styled.div`

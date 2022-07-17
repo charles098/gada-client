@@ -67,3 +67,9 @@ export function getPosition2bound(place: Place[]) {
     }
     return bound;
 }
+
+export const setDistanceText = (meter: number): string => {
+    if (meter < 1000) return `${meter}m`;
+    if (meter < 100000) return `${(meter / 1000).toFixed(1)}km`;
+    return `${Math.round(meter / 1000)}km`;
+};
