@@ -37,9 +37,12 @@ const Header: FC = () => {
             })
             .then((response) => {
                 console.log('로그아웃 성공');
+                navigate("/");
             })
             .catch((err) => {
                 console.log(err);
+                navigate("/"); 
+                // 임시 방편으로 해놓음. 서버에서 redirect 안됨. 쿠키는 지워짐.
             })
     }
 
