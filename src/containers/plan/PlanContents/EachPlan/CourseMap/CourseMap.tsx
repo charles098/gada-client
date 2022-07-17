@@ -23,10 +23,17 @@ const CourseMap = () => {
     const mapCenterBound = useSelector(mapCenterBoundSelector);
 
     const mapRef = useRef<kakao.maps.Map>(null);
+
+    const validPlaceList = useMemo(
+        () => placeList.length > 0 && placeList[setDay].length > 0,
+        [placeList, setDay],
+    );
+
     useEffect(() => {
         const map = mapRef.current;
-        if (map && mapCenterBound) map.setBounds(mapCenterBound);
-    }, [mapCenterBound]);
+        if (map && mapCenterBound && validPlaceList)
+            map.setBounds(mapCenterBound);
+    }, [mapCenterBound, setDay]);
 
     return (
         <Container>
@@ -38,8 +45,7 @@ const CourseMap = () => {
                 }}
                 ref={mapRef}
             >
-                {placeList.length > 0 &&
-                    placeList[setDay].length > 0 &&
+                {validPlaceList &&
                     placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
