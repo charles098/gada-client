@@ -25,7 +25,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -36,7 +36,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -47,7 +47,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -58,7 +58,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
     ],
@@ -71,7 +71,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -82,7 +82,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -93,7 +93,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -104,7 +104,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
     ],
@@ -117,7 +117,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -128,7 +128,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -139,7 +139,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
         {
@@ -150,7 +150,7 @@ const dummyPlanList: Place[][] = [
             longitude: '3',
             latitude: '4',
             description: 'fsdf',
-            cost: 2333,
+            cost: '2333',
             category: 'fsdf',
         },
     ],
@@ -164,7 +164,7 @@ const dummyPlaceOptionList: Place[] = [
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
-        cost: 2333,
+        cost: '2333',
         category: 'fsdf',
     },
     {
@@ -175,7 +175,7 @@ const dummyPlaceOptionList: Place[] = [
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
-        cost: 2333,
+        cost: '2333',
         category: 'fsdf',
     },
     {
@@ -186,7 +186,7 @@ const dummyPlaceOptionList: Place[] = [
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
-        cost: 2333,
+        cost: '2333',
         category: 'fsdf',
     },
     {
@@ -197,7 +197,7 @@ const dummyPlaceOptionList: Place[] = [
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
-        cost: 2333,
+        cost: '2333',
         category: 'fsdf',
     },
     {
@@ -208,7 +208,7 @@ const dummyPlaceOptionList: Place[] = [
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
-        cost: 2333,
+        cost: '2333',
         category: 'fsdf',
     },
     {
@@ -219,7 +219,7 @@ const dummyPlaceOptionList: Place[] = [
         longitude: '3',
         latitude: '4',
         description: 'fsdf',
-        cost: 2333,
+        cost: '2333',
         category: 'fsdf',
     },
 ];

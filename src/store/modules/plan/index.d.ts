@@ -12,7 +12,8 @@ export interface SelectedPlace extends SearchedPlaceInfo {
 export interface Place extends SelectedPlace {
     day?: number;
     description?: string;
-    cost?: number;
+    cost?: string;
+    time?: string;
     category?: string;
 }
 export interface Position {

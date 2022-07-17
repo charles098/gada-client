@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { Place } from 'store/modules/plan';
 import jeju from 'images/jeju.jpg';
-import TooltipMarker from './TooltipMarker';
+import PlaceMarker from './PlaceMarker';
 
 const placeListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -13,11 +13,7 @@ const placeDistanceSelector = (state: RootState) => state.plan.placeDistance;
 const placeDistanceCenterSelector = (state: RootState) =>
     state.plan.placeDistanceCenter;
 const mapCenterBoundSelector = (state: RootState) => state.plan.mapCenterBound;
-const data = [
-    { position: { lat: 33.450707, lng: 126.570678 }, name: '본사' },
-    { position: { lat: 37.402054, lng: 127.108209 }, name: '판교 오피스' },
-    { position: { lat: 37.402827, lng: 127.107292 }, name: '고객 센터' },
-];
+
 const CourseMap = () => {
     const placeList: Place[][] = useSelector(placeListSelector);
     const setDay = useSelector(setDaySelector);
@@ -55,7 +51,7 @@ const CourseMap = () => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
                             <>
-                                <TooltipMarker
+                                <PlaceMarker
                                     key={`marker-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     position={position}
                                     name={placeDetail.name}
@@ -79,12 +75,6 @@ const CourseMap = () => {
                                     strokeColor="#db4040" // 선의 색깔입니다
                                     strokeOpacity={0.5} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
                                     strokeStyle="solid" // 선의 스타일입니다
-                                    onCreate={(data) =>
-                                        console.log(
-                                            'CUSTOM LENGTH',
-                                            data.getLength(),
-                                        )
-                                    }
                                 />
                             </>
                         );
