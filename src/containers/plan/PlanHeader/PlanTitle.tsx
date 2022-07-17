@@ -4,6 +4,7 @@ import { PencilIcon, ResetIcon } from 'components/icons';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTitle } from 'store/modules/plan/plan';
+import SwitchToggle from 'components/SwitchToggle';
 
 const planTitleSelector = (state: RootState) => state.plan.title;
 

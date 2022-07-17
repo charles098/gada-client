@@ -45,8 +45,8 @@ export function changePosition2DistanceCenter(positions: Place[]) {
             const preLng = Number(pre.longitude);
             const curLat = Number(cur.latitude);
             const curLng = Number(cur.longitude);
-            const lat: number = (preLat + preLng) / 2;
-            const lng: number = (curLat + curLng) / 2;
+            const lat: number = (preLat + curLat) / 2;
+            const lng: number = (preLng + curLng) / 2;
             const result: { lng: number; lat: number } = { lat, lng };
             nodeCenter.push(result);
             return cur;
@@ -67,3 +67,9 @@ export function getPosition2bound(place: Place[]) {
     }
     return bound;
 }
+
+export const setDistanceText = (meter: number): string => {
+    if (meter < 1000) return `${meter}m`;
+    if (meter < 100000) return `${(meter / 1000).toFixed(1)}km`;
+    return `${Math.round(meter / 1000)}km`;
+};

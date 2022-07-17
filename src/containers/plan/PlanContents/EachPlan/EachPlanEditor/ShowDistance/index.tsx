@@ -2,6 +2,8 @@ import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import styled from 'styled-components';
+import { theme } from 'styles/theme';
+import { setDistanceText } from 'utils/mapPointHelper';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -21,7 +23,13 @@ const ShowDistance: FC = () => {
         <Container>
             {[...new Array(length)].map((value, index) => (
                 <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
-                    <PlacePicker color="grey" />
+                    <PlacePicker
+                        size={32}
+                        border={20}
+                        color={theme.USER_PLAN_COLOR[index]}
+                    >
+                        <div>{index + 1}</div>
+                    </PlacePicker>
                     {index < length - 1 && (
                         <DistanceLine>
                             <DistanceText>
@@ -35,12 +43,6 @@ const ShowDistance: FC = () => {
     );
 };
 
-const setDistanceText = (meter: number): string => {
-    if (meter < 1000) return `${meter}m`;
-    if (meter < 100000) return `${(meter / 1000).toFixed(1)}km`;
-    return `${Math.round(meter / 1000)}km`;
-};
-
 const Container = styled.div`
     padding-top: 15px;
     background-color: #f2fbcb;
@@ -52,27 +54,41 @@ const LocationPointBox = styled.div`
     height: 115px;
 `;
 
-const PlacePicker = styled.div`
-    width: 40px;
-    height: 40px;
-    background: white;
-    border: 15px solid ${({ color }) => color};
+const PlacePicker = styled.div<{ size: number; border: number; color: string }>`
+    width: ${({ size }) => size}px;
+    height: ${({ size }) => size}px;
+    background: ${({ color }) => color};
     border-radius: 50%;
     margin: 0 auto;
     z-index: 4;
     box-sizing: border-box;
     position: relative;
+
     :before {
         content: '';
         position: absolute;
-        border-top: 30px solid ${({ color }) => color};
-        border-right: 20px solid transparent;
-        border-left: 20px solid transparent;
-        left: calc(50% - 20px);
+        border-top: ${({ size }) => (size / 4) * 3}px solid
+            ${({ color }) => color};
+        border-right: ${({ size }) => size / 2 - 1}px solid transparent;
+        border-left: ${({ size }) => size / 2 - 1}px solid transparent;
+        left: calc(50% - ${({ size }) => size / 2 - 1}px);
         box-sizing: border-box;
 
-        bottom: -30px;
-        z-index: 3;
+        bottom: -${({ size }) => (size / 4) * 2 - 2}px;
+        z-index: 2;
+    }
+    & > div {
+        display: inline-block;
+        width: ${({ border }) => border}px;
+        height: ${({ border }) => border}px;
+        border-radius: 50%;
+        position: absolute;
+        left: calc(50% - ${({ border }) => border / 2}px);
+        top: calc(50% - ${({ border }) => border / 2}px);
+        z-index: 5;
+        background: white;
+        text-align: center;
+        vertical-align: middle;
     }
 `;
 

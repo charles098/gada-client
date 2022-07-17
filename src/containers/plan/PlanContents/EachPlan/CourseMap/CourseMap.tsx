@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { Place } from 'store/modules/plan';
 import jeju from 'images/jeju.jpg';
+import { theme } from 'styles/theme';
 import PlaceMarker from './PlaceMarker';
+import PlacePolyline from './PlacePolyline';
 
 const placeListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
@@ -22,10 +24,17 @@ const CourseMap = () => {
     const mapCenterBound = useSelector(mapCenterBoundSelector);
 
     const mapRef = useRef<kakao.maps.Map>(null);
+
+    const validPlaceList = useMemo(
+        () => placeList.length > 0 && placeList[setDay].length > 0,
+        [placeList, setDay],
+    );
+
     useEffect(() => {
         const map = mapRef.current;
-        if (map && mapCenterBound) map.setBounds(mapCenterBound);
-    }, [mapCenterBound]);
+        if (map && mapCenterBound && validPlaceList)
+            map.setBounds(mapCenterBound);
+    }, [mapCenterBound, setDay]);
 
     return (
         <Container>
@@ -37,16 +46,7 @@ const CourseMap = () => {
                 }}
                 ref={mapRef}
             >
-                {/* {data.map((markerData) => (
-                    <TooltipMarker
-                        key={`TooltipMarker-${markerData.name}`}
-                        position={markerData.position}
-                        name={markerData.name}
-                        img={jeju}
-                    />
-                ))} */}
-                {placeList.length > 0 &&
-                    placeList[setDay].length > 0 &&
+                {validPlaceList &&
                     placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
@@ -56,8 +56,9 @@ const CourseMap = () => {
                                     position={position}
                                     name={placeDetail.name}
                                     img={placeDetail.imgUrl ?? jeju}
+                                    color={theme.USER_PLAN_COLOR[index]}
                                 />
-                                <Polyline
+                                <PlacePolyline
                                     key={`line-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     path={
                                         index > 0
@@ -71,10 +72,8 @@ const CourseMap = () => {
                                               ]
                                             : [position]
                                     }
-                                    strokeWeight={3} // 선의 두께입니다
-                                    strokeColor="#db4040" // 선의 색깔입니다
-                                    strokeOpacity={0.5} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-                                    strokeStyle="solid" // 선의 스타일입니다
+                                    center={placeDistanceCenter[index - 1]}
+                                    distance={placeDistance[index - 1]}
                                 />
                             </>
                         );

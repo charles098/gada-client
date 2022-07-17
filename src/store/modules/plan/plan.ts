@@ -84,6 +84,7 @@ const planDetailSlice = createSlice({
         setUpDay(state: planState, action) {
             const { selectedDay } = action.payload;
             state.setDay = selectedDay;
+            setPointRelatedOptions(state);
         },
         sortPlanList(state: planState, action) {
             const { list } = action.payload;

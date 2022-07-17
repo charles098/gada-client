@@ -14,10 +14,11 @@ type Props = {
     position: { lat: number; lng: number };
     name: string;
     img: string;
+    color: string;
 };
 
 // eslint-disable-next-line react/function-component-definition
-function TooltipMarker({ position, name, img }: Props) {
+function TooltipMarker({ position, name, img, color }: Props) {
     const map = useMap();
     const node = useRef(document.createElement('div'));
     const [visible, setVisible] = useState(false);
@@ -90,7 +91,13 @@ function TooltipMarker({ position, name, img }: Props) {
     const Marker = () => {
         return (
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
-            <PlaceNode>
+            <PlaceNode
+                color={color}
+                onClick={() => {
+                    map.setCenter(positionLatlng);
+                    map.setLevel(3);
+                }}
+            >
                 <img
                     src={
                         img ??
@@ -392,7 +399,7 @@ const PlaceTracker = styled.div<{ url: string }>`
     margin: -35px 0 0 -30px;
     display: ;
     cursor: pointer;
-    z-index: 999;
+    z-index: 9;
 
     .icon {
         position: absolute;
@@ -412,8 +419,7 @@ const PlaceTracker = styled.div<{ url: string }>`
         position: absolute;
         width: 60px;
         height: 60px;
-        background-image: url(${({ url }) =>
-            `https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/balloon.png`});
+        background-image: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/balloon.png);
         background-repeat: no-repeat;
         background-size: cover;
         -ms-transform-origin: 50% 34px;
@@ -431,7 +437,7 @@ const PlaceNode = styled.div`
     height: 52px
     position: absolute;
     cursor: pointer;
-    background: white;
+    background: ${({ color }) => (color ? `${color}99` : 'white')};
     border-radius: 5px;
     box-sizing: border-box;
     text-algin: center;
@@ -441,7 +447,8 @@ const PlaceNode = styled.div`
     :after{
         content: '';
         position: absolute;
-        border-top: 10px solid ${({ color }) => color ?? 'white'};
+        border-top: 10px solid ${({ color }) =>
+            color ? `${color}99` : 'white'};
         border-right: 5px solid transparent;
         border-left: 5px solid transparent;
         left: calc(50% - 5px);
