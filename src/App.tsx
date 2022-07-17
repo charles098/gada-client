@@ -24,6 +24,7 @@ import Plan from 'routes/Plan';
 import Main from 'routes/Main';
 import Board from 'routes/Board';
 import NotFound from 'routes/NotFound';
+import Profile from 'routes/Profile';
 
 // Axios
 const baseURL = 'http://localhost:5000';
@@ -49,6 +50,7 @@ const App: FC = () => {
                             <Route path="/plan" element={<Plan />} />
                             <Route path="/main" element={<Main />} />
                             <Route path="/board" element={<Board />} />
+                            <Route path="/profile" element={<Profile />} />
                         </Route>
                         <Route path="*" element={<NotFound />} />
                     </Routes>
