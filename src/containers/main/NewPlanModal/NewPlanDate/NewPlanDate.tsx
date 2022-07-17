@@ -7,7 +7,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
 const NewPlanDate: FC = () => {
-    const [Calendar, setCalendar] = useState<any>([
+    const [calendar, setCalendar] = useState<any>([
         {
             startDate: new Date(),
             endDate: addDays(new Date(), 1),
@@ -19,7 +19,7 @@ const NewPlanDate: FC = () => {
         const start = calendar.startDate.toLocaleDateString();
         const end = calendar.endDate.toLocaleDateString();
         return `${start} ~ ${end}`
-    }, [Calendar])
+    }, [calendar])
 
     const handleChange = (item: any) => {
       setCalendar(() => {
@@ -38,7 +38,7 @@ const NewPlanDate: FC = () => {
                 <DateInput
                     type='text'
                     name="date"
-                    value={getDateInput(Calendar[0])}
+                    value={getDateInput(calendar[0])}
                     disabled
                 />
             </DateWrapper>
@@ -47,7 +47,7 @@ const NewPlanDate: FC = () => {
                 locale={ko}
                 onChange={handleChange}
                 moveRangeOnFirstSelection={false}
-                ranges={Calendar}
+                ranges={calendar}
                 dateDisplayFormat='yyyy.MM.dd'
             />
         </>

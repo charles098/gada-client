@@ -162,7 +162,7 @@ const Information = styled.div`
     border-radius: 10px;
     color: #60A5F8;
     box-sizing: border-box;
-    width: 292px;
+    width: 320px;
     text-align: center;
     &:before {
         content: '✓';

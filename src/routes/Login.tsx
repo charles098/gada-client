@@ -19,8 +19,6 @@ const Login = () => {
         dispatch(changeOpenState(!modalIsOpen));
     };
 
-    const toMainHandler = () => {navigate("/main")}
-
     return (
         <LoginContainer>
             <KakaoLogin
@@ -39,7 +37,6 @@ const Login = () => {
                 <LoginText>다른 계정으로 로그인</LoginText>
             </LocalLogin>
             <Register onClick={handleRegisterClick}>회원가입</Register>
-            <ToMain onClick={toMainHandler}>메인 바로가기</ToMain>
         </LoginContainer>
     )
 }
