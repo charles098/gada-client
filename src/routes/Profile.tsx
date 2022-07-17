@@ -1,21 +1,120 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
+import getAuthHeader from 'utils/getAuthHeader';
+import axios from 'axios';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+import { changeOpenState, changeModalName } from 'store/modules/modal';
 
-const email = 'elice@test.com';
-const username = '뚱인데요';
+interface ProfileProps {
+    email: string;
+    username: string;
+}
 
+const initData = {
+    email: '',
+    username: ''
+}
+
+const nicknameInfoMessages = {
+    sameNickname: "이전 닉네임과 동일합니다.",
+    emptyNickname: "닉네임을 입력해주세요.",
+}
+
+const passwordInfoMessages = {
+    samePassword: "이전 패스워드와 동일합니다.",
+    emptyPassword: "패스워드를 입력해주세요.",
+    notMatch: "새 비밀번호가 일치하지 않습니다."    
+}
+
+const ModalSelector = (state: RootState) => state.modal
 
 const Profile: FC = () => {
+    const dispatch = useDispatch();
+    const { modalIsOpen } = useSelector(ModalSelector);
+    const [ profileData, setProfileData ] = useState<ProfileProps>(initData);
+    const [ nicknameMessage, setMessage ] = useState("");
+    const [ passwordMessage, setPasswordMessage ] = useState("");
+    const headers = getAuthHeader();
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        (async ()  => {
+            try{
+                const results = await axios.get('/api/users/info/user',{ headers });
+                
+                setProfileData(results.data.data);
+            } catch(err) {
+                navigate("/");
+                console.log(err);
+            }
+        })()
+    },[])
+
     const usernameSubmitHandler = (e: any) => {
         e.preventDefault();
-        console.log(e.target.username.value)
+
+        const data = { 
+            username: e.target.username.value
+        };
+
+        if (data.username === profileData.username) {
+            setMessage(nicknameInfoMessages.sameNickname);
+            return;
+        }
+
+        (async () => {
+            try {
+                const results = await axios.patch('/api/users/username', data, { headers });
+                console.log(results.data);
+                setMessage("");
+                alert('닉네임이 변경되었습니다!')
+            } catch(err) {
+                console.log(err);
+            }
+        })()
     }
 
     const passwordSubmitHandler = (e: any) => {
         e.preventDefault();
-        console.log(e.target.currentPassword.value);
-        console.log(e.target.newPassword.value);
-        console.log(e.target.newPasswordCheck.value);
+
+        const { currentPassword, newPassword, newPasswordCheck } = e.target;
+        const data = { 
+            currentPassword: currentPassword.value,
+            newPassword: newPassword.value,
+            newPasswordCheck: newPasswordCheck.value
+        };
+
+        if (!data.currentPassword || !data.newPassword || !data.newPasswordCheck) {
+            setPasswordMessage(passwordInfoMessages.emptyPassword);
+            return; 
+        } 
+        
+        if (data.newPassword !== data.newPasswordCheck) {
+            setPasswordMessage(passwordInfoMessages.notMatch);
+            return;
+        }
+        
+        (async () => {
+            try {
+                const results = await axios.patch('/api/users/password', data, { headers });
+                console.log(results.data);
+                setPasswordMessage("");
+                alert('비밀번호가 변경되었습니다!');
+                
+            } catch(err: any) {
+                if (err.response.status === 400) {
+                    setPasswordMessage(err.response.data.message);
+                }
+                console.log(err);
+            }
+        })()
+    }
+
+    const findPasswordClickHandler = () => {
+        dispatch(changeModalName("FindPasswordModal"));
+        dispatch(changeOpenState(!modalIsOpen));
     }
 
     return (
@@ -33,7 +132,7 @@ const Profile: FC = () => {
                         <CardName>이메일</CardName>
                         <Email
                         type="email"
-                        value={email}
+                        value={profileData.email}
                         disabled
                         />
                     </ProfileForm>
@@ -41,7 +140,7 @@ const Profile: FC = () => {
                         <CardName>닉네임</CardName>
                         <UserName
                         type="text"
-                        defaultValue={username}
+                        defaultValue={profileData.username}
                         placeholder="넥네임을 입력해주세요."
                         name="username"
                         />
@@ -49,12 +148,14 @@ const Profile: FC = () => {
                         type="submit"
                         value="저장하기"
                         />
-                        <InfoMessage>이미 존재하는 닉네임입니다.</InfoMessage>
+                        <InfoMessage>{nicknameMessage}</InfoMessage>
                     </ProfileForm>
                     <ProfileForm onSubmit={passwordSubmitHandler}>
                         <CardNameContainer>
                             <CardTitle>비밀번호</CardTitle>
-                            <CardHelp>비밀번호를 모르신다면?</CardHelp>
+                            <CardHelp onClick={findPasswordClickHandler}>
+                                비밀번호를 모르신다면?
+                            </CardHelp>
                         </CardNameContainer>
                         <Password
                         placeholder="현재 비밀번호"
@@ -75,7 +176,7 @@ const Profile: FC = () => {
                         type="submit"
                         value="저장하기"
                         />
-                        <InfoMessage>현재 비밀번호를 확인해주세요.</InfoMessage>
+                        <InfoMessage>{passwordMessage}</InfoMessage>
                     </ProfileForm>
                 </MainContainer>
             </Main>
@@ -163,6 +264,7 @@ const CardHelp = styled.div`
     font-size: 13px;
     margin-left: auto;
     color: #888;
+    cursor: pointer;
 `
 
 const InputWrapper = styled.input`
