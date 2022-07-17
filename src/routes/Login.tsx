@@ -29,7 +29,9 @@ const Login = () => {
                 <ChatIcon style={LoginIconStyle} />
                 <LoginText>카카오 로그인</LoginText>
             </KakaoLogin>
-            <GoogleLogin>
+            <GoogleLogin
+            href="http://localhost:5000/api/users/login/google"
+            >
                 <GoogleIcon style={LoginIconStyle} />
                 <LoginText>구글 로그인</LoginText>
             </GoogleLogin>
