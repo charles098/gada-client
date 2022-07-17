@@ -14,6 +14,7 @@ export interface planState {
     setDay: number;
     grabPlanId: string | null;
     grabPlaceOptionId: string | null;
+    clickPlaceDetailId: string | null;
     planList: Place[][];
     placeOptionList: Place[];
     placeDistance: number[];
@@ -29,6 +30,7 @@ const initialState: planState = {
     setDay: 0,
     grabPlanId: null,
     grabPlaceOptionId: null,
+    clickPlaceDetailId: null,
     planList: [],
     placeOptionList: [],
     placeDistance: [],
@@ -101,6 +103,16 @@ const planDetailSlice = createSlice({
             const { id } = action.payload;
             state.grabPlaceOptionId = id;
         },
+        setClickPlaceDetailId(
+            state: planState,
+            action: PayloadAction<string | undefined>,
+        ) {
+            if (!action.payload) {
+                state.clickPlaceDetailId = null;
+                return;
+            }
+            state.clickPlaceDetailId = action.payload;
+        },
         movePlanToPlaceOption(state: planState) {
             // dropPlan
             const droppedPlan = state.planList[state.setDay].find(
@@ -139,6 +151,7 @@ export const {
     grabPlan,
     sortPlanList,
     grabPlaceOption,
+    setClickPlaceDetailId,
     movePlanToPlaceOption,
     movePlaceOptionToPlan,
 } = actions;

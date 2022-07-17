@@ -1,5 +1,9 @@
 import { ClockIcon, PencilIcon, WonIcon } from 'components/icons';
 import React, { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+import { changeModalName, changeOpenState } from 'store/modules/modal';
+import { setClickPlaceDetailId } from 'store/modules/plan/plan';
 import styled from 'styled-components';
 
 interface IProps {
@@ -11,6 +15,8 @@ interface IProps {
     dataId: string;
 }
 
+const ModalSelector = (state: RootState) => state.modal;
+
 const PlaceBox: FC<IProps> = ({
     key,
     focusRef,
@@ -19,6 +25,8 @@ const PlaceBox: FC<IProps> = ({
     location,
     dataId,
 }) => {
+    const { modalIsOpen } = useSelector(ModalSelector);
+    const dispatch = useDispatch();
     return (
         <Container
             key={key}
@@ -30,7 +38,13 @@ const PlaceBox: FC<IProps> = ({
                 <Name>{placename}</Name>
                 <Location>{location}</Location>
             </ItemsTexts>
-            <ItemsToolBtn>
+            <ItemsToolBtn
+                onClick={() => {
+                    dispatch(changeModalName('PlanDetailModal'));
+                    dispatch(changeOpenState(!modalIsOpen));
+                    dispatch(setClickPlaceDetailId(dataId));
+                }}
+            >
                 <div>
                     <PencilIcon width={10} height={10} />
                     <p>메모</p>

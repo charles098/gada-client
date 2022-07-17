@@ -1,5 +1,5 @@
 import Modal from 'components/Modal';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,17 +8,46 @@ import jeju from 'images/jeju.jpg';
 import { PencilIcon, ClockIcon, WonIcon } from 'components/icons';
 import { theme } from 'styles/theme';
 import SubmitButton from 'components/StyledSmitButton';
+import { Place } from 'store/modules/plan';
 
-const ModalSelector = (state: RootState) => state.modal
+const ModalSelector = (state: RootState) => state.modal;
+const PlanSelector = (state: RootState) => state.plan;
+const setDay = (state: RootState) => state.plan.setDay;
+const detailIdSelector = (state: RootState) => state.plan.clickPlaceDetailId;
 
-const PlanDetailModal: FC = ({ placeData }: any) => {
+const PlanDetailModal: FC = () => {
     const dispatch = useDispatch();
     const { modalIsOpen } = useSelector(ModalSelector);
+    const {
+        planList,
+        setDay,
+        clickPlaceDetailId: detailId,
+    } = useSelector(PlanSelector);
+
+    const SelectedDetailPlace: Place | undefined = useMemo(() => {
+        if (!detailId) return undefined;
+        const Place = planList[setDay].find((p) => p.id === detailId);
+        return Place;
+    }, [detailId]);
+
     const [details, setDetails] = useState({
-        memo: '',
+        description: '',
         time: '',
         cost: '',
     });
+
+    useEffect(() => {
+        // setDetails
+        if (SelectedDetailPlace) {
+            setDetails({
+                description: SelectedDetailPlace?.description ?? '',
+                time: SelectedDetailPlace?.time ?? '',
+                cost: SelectedDetailPlace?.cost ?? '',
+            });
+        }
+        console.log('CUSTOM: It is State When you enter Detail', details);
+    }, []);
+
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => {
@@ -32,18 +61,23 @@ const PlanDetailModal: FC = ({ placeData }: any) => {
     const removeHandler = (e: React.MouseEvent) => {
         e.preventDefault();
 
-        dispatch(changeModalName("PlanModal"));
+        console.log('CUSTOM: It is State When you leave Detail', details);
+
         dispatch(changeOpenState(!modalIsOpen));
     };
 
     return (
         <ModalContainer>
             <DialogBox width={650} height={750}>
-                <PlaceDetailThumbnail src={jeju} />
+                <PlaceDetailThumbnail
+                    src={SelectedDetailPlace?.imgUrl ?? jeju}
+                />
                 <PlaceDetailContents>
                     <PlaceDetailTitle>
-                        <p className="title">제주도</p>
-                        <p className="subtitle">제주도 맨도롱또돗</p>
+                        <p className="title">{SelectedDetailPlace?.name}</p>
+                        <p className="subtitle">
+                            {SelectedDetailPlace?.address}
+                        </p>
                     </PlaceDetailTitle>
                     <PlaceDetailMemo>
                         <p className="head">
@@ -55,8 +89,8 @@ const PlanDetailModal: FC = ({ placeData }: any) => {
                             <p>메모하기</p>
                         </p>
                         <textarea
-                            name="memo"
-                            value={details.memo}
+                            name="description"
+                            value={details.description}
                             onChange={handleChange}
                         />
                     </PlaceDetailMemo>
@@ -71,6 +105,7 @@ const PlanDetailModal: FC = ({ placeData }: any) => {
                         </p>
                         <input
                             type="text"
+                            name="time"
                             value={details.time}
                             onChange={handleChange}
                         />
@@ -85,13 +120,14 @@ const PlanDetailModal: FC = ({ placeData }: any) => {
                             <p>바용</p>
                         </p>
                         <input
-                            type="textarea"
+                            type="text"
+                            name="cost"
                             value={details.cost}
                             onChange={handleChange}
                         />
                     </PlaceDetailCost>
                 </PlaceDetailContents>
-                <SubmitButton width={300} height={56}>
+                <SubmitButton width={300} height={56} onClick={removeHandler}>
                     메모하기
                 </SubmitButton>
             </DialogBox>
