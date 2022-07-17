@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import { PlaneIcon } from 'components/icons';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import useDetectClose from 'hooks/useDetectClose';
+import { useCookies } from 'react-cookie';
+import axios from 'axios';
 
 const Header: FC = () => {
     const navigate = useNavigate();
@@ -10,9 +12,9 @@ const Header: FC = () => {
     const boardRef = useRef<any>(null);
     const [myPageIsOpen, setmyPageIsOpen] = useDetectClose(myPageRef, false);
     const [boardIsOpen, setBoardIsOpen] = useDetectClose(boardRef, false);
-
+    const [cookies, setCookie, removeCookie] = useCookies(['accessToken']);
     const navigateHandler = () => { navigate("/main") }
-
+    
     const myPageHandler = () => {
         setmyPageIsOpen(!myPageIsOpen);
         setBoardIsOpen(false);
@@ -25,6 +27,22 @@ const Header: FC = () => {
         setBoardIsOpen(false);
         setmyPageIsOpen(false);
     }
+
+    const logoutClickHandler = () => {
+        axios
+            .get('/api/users/logout',{
+                headers: {
+                    Authorization: `Bearer ${cookies.accessToken}`,
+                }
+            })
+            .then((response) => {
+                console.log('로그아웃 성공');
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
     return (
         <>
             <HeaderContainer>
@@ -86,7 +104,11 @@ const Header: FC = () => {
                         onClick={removeMenu}
                         onKeyDown={removeMenu}
                     >
-                        <LinkNoDropDown to="/">로그아웃</LinkNoDropDown>
+                        <Logout
+                        onClick={logoutClickHandler}
+                        >
+                            로그아웃
+                        </Logout>
                     </DropdownContainer>
                 </Menu>
             </HeaderContainer>
@@ -204,4 +226,14 @@ const LinkNoDropDown = styled(Link)`
     text-decoration: none;
     font-size: 19px;
     color: white;
+`
+
+const Logout = styled.div`
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-size: 19px;
 `
