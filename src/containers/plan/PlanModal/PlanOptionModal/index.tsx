@@ -7,6 +7,7 @@ import { changeState, dropAllSelectedPlaces } from 'store/modules/plan/search';
 
 import SubmitButton from 'components/StyledSmitButton';
 import { insertPlaceOptionList } from 'store/modules/plan/plan';
+import { changeOpenState } from 'store/modules/modal';
 import PlanModalTitle from './Title';
 import PlanPlaceForm from './PlaceForm';
 import PlanModalContents from './Contents';
@@ -38,7 +39,7 @@ const PlanModal = () => {
                         console.log('Model confirm Execute!!!');
                         dispatch(dropAllSelectedPlaces());
                         dispatch(insertPlaceOptionList(selectedList));
-                        // dispatch(largeModal(false));
+                        dispatch(changeOpenState(false));
                     }}
                 >
                     등록완료

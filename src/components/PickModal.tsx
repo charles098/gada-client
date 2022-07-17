@@ -1,7 +1,8 @@
 import React from 'react';
 import EmailAuthModal from 'components/EmailAuthModal';
-import PlanModal from 'containers/plan/PlanModal/PlanOptionModal';
+import PlanOptionModal from 'containers/plan/PlanModal/PlanOptionModal';
 import NewPlanModal from 'containers/main/NewPlanModal';
+import PlanDetailModal from 'containers/plan/PlanModal/PlanDetailModal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 
@@ -9,7 +10,8 @@ const ModalSelector = (state: RootState) => state.modal;
 
 const modalComponents: any = {
     EmailAuthModal: <EmailAuthModal />,
-    PlanModal: <PlanModal />,
+    PlanOptionModal: <PlanOptionModal />,
+    PlanDetailModal: <PlanDetailModal />,
     NewPlanModal: <NewPlanModal />,
 };
 

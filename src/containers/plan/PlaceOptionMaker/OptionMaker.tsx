@@ -13,7 +13,7 @@ const OptionMaker: FC = () => {
     const dispatch = useDispatch();
 
     const handleClick = () => {
-        dispatch(changeModalName('PlanModal'));
+        dispatch(changeModalName('PlanOptionModal'));
         dispatch(changeOpenState(!modalIsOpen));
     };
 
