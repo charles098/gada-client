@@ -9,13 +9,14 @@ const EmailAuthForm: FC = () => {
 
     const handleClick = () => {
         const data = { email: emailRef.current.value };
+        
         axios
             .post('/api/users/auth-email', data).then((response) => {
-                console.log(response.data);
                 setSendEmail(!sendEmail);
+                console.log(response.data);
             })
             .catch((err) => {
-                alert('오류가 발생했습니다. 콘솔을 확인해주세요.');
+                alert(err.response.data.message);
                 console.log(err);
             })
     }
@@ -160,7 +161,9 @@ const Information = styled.div`
     padding: 30px 20px;
     border-radius: 10px;
     color: #60A5F8;
-
+    box-sizing: border-box;
+    width: 292px;
+    text-align: center;
     &:before {
         content: '✓';
         margin-right: 10px;
