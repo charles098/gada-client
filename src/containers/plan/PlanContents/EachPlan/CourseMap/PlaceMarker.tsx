@@ -91,7 +91,13 @@ function TooltipMarker({ position, name, img, color }: Props) {
     const Marker = () => {
         return (
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
-            <PlaceNode color={color}>
+            <PlaceNode
+                color={color}
+                onClick={() => {
+                    map.setCenter(positionLatlng);
+                    map.setLevel(3);
+                }}
+            >
                 <img
                     src={
                         img ??

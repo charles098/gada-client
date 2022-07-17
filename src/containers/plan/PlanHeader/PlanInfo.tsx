@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import PlanPeriod from 'components/PlanPeriod';
 import PlanWith from 'components/PlanWith';
+import SwitchToggle from 'components/SwitchToggle';
 
 const PlanInfo: FC = () => {
     return (
@@ -10,6 +11,7 @@ const PlanInfo: FC = () => {
             <PlanTitle />
             <PlanPeriod />
             <PlanWith />
+            <SwitchToggle label="Switch One" noText />
         </Container>
     );
 };
