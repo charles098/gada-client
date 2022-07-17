@@ -52,7 +52,7 @@ const Header: FC = () => {
                                 onClick={removeMenu}
                                 onKeyDown={removeMenu}>
                                 <Li>
-                                    <LinkWrapper to="/">정보</LinkWrapper>
+                                    <LinkWrapper to="/profile">프로필</LinkWrapper>
                                 </Li>
                                 <Li>
                                     <LinkWrapper to="/main">내 계획</LinkWrapper>
