@@ -64,6 +64,8 @@ const CourseMap = () => {
                                               ]
                                             : [position]
                                     }
+                                    center={placeDistanceCenter[index - 1]}
+                                    distance={placeDistance[index - 1]}
                                 />
                             </>
                         );
