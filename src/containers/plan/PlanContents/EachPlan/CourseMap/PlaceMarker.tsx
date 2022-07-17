@@ -392,7 +392,7 @@ const PlaceTracker = styled.div<{ url: string }>`
     margin: -35px 0 0 -30px;
     display: ;
     cursor: pointer;
-    z-index: 999;
+    z-index: 9;
 
     .icon {
         position: absolute;
