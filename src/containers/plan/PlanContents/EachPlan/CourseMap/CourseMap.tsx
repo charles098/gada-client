@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { Place } from 'store/modules/plan';
 import jeju from 'images/jeju.jpg';
+import { theme } from 'styles/theme';
 import PlaceMarker from './PlaceMarker';
 import PlacePolyline from './PlacePolyline';
 
@@ -55,6 +56,7 @@ const CourseMap = () => {
                                     position={position}
                                     name={placeDetail.name}
                                     img={placeDetail.imgUrl ?? jeju}
+                                    color={theme.USER_PLAN_COLOR[index]}
                                 />
                                 <PlacePolyline
                                     key={`line-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}

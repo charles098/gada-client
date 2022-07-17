@@ -133,6 +133,7 @@ const Container = styled.div`
     align-items: center;
     padding-top: 15px;
     position: relative;
+    box-sizing: border-box;
 
     &.drag-over {
         width: 450px;

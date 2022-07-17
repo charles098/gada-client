@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import styled from 'styled-components';
+import { theme } from 'styles/theme';
 import { setDistanceText } from 'utils/mapPointHelper';
 
 const planListSelector = (state: RootState) => state.plan.planList;
@@ -22,8 +23,12 @@ const ShowDistance: FC = () => {
         <Container>
             {[...new Array(length)].map((value, index) => (
                 <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
-                    <PlacePicker size={32} border={20} color="grey">
-                        <div>{index}</div>
+                    <PlacePicker
+                        size={32}
+                        border={20}
+                        color={theme.USER_PLAN_COLOR[index]}
+                    >
+                        <div>{index + 1}</div>
                     </PlacePicker>
                     {index < length - 1 && (
                         <DistanceLine>
