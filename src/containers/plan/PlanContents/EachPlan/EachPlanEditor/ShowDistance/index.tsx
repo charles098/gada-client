@@ -13,7 +13,7 @@ const ShowDistance: FC = () => {
     const planList = useSelector(planListSelector);
     const setDay = useSelector(setDaySelector);
     const placeDistance = useSelector(placeDistanceSelector);
-    const listLength = useMemo(() => {
+    const planListLength = useMemo(() => {
         if (planList && planList.length > 0)
             return planList[setDay].length ?? 0;
         return 0;
@@ -21,8 +21,8 @@ const ShowDistance: FC = () => {
 
     return (
         <Container>
-            {listLength > 0 &&
-                [...new Array(listLength)].map((value, index) => (
+            {planListLength > 0 &&
+                [...new Array(planListLength)].map((value, index) => (
                     <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
                         <PlacePicker
                             size={32}
@@ -31,7 +31,7 @@ const ShowDistance: FC = () => {
                         >
                             <div>{index + 1}</div>
                         </PlacePicker>
-                        {index < listLength - 1 && (
+                        {index < planListLength - 1 && (
                             <DistanceLine>
                                 <DistanceText>
                                     {setDistanceText(placeDistance[index])}
