@@ -12,6 +12,7 @@ const centerPoint = (state: RootState) => state.search.center;
 const CustomPlace = () => {
     const dispatch = useDispatch();
     const [position, setPosition] = useState<Position>();
+
     const moving = useSelector(movePoint);
     const mapCenter = useSelector(centerPoint);
     return (
@@ -23,7 +24,8 @@ const CustomPlace = () => {
                 height: '470px',
             }}
             level={3}
-            onClick={(_t, mouseEvent) => {
+            disableDoubleClickZoom
+            onDoubleClick={(_t, mouseEvent) => {
                 setPosition({
                     lat: mouseEvent.latLng.getLat(),
                     lng: mouseEvent.latLng.getLng(),
