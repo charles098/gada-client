@@ -12,7 +12,7 @@ import {
 } from 'store/modules/plan/plan';
 import jejuImg from 'images/jeju.jpg';
 import { Place } from 'store/modules/plan';
-import { CancelIcon } from 'components/icons';
+import { CancelDetailIcon } from 'components/icons';
 import { deleteSelectedPlaces } from 'store/modules/plan/search';
 
 const placeOptionListSelector = (state: RootState) =>
@@ -129,7 +129,7 @@ const SelectedOption: FC = () => {
                                     }}
                                 >
                                     <span>
-                                        <CancelIcon width="15px" />
+                                        <CancelDetailIcon />
                                     </span>
                                 </button>
                                 <div className="place-name">{option.name}</div>
@@ -157,7 +157,7 @@ const SelectedOption: FC = () => {
                                 }}
                             >
                                 <span>
-                                    <CancelIcon width="15px" />
+                                    <CancelDetailIcon />
                                 </span>
                             </button>
                             <div className="place-name">{option.name}</div>
@@ -199,8 +199,9 @@ const Container = styled.div`
     & > .sortable-container {
         width: 100%;
         height: 100px;
-        border: solid 2px ${({ theme }) => theme.LIGHT_GRAY};
-        border-radius: 18px;
+        box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        padding: 8px 5px;
         display: flex;
         align-items: center;
         overflow-y: hidden;
@@ -216,7 +217,7 @@ const Container = styled.div`
             border: 2px solid transparent;
         }
         &::-webkit-scrollbar-track {
-            background-color: #eee;
+            background-color: #fff;
             border-radius: 10px;
             box-shadow: inset 0px 0px 5px white;
         }
@@ -230,15 +231,24 @@ const Container = styled.div`
 `;
 
 const PlaceItem = styled.div`
-    margin-left: 20px;
-    cursor: move;
+    margin: 0 10px;
+
+    &:first-of-type { margin-left: 20px;}
+    &:last-of-type { margin-right: 20px; }
+    
+    cursor: grab;
     position: relative;
+
+    &:hover > button {
+        display: block;
+    }
 
     & > .img-container {
         width: 70px;
         height: 70px;
         border-radius: 100%;
         overflow: hidden;
+        margin-left: 10px;
     }
 
     & > .img-container img {
@@ -249,13 +259,11 @@ const PlaceItem = styled.div`
     & > .place-name {
         text-align: center;
         margin-top: 3px;
-
-        width: 70px;
+        width: 90px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
 
-        font-family: 'Inter';
         font-style: normal;
         font-weight: 400;
         font-size: 16px;
@@ -276,12 +284,16 @@ const PlaceItem = styled.div`
     & > button {
         cursor: pointer;
         position: absolute;
-        top: 0;
+        top: -7px;
         right: -10%;
         border: 0px;
         background: none;
-        &:hover {
-            background: grey;
+        display: none;
+
+        opacity: 0.8;
+
+        :hover {
+            opacity: 1;
         }
     }
 

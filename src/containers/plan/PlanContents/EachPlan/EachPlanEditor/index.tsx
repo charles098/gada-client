@@ -46,6 +46,8 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0px 0px 6px rgb(0 0 0 / 20%);
+    border-radius: 5px;
 `;
 
 const RouteContainer = styled.div`
@@ -68,7 +70,7 @@ const RouteContainer = styled.div`
     }
 
     &::-webkit-scrollbar-track {
-        background-color: #eee;
+        background-color: #fff;
         border-radius: 10px;
         box-shadow: inset 0px 0px 5px white;
     }

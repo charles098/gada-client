@@ -5,6 +5,7 @@ import SelectedPlaceOption from 'containers/plan/PlaceOptionMaker/SelectedPlaceO
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOpenState, changeModalName } from 'store/modules/modal';
 import { RootState } from 'store/modules';
+import { AddLocationIcon } from 'components/icons';
 
 const ModalSelector = (state: RootState) => state.modal;
 
@@ -19,8 +20,12 @@ const OptionMaker: FC = () => {
 
     return (
         <Container>
-            <img className="drag-explanation" src={dragImg} alt="drag" />
-            <AddOptionButton onClick={handleClick}>장소 추가</AddOptionButton>
+            <img className="drag-explanation" src={dragImg} 
+            alt="drag" />
+            <AddOptionButton onClick={handleClick}>
+                <AddLocationIconWrapper />
+                장소 추가
+            </AddOptionButton>
             <SelectedPlaceOption />
         </Container>
     );
@@ -44,12 +49,18 @@ const AddOptionButton = styled.button`
     cursor: pointer;
     border: none;
     background-color: transparent;
-    color: ${({ theme }) => theme.PRIMARY};
+    color: #3D95FF;
     padding: 0;
     margin-left: 15px;
     margin-bottom: 8px;
     font-size: 20px;
     font-weight: bold;
 `;
+
+const AddLocationIconWrapper = styled(AddLocationIcon)`
+    width: 21px;
+    height: 25px;
+    margin-right: 5px;
+`
 
 export default OptionMaker;

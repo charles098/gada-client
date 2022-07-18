@@ -266,6 +266,7 @@ const Container = styled.div`
 
     & .bottom-section {
         display: flex;
+        padding-top: 30px;
     }
 `;
 

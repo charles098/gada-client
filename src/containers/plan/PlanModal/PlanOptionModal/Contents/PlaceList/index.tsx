@@ -2,6 +2,7 @@ import React from 'react';
 import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { insertSelectedPlaces } from 'store/modules/plan/search';
+import styled from 'styled-components';
 
 import PlaceListItem from './PlaceListItem';
 
@@ -12,7 +13,7 @@ const PlaceList = () => {
     const placeList = useSelector(places);
     return (
         <>
-            <header> 검색결과</header>
+            <Header> 검색결과</Header>
             <div className="contents">
                 {placeList.map((place) => (
                     <PlaceListItem
@@ -29,5 +30,9 @@ const PlaceList = () => {
         </>
     );
 };
+
+const Header = styled.header`
+    padding-left: 10px;
+`
 
 export default PlaceList;

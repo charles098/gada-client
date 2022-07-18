@@ -22,9 +22,13 @@ const PlaceListItem = ({ name, address, imgUrl, onClick }: Props) => {
     );
 };
 const ItemContainer = styled.div`
-    margin: 10px 0;
+    padding: 10px;
     display: flex;
     justify-contents: center;
+
+    :hover {
+        background: #F8F8F8;
+    }
 `;
 const ItemImage = styled.img`
     border-radius: 15px;

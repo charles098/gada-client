@@ -46,7 +46,7 @@ const ShowDistance: FC = () => {
 
 const Container = styled.div`
     padding-top: 15px;
-    background-color: #f2fbcb;
+    
     width: 80px;
     margin-left: 40px;
 `;
