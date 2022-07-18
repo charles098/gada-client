@@ -2,16 +2,26 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import PlanPeriod from 'components/PlanPeriod';
-import PlanWith from 'components/PlanWith';
 import SwitchToggle from 'components/SwitchToggle';
+import { useDispatch } from 'react-redux';
+import { changeShareMode } from 'store/modules/plan/plan';
 
 const PlanInfo: FC = () => {
+    const dispatch = useDispatch();
     return (
         <Container>
             <PlanTitle />
             <PlanPeriod />
-            <PlanWith />
-            <SwitchToggle label="Switch One" noText />
+            <PlanSwitch>
+                <p>공유하기</p>
+                <SwitchToggle
+                    label="Switch One"
+                    noText
+                    onClick={() => {
+                        dispatch(changeShareMode());
+                    }}
+                />
+            </PlanSwitch>
         </Container>
     );
 };
@@ -21,6 +31,8 @@ const Container = styled.div`
     height: 30px;
     margin: 30px;
     display: flex;
+    flex-direction: row;
+
     align-items: center;
 
     & > button {
@@ -31,6 +43,14 @@ const Container = styled.div`
         background-color: ${({ theme }) => theme.PRIMARY};
         color: white;
     }
+`;
+
+const PlanSwitch = styled.button`
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-contents: center;
+    margin-left: auto;
 `;
 
 export default PlanInfo;

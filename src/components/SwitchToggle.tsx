@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -18,6 +18,8 @@ function toCamelCase(Str: string) {
 const SwitchToggle = ({ className, label, ...props }: any) => {
     const id = toCamelCase(label);
 
+    const [onOff, setOnOff] = useState<boolean>(false);
+
     const switchClass = useMemo(() => {
         let Class = className;
         if (props.large) Class += ' switch--large';
@@ -28,7 +30,14 @@ const SwitchToggle = ({ className, label, ...props }: any) => {
 
     return (
         <Switch>
-            <div aria-label={label} className={switchClass}>
+            <switch
+                aria-label={label}
+                className={switchClass}
+                onClick={() => {
+                    setOnOff((f) => !f);
+                    if (props.onClick) props.onClick(onOff);
+                }}
+            >
                 <label className="switch__label" htmlFor={id}>
                     <input
                         role="switch"
@@ -43,14 +52,18 @@ const SwitchToggle = ({ className, label, ...props }: any) => {
                     />
                     <span className="switch__handle" />
                 </label>
-            </div>
+            </switch>
         </Switch>
     );
 };
 
 const Switch = styled.div`
     display: block;
+    width: auto;
+    height: auto;
     position: relative;
+    margin-right: 30px;
+
     .switch {
         background-color: transparent;
         box-sizing: border-box;

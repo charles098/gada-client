@@ -127,7 +127,11 @@ const PlanDetailModal: FC = () => {
                         />
                     </PlaceDetailCost>
                 </PlaceDetailContents>
-                <SubmitButton width={300} height={56} onClick={removeHandler}>
+                <SubmitButton 
+                width={300} 
+                height={56} 
+                fontSize={20}
+                onClick={removeHandler}>
                     메모하기
                 </SubmitButton>
             </DialogBox>

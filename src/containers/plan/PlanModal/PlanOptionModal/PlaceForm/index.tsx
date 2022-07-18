@@ -62,9 +62,8 @@ const PlanPlaceForm = () => {
 const PlaceForm = styled.form`
     box-sizing: border-box;
 
-    width: 975px;
+    width: 920px;
     height: 47px;
-    margin-left: 65px;
 
     background: #ffffff;
     border: 1px solid #cccccc;

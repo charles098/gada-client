@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { SearchedPlaceInfo } from 'store/modules/plan';
 import styled from 'styled-components';
+import { CrossIcon } from 'react-select/dist/declarations/src/components/indicators';
+import { CancelIcon } from 'components/icons';
 
 const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
@@ -17,15 +19,17 @@ interface Props {
 
 const PickMapPlace = ({ position, callback }: Props) => {
     useEffect(() => {
+        setIsOpen(true);
         if (inputRef.current) {
             inputRef.current.focus();
         }
     }, [position]);
     const [name, setName] = useState<string>();
+    const [isOpen, setIsOpen] = useState(true);
 
     const inputRef = useRef<HTMLInputElement>(null);
-    return (
-        <CustomOverlayMap position={position} yAnchor={1} zIndex={10}>
+    return isOpen ? (
+        <CustomOverlayMap position={position} yAnchor={1} zIndex={10} clickable>
             <PickMyPlaceForm
                 onSubmit={async (e) => {
                     e.preventDefault();
@@ -41,17 +45,31 @@ const PickMapPlace = ({ position, callback }: Props) => {
                         longitude: String(position.lng),
                     };
                     callback(place);
+                    setName('');
+                    setIsOpen(false);
                 }}
             >
+                <CancelBtn
+                    type="button"
+                    onClick={() => {
+                        setIsOpen(false);
+                    }}
+                >
+                    <span>
+                        <CancelIcon width="15px" />
+                    </span>
+                </CancelBtn>
                 <PickMyPlaceInput
                     placeholder="장소 이름을 입력해주세요!"
                     value={name ?? ''}
                     onChange={(e) => setName(e.target.value)}
                     ref={inputRef}
                 />
-                <PickMyPlaceButton>확인</PickMyPlaceButton>
+                <PickMyPlaceButton type="submit">확인</PickMyPlaceButton>
             </PickMyPlaceForm>
         </CustomOverlayMap>
+    ) : (
+        <div />
     );
 };
 const PickMyPlaceForm = styled.form`
@@ -113,6 +131,15 @@ const PickMyPlaceButton = styled.button`
     font-size: 12px;
     line-height: 17px;
     color: #ffffff;
+`;
+
+const CancelBtn = styled.button`
+    cursor: pointer;
+    position: absolute;
+    top: 3%;
+    right: 1%;
+    border: 0px;
+    background: none;
 `;
 
 export default PickMapPlace;

@@ -21,7 +21,7 @@ const PlanModal = () => {
     const selectedList = useSelector(selectedListSelector);
     const dispatch = useDispatch();
     return (
-        <Modal width={1111} height={884}>
+        <Modal width={1100} height={860}>
             <Container>
                 <PlanModalTitle
                     state={contentsType}
@@ -35,6 +35,7 @@ const PlanModal = () => {
                 <SubmitButton
                     width={430}
                     height={56}
+                    fontSize={20}
                     onClick={() => {
                         console.log('Model confirm Execute!!!');
                         dispatch(dropAllSelectedPlaces());
@@ -50,10 +51,13 @@ const PlanModal = () => {
 };
 
 const Container = styled.div`
-    width: 100%;
+    box-sizing: border-box;
+    width: 920px;
+    height: 100%; 
     display: flex;
     flex-direction: column;
-    padding: 50px 65px 20px 65px;
+    align-items: center;
+    margin-top: 30px;
 `;
 
 // width: 430px;

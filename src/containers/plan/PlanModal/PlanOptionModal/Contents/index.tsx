@@ -17,7 +17,8 @@ const PlanModalContents = () => {
 };
 
 const PlaceContents = styled.div`
-    margin: 20px 80px;
+    width: 920px;
+    margin: 20px 0px;
     header {
         font-family: 'Noto Sans KR';
         font-style: normal;

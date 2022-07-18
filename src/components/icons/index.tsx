@@ -19,8 +19,10 @@ import LikeIcon from './LikeIcon';
 import UnlikeIcon from './UnLikeIcon';
 import ErrorIcon from './ErrorIcon';
 import SpeechIcon from './SpeechIcon';
+import CancelDetailIcon from './CancelDetailIcon';
 
 export {
+    CancelDetailIcon,
     UnlikeIcon,
     LikeIcon,
     AddLocationIcon,
