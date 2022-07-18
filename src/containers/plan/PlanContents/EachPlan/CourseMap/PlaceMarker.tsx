@@ -14,7 +14,7 @@ type Latlng = { lat: number; lng: number };
 type node = { x: number; y: number };
 
 type Props = {
-    position: Latlng & node;
+    position: Latlng;
     name: string;
     img: string;
     color: string;

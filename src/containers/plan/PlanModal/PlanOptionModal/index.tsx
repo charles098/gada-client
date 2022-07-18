@@ -42,17 +42,8 @@ const PlanModal = () => {
                 <SubmitButton
                     width={430}
                     height={56}
-<<<<<<< HEAD
                     fontSize={20}
-                    onClick={() => {
-                        console.log('Model confirm Execute!!!');
-                        dispatch(dropAllSelectedPlaces());
-                        dispatch(insertPlaceOptionList(selectedList));
-                        dispatch(changeOpenState(false));
-                    }}
-=======
                     onClick={onClickSubmitButton}
->>>>>>> d1378c56ef3161e3f4d660b5c29079a0289e7c06
                 >
                     등록완료
                 </SubmitButton>
