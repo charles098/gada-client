@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { PlaneIcon } from 'components/icons';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 const LoginHeader = () => {
+    const navigate = useNavigate();
+    
+    const clickHandler = () => { navigate("/") }
     return (
         <Wrapper>
             <TitleContainer>
-                <Title>
+                <Title onClick={clickHandler}>
                     <PlaneIcon
                         width="50px"
                         height="55px"
@@ -15,7 +18,9 @@ const LoginHeader = () => {
                     />
                     여행가다
                 </Title>
-                <SubTitle>지금 당장 여행 계획을 짜보세요!</SubTitle>
+                <SubTitle onClick={clickHandler}>
+                    지금 당장 여행 계획을 짜보세요!
+                </SubTitle>
             </TitleContainer>
             <Outlet />
         </Wrapper>
@@ -50,7 +55,9 @@ const planeIconStyle = {
 const Title = styled.div`
     font-size: 32px;
     margin-bottom: 20px;
+    cursor: pointer;
 `
 const SubTitle = styled.div`
     font-size: 24px;
+    cursor: pointer;
 `

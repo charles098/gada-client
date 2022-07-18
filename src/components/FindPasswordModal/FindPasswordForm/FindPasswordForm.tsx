@@ -1,9 +1,8 @@
 import React, { FC, useState, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import welcomeImg from 'images/welcome.png';
 
-const EmailAuthForm: FC = () => {
+const FindPasswordForm: FC = () => {
     const [sendEmail, setSendEmail] = useState<boolean>(false);
     const emailRef = useRef<any>();
 
@@ -11,7 +10,7 @@ const EmailAuthForm: FC = () => {
         const data = { email: emailRef.current.value };
         
         axios
-            .post('/api/users/auth-email', data).then((response) => {
+            .post('/api/users/reset', data).then((response) => {
                 setSendEmail(!sendEmail);
                 console.log(response.data);
             })
@@ -23,14 +22,14 @@ const EmailAuthForm: FC = () => {
 
     return (
         <Wrapper>
-            <Welcome>환영합니다!!</Welcome>
-            <Subtitle1>이메일 인증을 완료하면</Subtitle1>
-            <Subtitle2>회원가입 페이지로 이동합니다.</Subtitle2>
+            <Title>비밀번호 찾기</Title>
+            <Subtitle1>회원 이메일로 임시비밀번호가 발급됩니다.</Subtitle1>
+            <Subtitle2>로그인 후 프로필에서 비밀번호를 수정하세요.</Subtitle2>
             <BottomContainer>
                 {
                     sendEmail ?
                     <Information>
-                    회원가입 링크가 이메일로 전송되었습니다.
+                    임시 비밀번호가 이메일로 전송되었습니다.
                     </Information> :
                     <>
                         <InputContainer>
@@ -43,7 +42,7 @@ const EmailAuthForm: FC = () => {
                         </InputContainer>
                         <Button
                             onClick={handleClick}
-                        >인증 메일 보내기</Button>
+                        >임시 비밀번호 발급</Button>
                     </>
                 }
             </BottomContainer>
@@ -51,7 +50,7 @@ const EmailAuthForm: FC = () => {
     )
 }
 
-export default EmailAuthForm;
+export default FindPasswordForm;
 
 const Wrapper = styled.div`
     padding: 20px;
@@ -62,27 +61,12 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
 `
-const Welcome = styled.div`
+const Title = styled.div`
     text-align: center;
     font-size: 30px;
     position: relative;
     color: #444444;
     margin-top: 10px;
-
-    &:before {
-        content: url(${welcomeImg});;
-        margin-right: 10px;
-        position: absolute;
-        top: -2px;
-        right: 160px;
-    }
-    &:after {
-        content: url(${welcomeImg});;
-        margin-left: 10px;
-        position: absolute;
-        top: -2px;
-        left: 160px;
-    }
 `
 
 const Subtitle1 = styled.div`

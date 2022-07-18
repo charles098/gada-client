@@ -38,8 +38,13 @@ const LoginForm = () => {
         }
     }
     
-    const handleRegisterClick = () => {
+    const registerClickHandler = () => {
         dispatch(changeModalName("EmailAuthModal"));
+        dispatch(changeOpenState(!modalIsOpen));
+    }
+
+    const findPasswordClickHandler = () => {
+        dispatch(changeModalName("FindPasswordModal"));
         dispatch(changeOpenState(!modalIsOpen));
     }
 
@@ -58,10 +63,12 @@ const LoginForm = () => {
             name="password"
             />
             <LinkContainer>
-                <Register onClick={handleRegisterClick}>
+                <Register onClick={registerClickHandler}>
                     회원가입
                 </Register>
-                <FindPassword>비밀번호 찾기</FindPassword>
+                <FindPassword onClick={findPasswordClickHandler}>
+                    비밀번호 찾기
+                </FindPassword>
             </LinkContainer>
             <LoginButton
             type="submit"
