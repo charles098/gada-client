@@ -3,9 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { SearchedPlaceInfo } from 'store/modules/plan';
 import styled from 'styled-components';
-import { CrossIcon } from 'react-select/dist/declarations/src/components/indicators';
 import { CancelIcon } from 'components/icons';
 
+/**
+ * @TODO DefaultImage 선정
+ */
 const emptyImage =
     'https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg';
 
@@ -14,7 +16,7 @@ interface Props {
         lat: number;
         lng: number;
     };
-    callback: any;
+    callback: (data: SearchedPlaceInfo) => void;
 }
 
 const PickMapPlace = ({ position, callback }: Props) => {
@@ -28,33 +30,30 @@ const PickMapPlace = ({ position, callback }: Props) => {
     const [isOpen, setIsOpen] = useState(true);
 
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!name) return;
+        const address = await position2DetailAddressByGeocoder(position);
+        const place: SearchedPlaceInfo = {
+            name,
+            imgUrl: emptyImage,
+            address,
+            latitude: String(position.lat),
+            longitude: String(position.lng),
+        };
+        callback(place);
+        setName('');
+        setIsOpen(false);
+    };
+    const onClickCancel = () => setIsOpen(false);
+    const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setName(e.target.value);
+
     return isOpen ? (
         <CustomOverlayMap position={position} yAnchor={1} zIndex={10} clickable>
-            <PickMyPlaceForm
-                onSubmit={async (e) => {
-                    e.preventDefault();
-                    if (!name) return;
-                    const address = await position2DetailAddressByGeocoder(
-                        position,
-                    );
-                    const place: SearchedPlaceInfo = {
-                        name,
-                        imgUrl: emptyImage,
-                        address,
-                        latitude: String(position.lat),
-                        longitude: String(position.lng),
-                    };
-                    callback(place);
-                    setName('');
-                    setIsOpen(false);
-                }}
-            >
-                <CancelBtn
-                    type="button"
-                    onClick={() => {
-                        setIsOpen(false);
-                    }}
-                >
+            <PickMyPlaceForm onSubmit={onSubmit}>
+                <CancelBtn type="button" onClick={onClickCancel}>
                     <span>
                         <CancelIcon width="15px" />
                     </span>
@@ -62,7 +61,7 @@ const PickMapPlace = ({ position, callback }: Props) => {
                 <PickMyPlaceInput
                     placeholder="장소 이름을 입력해주세요!"
                     value={name ?? ''}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={onChangeInput}
                     ref={inputRef}
                 />
                 <PickMyPlaceButton type="submit">확인</PickMyPlaceButton>
