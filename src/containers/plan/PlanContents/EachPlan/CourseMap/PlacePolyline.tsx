@@ -15,6 +15,27 @@ const PlacePolyline = ({ path, center, distance }: Props) => {
 
     let textTimeoutId: NodeJS.Timeout | undefined;
 
+    const onMouseoverPolyline = (e: kakao.maps.Polyline) => {
+        if (textRef.current) {
+            textRef.current.classList.add('visible');
+        }
+        e.setOptions({
+            strokeColor: '#ff0000',
+            strokeStyle: 'solid',
+        });
+        // console.log('CUSTOM', );
+        if (textTimeoutId) clearTimeout(textTimeoutId);
+    };
+    const onMouseoutPolyline = (e: kakao.maps.Polyline) => {
+        textTimeoutId = setTimeout(() => {
+            if (textRef.current) textRef.current.classList.remove('visible');
+            e.setOptions({
+                strokeColor: '#3e3e3e',
+                strokeStyle: 'shortdashdot',
+            });
+        }, 1000);
+    };
+
     return (
         <>
             {center && (
@@ -31,27 +52,8 @@ const PlacePolyline = ({ path, center, distance }: Props) => {
                 strokeOpacity={0.5} // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
                 strokeStyle="shortdashdot" // 선의 스타일입니다
                 zIndex={4}
-                onMouseover={(e) => {
-                    if (textRef.current) {
-                        textRef.current.classList.add('visible');
-                    }
-                    e.setOptions({
-                        strokeColor: '#ff0000',
-                        strokeStyle: 'solid',
-                    });
-                    // console.log('CUSTOM', );
-                    if (textTimeoutId) clearTimeout(textTimeoutId);
-                }}
-                onMouseout={(e) => {
-                    textTimeoutId = setTimeout(() => {
-                        if (textRef.current)
-                            textRef.current.classList.remove('visible');
-                        e.setOptions({
-                            strokeColor: '#3e3e3e',
-                            strokeStyle: 'shortdashdot',
-                        });
-                    }, 1000);
-                }}
+                onMouseover={onMouseoverPolyline}
+                onMouseout={onMouseoutPolyline}
             />
         </>
     );
