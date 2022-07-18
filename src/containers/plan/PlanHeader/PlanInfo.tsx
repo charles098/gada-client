@@ -4,8 +4,11 @@ import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import PlanPeriod from 'components/PlanPeriod';
 import PlanWith from 'components/PlanWith';
 import SwitchToggle from 'components/SwitchToggle';
+import { useDispatch } from 'react-redux';
+import { changeShareMode } from 'store/modules/plan/plan';
 
 const PlanInfo: FC = () => {
+    const dispatch = useDispatch();
     return (
         <Container>
             <PlanTitle />
@@ -13,7 +16,13 @@ const PlanInfo: FC = () => {
             <PlanWith />
             <PlanSwitch>
                 <p>공유하기</p>
-                <SwitchToggle label="Switch One" noText />
+                <SwitchToggle
+                    label="Switch One"
+                    noText
+                    onClick={() => {
+                        dispatch(changeShareMode());
+                    }}
+                />
             </PlanSwitch>
         </Container>
     );

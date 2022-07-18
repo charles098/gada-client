@@ -20,6 +20,7 @@ export interface planState {
     placeDistance: number[];
     placeDistanceCenter: Position[];
     mapCenterBound: kakao.maps.LatLngBounds | null;
+    shareMode: boolean;
 }
 
 const initialState: planState = {
@@ -36,6 +37,7 @@ const initialState: planState = {
     placeDistance: [],
     placeDistanceCenter: [],
     mapCenterBound: null,
+    shareMode: false,
 };
 const setPointRelatedOptions = (state: planState) => {
     state.placeDistance = changePosition2DistanceArray(
@@ -136,6 +138,9 @@ const planDetailSlice = createSlice({
             state.planList[state.setDay].push(droppedPlaceOption);
             setPointRelatedOptions(state);
         },
+        changeShareMode(state: planState) {
+            state.shareMode = !state.shareMode;
+        },
     },
 });
 
@@ -155,6 +160,7 @@ export const {
     setClickPlaceDetailId,
     movePlanToPlaceOption,
     movePlaceOptionToPlan,
+    changeShareMode,
 } = actions;
 
 export default reducer;
