@@ -2,13 +2,9 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import PlanPeriod from 'components/PlanPeriod';
-import PlanWith from 'components/PlanWith';
 import SwitchToggle from 'components/SwitchToggle';
 import { useDispatch } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
-import { RootState } from 'store/modules';
-
-const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
 const PlanInfo: FC = () => {
     const dispatch = useDispatch();
@@ -16,7 +12,6 @@ const PlanInfo: FC = () => {
         <Container>
             <PlanTitle />
             <PlanPeriod />
-            <PlanWith />
             <PlanSwitch>
                 <p>공유하기</p>
                 <SwitchToggle
@@ -50,10 +45,11 @@ const Container = styled.div`
     }
 `;
 
-const PlanSwitch = styled.div`
+const PlanSwitch = styled.button`
+    padding: 5px;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    justify-contents: center;
     margin-left: auto;
 `;
 

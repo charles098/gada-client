@@ -59,8 +59,11 @@ const SwitchToggle = ({ className, label, ...props }: any) => {
 
 const Switch = styled.div`
     display: block;
+    width: auto;
+    height: auto;
     position: relative;
     margin-right: 30px;
+
     .switch {
         background-color: transparent;
         box-sizing: border-box;
