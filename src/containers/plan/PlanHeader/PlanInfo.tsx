@@ -11,7 +11,10 @@ const PlanInfo: FC = () => {
             <PlanTitle />
             <PlanPeriod />
             <PlanWith />
-            <SwitchToggle label="Switch One" noText />
+            <PlanSwitch>
+                <p>공유하기</p>
+                <SwitchToggle label="Switch One" noText />
+            </PlanSwitch>
         </Container>
     );
 };
@@ -21,6 +24,8 @@ const Container = styled.div`
     height: 30px;
     margin: 30px;
     display: flex;
+    flex-direction: row;
+
     align-items: center;
 
     & > button {
@@ -31,6 +36,13 @@ const Container = styled.div`
         background-color: ${({ theme }) => theme.PRIMARY};
         color: white;
     }
+`;
+
+const PlanSwitch = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: auto;
 `;
 
 export default PlanInfo;
