@@ -13,7 +13,7 @@ const ShowDistance: FC = () => {
     const planList = useSelector(planListSelector);
     const setDay = useSelector(setDaySelector);
     const placeDistance = useSelector(placeDistanceSelector);
-    const length = useMemo(() => {
+    const planListLength = useMemo(() => {
         if (planList && planList.length > 0)
             return planList[setDay].length ?? 0;
         return 0;
@@ -21,24 +21,25 @@ const ShowDistance: FC = () => {
 
     return (
         <Container>
-            {[...new Array(length)].map((value, index) => (
-                <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
-                    <PlacePicker
-                        size={32}
-                        border={20}
-                        color={theme.USER_PLAN_COLOR[index]}
-                    >
-                        <div>{index + 1}</div>
-                    </PlacePicker>
-                    {index < length - 1 && (
-                        <DistanceLine>
-                            <DistanceText>
-                                {setDistanceText(placeDistance[index])}
-                            </DistanceText>
-                        </DistanceLine>
-                    )}
-                </LocationPointBox>
-            ))}
+            {planListLength > 0 &&
+                [...new Array(planListLength)].map((value, index) => (
+                    <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
+                        <PlacePicker
+                            size={32}
+                            border={20}
+                            color={theme.USER_PLAN_COLOR[index]}
+                        >
+                            <div>{index + 1}</div>
+                        </PlacePicker>
+                        {index < planListLength - 1 && (
+                            <DistanceLine>
+                                <DistanceText>
+                                    {setDistanceText(placeDistance[index])}
+                                </DistanceText>
+                            </DistanceLine>
+                        )}
+                    </LocationPointBox>
+                ))}
         </Container>
     );
 };

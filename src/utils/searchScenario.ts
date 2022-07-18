@@ -67,7 +67,7 @@ const pickByKeyword = async (
         ps.keywordSearch(`${keyword}`, async (data, status) => {
             if (status === kakao.maps.services.Status.OK) {
                 const place = data[0];
-                resolve({ lat: Number(place.x), lng: Number(place.y) });
+                resolve({ lat: Number(place.y), lng: Number(place.x) });
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                 reject(new Error('검색 결과가 존재하지 않습니다.'));
             } else if (status === kakao.maps.services.Status.ERROR) {
@@ -92,7 +92,6 @@ const position2DetailAddressByGeocoder = (
     return new Promise((resolve, reject) => {
         geocoder.coord2Address(position.lng, position.lat, (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
-                // console.log(result);
                 resolve(result[0].address.address_name);
             } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                 reject(new Error('주소가 존재하지 않습니다.'));

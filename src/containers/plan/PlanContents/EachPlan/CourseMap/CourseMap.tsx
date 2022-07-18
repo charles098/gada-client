@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { Map, MapMarker, Polyline } from 'react-kakao-maps-sdk';
+import { Map } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
@@ -45,6 +45,7 @@ const CourseMap = () => {
                     height: '100%',
                 }}
                 ref={mapRef}
+                minLevel={4}
             >
                 {validPlaceList &&
                     placeList[setDay].map((placeDetail, index) => {
@@ -84,16 +85,16 @@ const CourseMap = () => {
 };
 
 const getPositionByIPlace = (data: Place) => ({
-    lng: Number(data.longitude),
     lat: Number(data.latitude),
+    lng: Number(data.longitude),
 });
 
 const Container = styled.div`
     background-color: #faeacd;
-
     width: 810px;
     height: 620px;
     margin: 0 30px 30px 30px;
+    position: relative;
 `;
 
 export default CourseMap;
