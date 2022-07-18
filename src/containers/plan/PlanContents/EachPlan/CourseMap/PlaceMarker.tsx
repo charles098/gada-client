@@ -10,8 +10,11 @@ import ReactDOM from 'react-dom';
 import { AbstractOverlay, useMap } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
+type Latlng = { lat: number; lng: number };
+type node = { x: number; y: number };
+
 type Props = {
-    position: { lat: number; lng: number };
+    position: Latlng & node;
     name: string;
     img: string;
     color: string;
@@ -30,24 +33,15 @@ function TooltipMarker({ position, name, img, color }: Props) {
         [position.lat, position.lng],
     );
 
-    useEffect(() => {
-        // console.log('CUSTOM LOG TOOLTIP', node.current);
-        // console.log('CUSTOM LOG TOOLTIP', node);
-        // console.log('CUSTOM LOG TOOLTIP', position);
-    });
-
     function onAdd(this: any) {
         // eslint-disable-next-line react/no-this-in-sfc
         const panel = this.getPanels().overlayLayer;
         panel.appendChild(node.current);
-        // console.log('CUSTOM LOG TOOLTIP', 'onAdd');
-
-        // console.log('CUSTOM LOG TOOLTIP', panel, this);
     }
+
     function onRemove() {
         if (node.current.parentNode)
             node.current.parentNode.removeChild(node.current);
-        // console.log('CUSTOM LOG TOOLTIP', 'onRemove');
     }
 
     function draw(this: any) {
@@ -110,7 +104,13 @@ function TooltipMarker({ position, name, img, color }: Props) {
     };
 
     // eslint-disable-next-line react/no-unstable-nested-components
-    const Tracker = ({ position, angle }: any) => {
+    const Tracker = ({
+        position,
+        angle,
+    }: {
+        position: node;
+        angle: number;
+    }) => {
         return (
             // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <PlaceTracker
@@ -140,14 +140,14 @@ function TooltipMarker({ position, name, img, color }: Props) {
     // https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
     const getClipPosition = useCallback(
         (
-            top: any,
-            right: any,
-            bottom: any,
-            left: any,
-            inner: any,
-            outer: any,
+            top: number,
+            right: number,
+            bottom: number,
+            left: number,
+            inner: node,
+            outer: node,
         ) => {
-            const calcOutcode = (x: any, y: any) => {
+            const calcOutcode = (x: number, y: number) => {
                 let outcode: number = OUTCODE.INSIDE;
 
                 if (x < left) {
@@ -213,7 +213,7 @@ function TooltipMarker({ position, name, img, color }: Props) {
         ],
     );
 
-    const getAngle = (center: any, target: any) => {
+    const getAngle = (center: node, target: node) => {
         const dx = target.x - center.x;
         const dy = center.y - target.y;
         const deg = (Math.atan2(dy, dx) * 180) / Math.PI;
@@ -343,22 +343,19 @@ function TooltipMarker({ position, name, img, color }: Props) {
     // 지도에서 완전히 사라지려면 지도 영역을 상하좌우 30px만큼 더 드래그해야 합니다.
     // 이 함수는 현재 보이는 지도 bounds에서 상하좌우 30px만큼 확장한 bounds를 리턴합니다.
     // 이 확장된 영역은 TooltipMarker가 화면에서 보이는지를 판단하는 영역으로 사용됩니다.
-    const extendBounds = (bounds: any, proj: any) => {
-        // 주어진 bounds는 지도 좌표 정보로 표현되어 있습니다.
-        // 이것을 BOUNDS_BUFFER 픽셀 만큼 확장하기 위해서는
-        // 픽셀 단위인 화면 좌표로 변환해야 합니다.
+    const extendBounds = (
+        bounds: kakao.maps.LatLngBounds,
+        proj: kakao.maps.MapProjection,
+    ) => {
         const sw = proj.pointFromCoords(bounds.getSouthWest());
         const ne = proj.pointFromCoords(bounds.getNorthEast());
 
-        // 확장을 위해 각 좌표에 BOUNDS_BUFFER가 가진 수치만큼 더하거나 빼줍니다.
         sw.x -= BOUNDS_BUFFER;
         sw.y += BOUNDS_BUFFER;
 
         ne.x += BOUNDS_BUFFER;
         ne.y -= BOUNDS_BUFFER;
 
-        // 그리고나서 다시 지도 좌표로 변환한 extBounds를 리턴합니다.
-        // extBounds는 기존의 bounds에서 상하좌우 30px만큼 확장된 영역 객체입니다.
         return new kakao.maps.LatLngBounds(
             proj.coordsFromPoint(sw),
             proj.coordsFromPoint(ne),
@@ -385,8 +382,7 @@ function TooltipMarker({ position, name, img, color }: Props) {
             {visible
                 ? ReactDOM.createPortal(
                       <Tracker position={tracerPosition} angle={tracerAngle} />,
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-ignore
+
                       map.getNode(),
                   )
                 : ReactDOM.createPortal(<Marker />, node.current)}

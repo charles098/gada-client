@@ -15,6 +15,20 @@ const CustomPlace = () => {
 
     const moving = useSelector(movePoint);
     const mapCenter = useSelector(centerPoint);
+
+    const executeMapEvent = (
+        _t: kakao.maps.Map,
+        mouseEvent: kakao.maps.event.MouseEvent,
+    ) => {
+        setPosition({
+            lat: mouseEvent.latLng.getLat(),
+            lng: mouseEvent.latLng.getLng(),
+        });
+    };
+
+    const pickMapPlaceEvent = (customPlace: SearchedPlaceInfo) => {
+        dispatch(insertSelectedPlaces(customPlace));
+    };
     return (
         <Map
             center={moving ?? mapCenter}
@@ -25,19 +39,12 @@ const CustomPlace = () => {
             }}
             level={3}
             disableDoubleClickZoom
-            onDoubleClick={(_t, mouseEvent) => {
-                setPosition({
-                    lat: mouseEvent.latLng.getLat(),
-                    lng: mouseEvent.latLng.getLng(),
-                });
-            }}
+            onDoubleClick={executeMapEvent}
         >
             {position && (
                 <PickMapPlace
                     position={position}
-                    callback={(customPlace: SearchedPlaceInfo) => {
-                        dispatch(insertSelectedPlaces(customPlace));
-                    }}
+                    callback={pickMapPlaceEvent}
                 />
             )}
         </Map>
