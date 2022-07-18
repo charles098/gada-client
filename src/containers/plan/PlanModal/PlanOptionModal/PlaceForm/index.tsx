@@ -1,5 +1,5 @@
 import { SearchIcon } from 'components/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { RootState } from 'store/modules';
@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchPlaces, searchForCoord } from 'store/modules/plan/search';
 
 const state = (state: RootState) => state.search.state;
-const list = (state: RootState) => state.search.placeList;
 
 interface searchType {
     bySearch: string;
@@ -23,36 +22,39 @@ const PlanPlaceForm = () => {
     });
 
     const contentsType = useSelector(state);
+
+    const onSubmitPlaceForm = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (contentsType) {
+            if (!search.bySearch) return;
+            dispatch(searchPlaces(search.bySearch));
+        } else {
+            if (!search.byPick) return;
+            dispatch(searchForCoord(search.byPick));
+        }
+    };
+
+    const onChangePlaceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        if (contentsType) {
+            setSearch((inputs: searchType) => ({
+                ...inputs,
+                bySearch: value,
+            }));
+        } else {
+            setSearch((inputs: searchType) => ({
+                ...inputs,
+                byPick: value,
+            }));
+        }
+    };
+
     return (
-        <PlaceForm
-            onSubmit={async (e) => {
-                e.preventDefault();
-                if (contentsType) {
-                    if (!search.bySearch) return;
-                    dispatch(searchPlaces(search.bySearch));
-                } else {
-                    if (!search.byPick) return;
-                    dispatch(searchForCoord(search.byPick));
-                }
-            }}
-        >
+        <PlaceForm onSubmit={onSubmitPlaceForm}>
             <SearchIcon width="24px" height="23px" />
             <PlaceInput
                 placeholder="장소를 입력해주세요"
-                onChange={(e) => {
-                    const { value } = e.target;
-                    if (contentsType) {
-                        setSearch((inputs: searchType) => ({
-                            ...inputs,
-                            bySearch: value,
-                        }));
-                    } else {
-                        setSearch((inputs: searchType) => ({
-                            ...inputs,
-                            byPick: value,
-                        }));
-                    }
-                }}
+                onChange={onChangePlaceInput}
                 value={contentsType ? search.bySearch : search.byPick}
             />
         </PlaceForm>
