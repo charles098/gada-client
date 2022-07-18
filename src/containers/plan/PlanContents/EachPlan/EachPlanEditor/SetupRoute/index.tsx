@@ -14,6 +14,7 @@ import RoutItem from './RoutItem';
 
 const planListSelector = (state: RootState) => state.plan.planList;
 const setDaySelector = (state: RootState) => state.plan.setDay;
+const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
@@ -22,6 +23,7 @@ const SetupRoute: FC = () => {
     const dispatch = useDispatch();
     const planList = useSelector(planListSelector);
     const setDay = useSelector(setDaySelector);
+    const shareMode = useSelector(shareModeSelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
     const [isDrop, setIsDrop] = useState(false);
     const droppedRef = useRef<HTMLElement | null>(null);
@@ -41,46 +43,52 @@ const SetupRoute: FC = () => {
 
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
+            if (shareMode) return;
             enterCnt.current = 0;
             dispatch(grabPlaceOption({ id: null }));
             dispatch(grabPlan({ id: e.currentTarget.dataset.id }));
         },
-        [],
+        [shareMode],
     );
 
     const onDragEnterConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
+            if (shareMode) return;
             if (!grabPlaceOptionId) return;
             enterCnt.current += 1;
             e.currentTarget.classList.add('drag-over');
         },
-        [grabPlaceOptionId],
+        [grabPlaceOptionId, shareMode],
     );
 
     const onDragLeaveConainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
+            if (shareMode) return;
             if (!grabPlaceOptionId) return;
             enterCnt.current -= 1;
             if (enterCnt.current === 0) {
                 e.currentTarget.classList.remove('drag-over');
             }
         },
-        [grabPlaceOptionId],
+        [grabPlaceOptionId, shareMode],
     );
 
     const onDropContainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
+            if (shareMode) return;
             if (!grabPlaceOptionId) return;
             e.currentTarget.classList.remove('drag-over');
             dispatch(movePlaceOptionToPlan());
             setIsDrop(true);
         },
-        [grabPlaceOptionId],
+        [grabPlaceOptionId, shareMode],
     );
+
+    // SortableJs Logic
 
     const getSortableList = (list: Place[][]): Place[] => {
         if (!(list.length > 1)) return [];
-
+        if (shareMode) return [];
         return list[setDay].map((x) => ({
             ...x,
             chosen: true,
@@ -88,6 +96,7 @@ const SetupRoute: FC = () => {
     };
     const onSort = (list: Place[]): void => {
         if (!(list.length > 0)) return;
+        if (shareMode) return;
         dispatch(sortPlanList({ list }));
     };
 

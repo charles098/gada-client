@@ -35,7 +35,7 @@ const SwitchToggle = ({ className, label, ...props }: any) => {
                 className={switchClass}
                 onClick={() => {
                     setOnOff((f) => !f);
-                    props.onClick(onOff);
+                    if (props.onClick) props.onClick(onOff);
                 }}
             >
                 <label className="switch__label" htmlFor={id}>

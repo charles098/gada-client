@@ -60,7 +60,7 @@ const CourseMap = () => {
                                     color={theme.USER_PLAN_COLOR[index]}
                                 />
                                 <PlacePolyline
-                                    key={`line-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
+                                    key={`${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     path={
                                         index > 0
                                             ? [

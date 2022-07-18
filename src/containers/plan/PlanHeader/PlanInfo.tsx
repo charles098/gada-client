@@ -6,6 +6,9 @@ import PlanWith from 'components/PlanWith';
 import SwitchToggle from 'components/SwitchToggle';
 import { useDispatch } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
+import { RootState } from 'store/modules';
+
+const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
 const PlanInfo: FC = () => {
     const dispatch = useDispatch();

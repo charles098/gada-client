@@ -139,7 +139,7 @@ const planDetailSlice = createSlice({
             setPointRelatedOptions(state);
         },
         changeShareMode(state: planState) {
-            state.shareMode = !state.shareMode;
+            state.shareMode = true;
             console.log('CUSTOM SHARE', state.shareMode);
         },
     },
