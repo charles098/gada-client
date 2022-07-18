@@ -24,6 +24,9 @@ const PlanDetailModal: FC = () => {
         clickPlaceDetailId: detailId,
     } = useSelector(PlanSelector);
 
+    /**
+     * 이벤트 요청이 들어온 Place정보를 같아오는 Memo
+     */
     const SelectedDetailPlace: Place | undefined = useMemo(() => {
         if (!detailId) return undefined;
         const Place = planList[setDay].find((p) => p.id === detailId);
