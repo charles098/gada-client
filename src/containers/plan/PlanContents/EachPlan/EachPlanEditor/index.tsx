@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
 import { createPlanListArray } from 'store/modules/plan/plan';
+import { getPeriod } from 'utils/planUtils';
 import ShowDistance from './ShowDistance';
 import SetupRoute from './SetupRoute';
 
@@ -22,11 +23,6 @@ const PlanMaker: FC = () => {
         setPlanPeriod(period);
         dispatch(createPlanListArray({ days: period }));
     }, [startDate, lastDate]);
-
-    const getPeriod = (startDay: Date, lastDay: Date): number => {
-        const diffDate = startDay.getTime() - lastDay.getTime();
-        return Math.abs(diffDate / (1000 * 60 * 60 * 24));
-    };
 
     return (
         <Container>

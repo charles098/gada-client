@@ -1,10 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+    ActionReducerMapBuilder,
+    createAsyncThunk,
+    createSlice,
+    PayloadAction,
+} from '@reduxjs/toolkit';
+import axios, { AxiosRequestConfig } from 'axios';
 import {
     changePosition2DistanceArray,
     changePosition2DistanceCenter,
     getPosition2bound,
 } from 'utils/mapPointHelper';
 import { Place, Position } from '.';
+import { changePlanModel2PlanState } from './plan.controller';
+import { PlanDetailModel } from './plan.model';
 
 export interface planState {
     title: string;
@@ -15,7 +23,7 @@ export interface planState {
     grabPlanId: string | null;
     grabPlaceOptionId: string | null;
     clickPlaceDetailId: string | null;
-    planList: Place[][];
+    planList: PlanDetailModel[][];
     placeOptionList: Place[];
     placeDistance: number[];
     placeDistanceCenter: Position[];
@@ -49,6 +57,126 @@ const setPointRelatedOptions = (state: planState) => {
     state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
 };
 
+// Thunk
+
+const mockid = '';
+
+const getPlanInfoById = createAsyncThunk(
+    'GET/plan/getPlan',
+    async (planObjectId: string, { rejectWithValue }) => {
+        try {
+            const result = await axios.get(`/plans/${mockid}`);
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+const movePlaceOptionToPlan2 = createAsyncThunk(
+    'POST/plan/addPlanDetail',
+    async (
+        { place, setDay }: { place: Place; setDay: number },
+        { rejectWithValue },
+    ) => {
+        try {
+            const result = await axios.post(`/planDetails`, {
+                planId: mockid,
+                imgUrl: place.imgUrl,
+                index: setDay,
+                placeId: place.id,
+                name: place.name,
+                latitude: place.latitude,
+                longitude: place.longitude,
+                address: place.address,
+            });
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+const planDetails = createAsyncThunk(
+    'DELETE/plan/planDetails',
+    async (
+        {
+            planId,
+            index,
+            placeId,
+        }: { planId: string; index: number; placeId: string },
+        { rejectWithValue },
+    ) => {
+        try {
+            const data = {
+                planId: mockid,
+                index,
+                placeId,
+            };
+            const result = await axios.delete('/planDetail', {
+                headers: {},
+                data,
+            });
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+const getPlanDetail = createAsyncThunk(
+    'GET/plan/getPlanDetails',
+    async (placeId: string, { rejectWithValue }) => {
+        try {
+            const result = await axios.get(`/planDetails/${placeId}`);
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+const updatePlanDetail = createAsyncThunk(
+    'PATCH/plan/updatePlanDetail',
+    async (
+        { _id, ...place }: Partial<PlanDetailModel>,
+        { rejectWithValue },
+    ) => {
+        try {
+            const result = await axios.patch(`/planDetails`, {
+                planDetail: {
+                    _id,
+                    ...place,
+                },
+            });
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+const extraReducers = (builder: ActionReducerMapBuilder<planState>) => {
+    builder.addCase(getPlanInfoById.fulfilled, (state: planState, action) => {
+        const { data } = action.payload;
+        changePlanModel2PlanState(state, data);
+    });
+    builder.addCase(
+        movePlaceOptionToPlan2.fulfilled,
+        (state: planState, action) => {
+            // add Place Data
+            const { data } = action.payload;
+            console.log('API CALL', data);
+            const droppedPlaceOption = state.placeOptionList.find(
+                (option) => option.id === state.grabPlaceOptionId,
+            ) as Place;
+
+            const idx = state.placeOptionList.indexOf(droppedPlaceOption);
+            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
+            state.placeOptionList.splice(idx, 1);
+            // state.planList[state.setDay].push(droppedPlaceOption);
+            setPointRelatedOptions(state);
+        },
+    );
+};
+
 const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
@@ -76,7 +204,7 @@ const planDetailSlice = createSlice({
         },
         createPlanListArray(state: planState, action) {
             const days = action.payload.days ?? 1;
-            const arr = new Array<Place[]>(days).fill([]);
+            const arr = new Array<PlanDetailModel[]>(days).fill([]);
             state.planList = arr;
         },
         setTitle(state: planState, action) {
@@ -120,7 +248,7 @@ const planDetailSlice = createSlice({
             // dropPlan
             const droppedPlan = state.planList[state.setDay].find(
                 (plan) => plan.id === state.grabPlanId,
-            ) as Place;
+            ) as PlanDetailModel;
             const idx = state.planList[state.setDay].indexOf(droppedPlan);
             console.log('CUSTOM LOG: ', state.grabPlanId, idx);
             state.planList[state.setDay].splice(idx, 1);
@@ -130,7 +258,7 @@ const planDetailSlice = createSlice({
             // dropPlaceOption
             const droppedPlaceOption = state.placeOptionList.find(
                 (option) => option.id === state.grabPlaceOptionId,
-            ) as Place;
+            ) as PlanDetailModel;
 
             const idx = state.placeOptionList.indexOf(droppedPlaceOption);
             console.log('CUSTOM LOG: ', state.grabPlanId, idx);
@@ -143,6 +271,7 @@ const planDetailSlice = createSlice({
             console.log('CUSTOM SHARE', state.shareMode);
         },
     },
+    extraReducers,
 });
 
 const { reducer, actions } = planDetailSlice;
