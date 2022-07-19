@@ -65,7 +65,7 @@ const PlanSwitchLabel = styled.p<{ shareMode: boolean }>`
     line-height: 26px;
     font-weight: bold;
     color: ${({ shareMode }) => (
-        shareMode ? "#1A73E8" : "#999"
+        shareMode ? "#60A5F8" : "#999"
     )};
 `
 
@@ -101,7 +101,7 @@ const CheckBox = styled.input`
     width: 42px;
     height: 26px;
     &:checked + ${CheckBoxLabel} {
-        background: #1A73E8;
+        background: #60A5F8;
         &::after {
             content: "";
             display: block;
