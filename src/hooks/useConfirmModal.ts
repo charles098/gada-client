@@ -9,7 +9,7 @@ import {
 
 const ModalSelector = (state: RootState) => state.modal
 
-const useConfirmModal = (confirmPropsPayload: any) => {
+const useConfirmModal = (confirmPropsPayload: any, type: string) => {
     const dispatch = useDispatch();
     // 입력: confirmPropsPayload
     // 받는 값: confirmModalHandler, confirmState
@@ -20,7 +20,7 @@ const useConfirmModal = (confirmPropsPayload: any) => {
         dispatch(changeModalName("ConfirmModal"));
         dispatch(changeOpenState(!modalIsOpen));
         dispatch(changeConfirmState(false));
-        dispatch(changeConfirmProps(confirmPropsPayload))
+        dispatch(changeConfirmProps({ ...confirmPropsPayload, type }))
     }
 
     return [confirmState, confirmType, confirmModalHandler];

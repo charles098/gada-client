@@ -11,11 +11,10 @@ const confirmPropsPayload = {
   width: 400,
   height: 310,
   message: '확인을 누르면 콘솔에 확인이, 취소를 투르면 아무것도 안떠야 한다.',
-  type: 'password'
 }
 
 const Home: FC = () => {
-    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(confirmPropsPayload);
+    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(confirmPropsPayload, "password");
 
     useEffect(() => {
       if (confirmState && confirmType === 'password') {
