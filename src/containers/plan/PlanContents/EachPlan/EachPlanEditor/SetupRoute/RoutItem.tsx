@@ -101,6 +101,7 @@ const ItemsToolBtn = styled.button`
     justify-content: center;
     margin-left: auto;
     border-radius: 2px 13px 13px 2px;
+    cursor: pointer;
 
     transition: background 0.1s linear;
 
