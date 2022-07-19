@@ -4,6 +4,7 @@ import FindPasswordModal from 'components/FindPasswordModal';
 import PlanOptionModal from 'containers/plan/PlanModal/PlanOptionModal';
 import NewPlanModal from 'containers/main/NewPlanModal';
 import PlanDetailModal from 'containers/plan/PlanModal/PlanDetailModal';
+import ConfirmModal from 'components/ConfirmModal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 
@@ -15,6 +16,7 @@ const modalComponents: any = {
     PlanOptionModal: <PlanOptionModal />,
     PlanDetailModal: <PlanDetailModal />,
     NewPlanModal: <NewPlanModal />,
+    ConfirmModal: <ConfirmModal />,
 };
 
 const PickModal = () => {
