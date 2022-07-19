@@ -67,6 +67,7 @@ const PlanSwitchLabel = styled.p<{ shareMode: boolean }>`
     color: ${({ shareMode }) => (
         shareMode ? "#60A5F8" : "#999"
     )};
+    cursor: default;
 `
 
 const CheckBoxWrapper = styled.div`
