@@ -1,12 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import getAuthHeader from 'utils/getAuthHeader';
 import axios from 'axios';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'store/modules';
-import { changeOpenState, changeModalName } from 'store/modules/modal';
 import { RightIcon } from 'components/icons';
+import useModal from 'hooks/useModal';
+import useConfirmModal from 'hooks/useConfirmModal';
 
 interface ProfileProps {
     email: string;
@@ -29,11 +28,33 @@ const passwordInfoMessages = {
     notMatch: "새 비밀번호가 일치하지 않습니다."    
 }
 
-const ModalSelector = (state: RootState) => state.modal
+const confirmNicknamePayload = {
+    width: 400,
+    height: 300,
+    message: '닉네임을 변경하시겠습니까?',
+    type: 'nickname'
+}
+
+const confirmPasswordPayload = {
+    width: 400,
+    hieght: 300,
+    message: '패스워드를 변경하시겠습니까?',
+    type: 'password'
+}
+
+const confirmWithdrawlPayload = {
+    width: 400,
+    height: 300,
+    message: '계정을 삭제하시겠습니까?😥',
+    type: 'withdrawl'
+}
 
 const Profile: FC = () => {
-    const dispatch = useDispatch();
-    const { modalIsOpen } = useSelector(ModalSelector);
+    const findPasswordClickHandler = useModal("FindPasswordModal");
+    const [nicknameState, nicknameType, nicknameModalHandler] = useConfirmModal(confirmNicknamePayload);
+    const nicknameRef = useRef<any>(null);
+    const [passwordState, passwordType, passwordModalHandler] = useConfirmModal(confirmPasswordPayload);
+    const [withdrawlState, withdrawlType, withdrawlModalHandler] = useConfirmModal(confirmWithdrawlPayload);
     const [ profileData, setProfileData ] = useState<ProfileProps>(initData);
     const [ nicknameMessage, setMessage ] = useState("");
     const [ passwordMessage, setPasswordMessage ] = useState("");
@@ -52,30 +73,36 @@ const Profile: FC = () => {
                 console.log(err);
             }
         })()
-    },[])
+    },[nicknameState])
+
+    useEffect(() => {
+        if (nicknameState) {
+            const data = {
+                username: nicknameRef.current.value
+            };
+
+            (async () => {
+                try {
+                    const results = await axios.patch('/api/users/username', data, { headers });
+                    console.log(results.data);
+                    setMessage("");
+                } catch(err) {
+                    console.log(err);
+                }
+            })()
+        }
+    }, [nicknameState])
 
     const usernameSubmitHandler = (e: any) => {
         e.preventDefault();
+        const username = nicknameRef.current.value;
 
-        const data = { 
-            username: e.target.username.value
-        };
-
-        if (data.username === profileData.username) {
+        if (username === profileData.username) {
             setMessage(nicknameInfoMessages.sameNickname);
             return;
         }
-
-        (async () => {
-            try {
-                const results = await axios.patch('/api/users/username', data, { headers });
-                console.log(results.data);
-                setMessage("");
-                alert('닉네임이 변경되었습니다!')
-            } catch(err) {
-                console.log(err);
-            }
-        })()
+        
+        nicknameModalHandler();
     }
 
     const passwordSubmitHandler = (e: any) => {
@@ -126,14 +153,8 @@ const Profile: FC = () => {
         })()
     }
 
-    const findPasswordClickHandler = () => {
-        dispatch(changeModalName("FindPasswordModal"));
-        dispatch(changeOpenState(!modalIsOpen));
-    }
-
     const toggleClickHandler = () => { 
         setClickedToggle(!clickedToggle);
-        console.log('asdf');
     }
 
     return (
@@ -158,6 +179,7 @@ const Profile: FC = () => {
                     <ProfileForm onSubmit={usernameSubmitHandler}>
                         <CardName>닉네임</CardName>
                         <UserName
+                        ref={nicknameRef}
                         type="text"
                         defaultValue={profileData.username}
                         placeholder="넥네임을 입력해주세요."
