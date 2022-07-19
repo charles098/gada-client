@@ -171,6 +171,7 @@ const PlaceDetailThumbnail = styled.img`
     border-radius: 50%;
     object-fit: cover;
     margin-top: 30px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
 `;
 const PlaceDetailTitle = styled.div`
     height: 72px;
