@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import dragImg from 'images/drag2.png';
 import SelectedPlaceOption from 'containers/plan/PlaceOptionMaker/SelectedPlaceOption';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeOpenState, changeModalName } from 'store/modules/modal';
@@ -20,8 +19,6 @@ const OptionMaker: FC = () => {
 
     return (
         <Container>
-            <img className="drag-explanation" src={dragImg} 
-            alt="drag" />
             <AddOptionButton onClick={handleClick}>
                 <AddLocationIconWrapper />
                 장소 추가

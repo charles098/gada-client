@@ -95,6 +95,11 @@ const SelectedOption: FC = () => {
             onDrop={onDropContainer}
             onDragOver={(e) => e.preventDefault()}
         >
+            <DragInfo className="drag-info">
+                <Message>
+                    장소를 드레그해서 일정에 추가해보세요!
+                </Message>
+            </DragInfo>
             <ReactSortable
                 className="sortable-container"
                 animation={150}
@@ -195,7 +200,44 @@ const SelectedOption: FC = () => {
 //                     </PlaceCard>
 //                 ))}
 //             </SlickSlider> */}
+const DragInfo = styled.div`
+    position: absolute;
+    top: -60px;
+    right: 300px;
+    width: 310px;
+    height: 40px;
+    background-color: #E4F0FF;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -10;
+
+    &:after {
+        content: '';
+        height: 0;
+        width: 0;
+        position: absolute;
+        top: 100%;
+        right: 140px;
+        border: 12px solid transparent;
+        border-top-width: 0;
+        border-bottom-color: #E4F0FF;
+        transform: rotate(180deg);
+    }
+`
+
+const Message = styled.p`
+    color: #76B2FA;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+`
+
 const Container = styled.div`
+    position: relative;
+    background-color: white;
+
     & > .sortable-container {
         width: 100%;
         height: 100px;
@@ -204,7 +246,7 @@ const Container = styled.div`
         padding: 8px 5px;
         display: flex;
         align-items: center;
-        overflow-y: hidden;
+        overflow-y: hidden;        
 
         &::-webkit-scrollbar {
             height: 10px;
