@@ -101,7 +101,7 @@ const SelectedOption: FC = () => {
                 <Message
                 shareMode={shareMode}>
                     { shareMode ? 
-                    "공유 모드에서는 일정 수정이 안됩니다!" :
+                    "공유한 계획은 수정할 수 없습니다!" :
                     "장소를 드레그해서 일정에 추가해보세요!" }
                 </Message>
             </DragInfo>
