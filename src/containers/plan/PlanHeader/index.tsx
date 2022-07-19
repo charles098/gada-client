@@ -6,11 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
 import { RootState } from 'store/modules';
 
-const PlanSelector = (state: RootState) => state.plan;
+const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
 const PlanInfo: FC = () => {
     const dispatch = useDispatch();
-    const { shareMode } = useSelector(PlanSelector);
+    const shareMode = useSelector(shareModeSelector);
 
     const onClickSwitch = (e: any) => dispatch(changeShareMode(!shareMode))
 
