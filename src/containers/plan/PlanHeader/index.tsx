@@ -30,10 +30,6 @@ const PlanInfo: FC = () => {
                         type="checkbox" />
                     <CheckBoxLabel htmlFor="checkbox" />
                 </CheckBoxWrapper>
-                { /* <SwitchToggle
-                    label="Switch One"
-                    noText
-                    onClick={onClickSwitch}/> */ }
             </PlanSwitch>
         </Container>
     );
