@@ -202,7 +202,7 @@ const SelectedOption: FC = () => {
 //             </SlickSlider> */}
 const DragInfo = styled.div`
     position: absolute;
-    top: -60px;
+    top: -54px;
     right: 300px;
     width: 310px;
     height: 40px;
