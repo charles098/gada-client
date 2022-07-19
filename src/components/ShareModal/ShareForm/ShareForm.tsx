@@ -1,13 +1,15 @@
 import React, { FC, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import useModal from 'hooks/useModal';
 import ShareHeader from './ShareHeader';
 import ShareTitle from './ShareTitle';
 import ShareTheme from './ShareTheme';
 
 const ShareForm: FC = () => {
     const [ theme, setTheme ] = useState<string>("");
-    
+    const closeModal = useModal("ShareForm");
+
     const submitHandler = (e: any) => {
         e.preventDefault();
         const { title } = e.target;
@@ -21,6 +23,7 @@ const ShareForm: FC = () => {
         else {
             console.log(title.value);
             console.log(theme);
+            closeModal();
         }
     }
 
