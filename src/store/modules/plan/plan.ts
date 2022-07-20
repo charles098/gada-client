@@ -15,6 +15,7 @@ import {
     changePlanModel2PlanState,
     movePlaceOptionToPlanFulfilledController,
     movePlanToPlaceOptionFulfilledController,
+    sortPlanListFulfilledController,
 } from './plan.controller';
 import { PlanDetailModel, PlanModel } from './plan.model';
 
@@ -128,24 +129,26 @@ const movePlanToPlaceOption = createAsyncThunk(
     },
 );
 
-const updateOrder = createAsyncThunk(
+const sortPlanList = createAsyncThunk(
     'PATCH/plan/updateOrder',
     async (
         {
             planId,
             index,
-            planDetails, //
-        }: { planId: string; planDetails: PlanDetailModel[]; index: number },
+            planDetails,
+        }: { planId: string; index: number; planDetails: PlanDetailModel[] },
         { rejectWithValue },
     ) => {
+        const data = {
+            planId: mockid,
+            index,
+            // eslint-disable-next-line no-underscore-dangle
+            planDetails: planDetails.map((data) => ({ planDetail: data._id })),
+        };
         try {
-            const data = {
-                planId: mockid,
-                index,
-                planDetails,
-            };
             const result = await axios.patch('/planDetails/order', data);
-            return result;
+            if (result) return planDetails;
+            return [];
         } catch (err) {
             return rejectWithValue(err);
         }
@@ -195,6 +198,7 @@ const extraReducers = (builder: ActionReducerMapBuilder<PlanState>) => {
         movePlanToPlaceOption.fulfilled,
         movePlanToPlaceOptionFulfilledController,
     );
+    builder.addCase(sortPlanList.fulfilled, sortPlanListFulfilledController);
 };
 
 const planDetailSlice = createSlice({
@@ -232,12 +236,12 @@ const planDetailSlice = createSlice({
             state.setDay = selectedDay;
             setPointRelatedOptions(state);
         },
-        sortPlanList(state: PlanState, action) {
-            const { list } = action.payload;
-            state.planList[state.setDay] = [...list];
-            // calc distance
-            setPointRelatedOptions(state);
-        },
+        // sortPlanList(state: PlanState, action) {
+        //     const { list } = action.payload;
+        //     state.planList[state.setDay] = [...list];
+        //     // calc distance
+        //     setPointRelatedOptions(state);
+        // },
         sortplaceOptionList(state: PlanState, action) {
             const { list } = action.payload;
             state.placeOptionList = [...list];
@@ -298,12 +302,16 @@ export const {
     setUpDay,
     sortplaceOptionList,
     grabPlan,
-    sortPlanList,
     grabPlaceOption,
     setClickPlaceDetailId,
     changeShareMode,
 } = actions;
 
-export { getPlanInfoById, movePlaceOptionToPlan, movePlanToPlaceOption };
+export {
+    getPlanInfoById,
+    movePlaceOptionToPlan,
+    movePlanToPlaceOption,
+    sortPlanList,
+};
 
 export default reducer;

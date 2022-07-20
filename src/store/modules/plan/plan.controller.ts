@@ -88,3 +88,12 @@ export const movePlanToPlaceOptionFulfilledController = (
     state.planList[state.setDay].splice(idx, 1);
     state.placeOptionList.push(droppedPlan);
 };
+
+export const sortPlanListFulfilledController = (
+    state: PlanState,
+    action: any,
+) => {
+    const data = action.payload; // planList 일수도?
+    state.planList[state.setDay] = [...data];
+    setPointRelatedOptions(state);
+};

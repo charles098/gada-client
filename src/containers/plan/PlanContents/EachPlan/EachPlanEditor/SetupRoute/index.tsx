@@ -10,6 +10,7 @@ import {
     sortPlanList,
 } from 'store/modules/plan/plan';
 import { Place } from 'store/modules/plan';
+import { PlanDetailModel } from 'store/modules/plan/plan.model';
 import RoutItem from './RoutItem';
 
 const planListSelector = (state: RootState) => state.plan.planList;
@@ -97,7 +98,7 @@ const SetupRoute: FC = () => {
 
     // SortableJs Logic
 
-    const getSortableList = (list: Place[][]): Place[] => {
+    const getSortableList = (list: PlanDetailModel[][]): PlanDetailModel[] => {
         if (!(list.length > 1)) return [];
         if (shareMode) return [];
         return list[setDay].map((x) => ({
@@ -105,10 +106,12 @@ const SetupRoute: FC = () => {
             chosen: true,
         }));
     };
-    const onSort = (list: Place[]): void => {
+    const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
         if (shareMode) return;
-        dispatch(sortPlanList({ list }));
+        dispatch(
+            sortPlanList({ planId: '', index: setDay, planDetails: list }),
+        );
     };
 
     return (
