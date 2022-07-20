@@ -274,8 +274,8 @@ const planDetailSlice = createSlice({
             state.planList[state.setDay].splice(idx, 1);
             state.placeOptionList.push(droppedPlan);
         },
-        changeShareMode(state: PlanState) {
-            state.shareMode = true;
+        changeShareMode(state: PlanState, action: PayloadAction<boolean>) {
+            state.shareMode = !action.payload;
             console.log('CUSTOM SHARE', state.shareMode);
         },
     },
