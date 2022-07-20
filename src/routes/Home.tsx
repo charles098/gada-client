@@ -6,6 +6,7 @@ import ko from 'date-fns/locale/ko';
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import useConfirmModal from 'hooks/useConfirmModal';
+import useModal from 'hooks/useModal';
 
 const confirmPropsPayload = {
   width: 400,
@@ -15,6 +16,7 @@ const confirmPropsPayload = {
 
 const Home: FC = () => {
     const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(confirmPropsPayload, "password");
+    const shareModalClickHandler = useModal("ShareModal");
 
     useEffect(() => {
       if (confirmState && confirmType === 'password') {
@@ -52,6 +54,11 @@ const Home: FC = () => {
             onClick={confirmModalHandler}>
               확인창
             </ConfirmModalButton>
+            <ShareModalButton
+            onClick={shareModalClickHandler}
+            >
+              공유 모달
+            </ShareModalButton>
             <DateWrapper>
                 <DateLabel
                     htmlFor="title"
@@ -129,5 +136,7 @@ const DateRangeWrapper = styled(DateRange)`
     display: none;
   }
 `
+
+const ShareModalButton = styled.button``;
 
 const ConfirmModalButton = styled.button``
