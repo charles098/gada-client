@@ -1,8 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+
+const LoactionSelector = (state: RootState) => state.location;
 
 const NewPlanTitle : FC = () => {
     const [title, setTitle] = useState<string>('');
+    const { locationName, isClickedLocation } = useSelector(LoactionSelector);
+
+    useEffect(() => {
+      if (isClickedLocation){
+        setTitle(`${locationName} 여행`);
+      }
+    }, [])
+
     const handleChange = (e: any) => setTitle(e.target.value);
 
     return (

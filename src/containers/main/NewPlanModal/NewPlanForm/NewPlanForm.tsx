@@ -22,10 +22,10 @@ const NewPlanForm: FC = () => {
         }
 
         // 유효성 검사
-        if (!image) {
-            alert('이미지를 삽입해주세요!');
-        }
-        else if (!title.value) {
+        // if (!image) {
+        //     alert('이미지를 삽입해주세요!');
+        // }
+        if (!title.value) {
             alert('제목을 입력해 주세요!');
         }
         else if (!location) {
