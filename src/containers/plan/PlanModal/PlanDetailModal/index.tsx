@@ -9,6 +9,7 @@ import { PencilIcon, ClockIcon, WonIcon } from 'components/icons';
 import { theme } from 'styles/theme';
 import SubmitButton from 'components/StyledSmitButton';
 import { Place } from 'store/modules/plan';
+import { PlanDetailModel } from 'store/modules/plan/plan.model';
 
 const ModalSelector = (state: RootState) => state.modal;
 const PlanSelector = (state: RootState) => state.plan;
@@ -27,11 +28,11 @@ const PlanDetailModal: FC = () => {
     /**
      * 이벤트 요청이 들어온 Place정보를 같아오는 Memo
      */
-    // const SelectedDetailPlace: Place | undefined = useMemo(() => {
-    //     if (!detailId) return undefined;
-    //     const Place = planList[setDay].find((p) => p.id === detailId);
-    //     return Place;
-    // }, [detailId]);
+    const SelectedDetailPlace: PlanDetailModel | undefined = useMemo(() => {
+        if (!detailId) return undefined;
+        const Place = planList[setDay].find((p) => p.id === detailId);
+        return Place;
+    }, [detailId]);
 
     const [details, setDetails] = useState({
         description: '',
@@ -39,17 +40,17 @@ const PlanDetailModal: FC = () => {
         cost: '',
     });
 
-    // useEffect(() => {
-    //     // setDetails
-    //     if (SelectedDetailPlace) {
-    //         setDetails({
-    //             description: SelectedDetailPlace?.description ?? '',
-    //             time: SelectedDetailPlace?.time ?? '',
-    //             cost: SelectedDetailPlace?.cost ?? '',
-    //         });
-    //     }
-    //     console.log('CUSTOM: It is State When you enter Detail', details);
-    // }, []);
+    useEffect(() => {
+        // setDetails
+        if (SelectedDetailPlace) {
+            setDetails({
+                description: SelectedDetailPlace?.description ?? '',
+                time: SelectedDetailPlace?.time ?? '',
+                cost: SelectedDetailPlace?.cost ?? '',
+            });
+        }
+        console.log('CUSTOM: It is State When you enter Detail', details);
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -71,9 +72,7 @@ const PlanDetailModal: FC = () => {
 
     return (
         <Modal width={500} height={770}>
-            {/* <PlaceDetailThumbnail
-                src={SelectedDetailPlace?.imgUrl ?? jeju}
-            /> */}
+            <PlaceDetailThumbnail src={SelectedDetailPlace?.imgUrl ?? jeju} />
             <PlaceDetailContents>
                 <PlaceDetailTitle>
                     {/* <p className="title">{SelectedDetailPlace?.name}</p>

@@ -12,6 +12,9 @@ interface PlanDetailModel extends Place {
     createdAt?: string;
     updatedAt?: string;
     __v?: number;
+    cost?: string;
+    description?: string;
+    time?: string;
 }
 
 interface PlanModel {
@@ -26,7 +29,4 @@ interface PlanModel {
     createdAt: string;
     updatedAt: string;
     __v: number;
-    cost?: string;
-    description?: string;
-    time?: string;
 }
