@@ -1,3 +1,4 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import {
     changePosition2DistanceArray,
     changePosition2DistanceCenter,
@@ -89,11 +90,10 @@ export const movePlanToPlaceOptionFulfilledController = (
     state.placeOptionList.push(droppedPlan);
 };
 
-export const sortPlanListFulfilledController = (
+export const sortPlanListController = (
     state: PlanState,
-    action: any,
+    data: PlanDetailModel[],
 ) => {
-    const data = action.payload; // planList 일수도?
     state.planList[state.setDay] = [...data];
     setPointRelatedOptions(state);
 };

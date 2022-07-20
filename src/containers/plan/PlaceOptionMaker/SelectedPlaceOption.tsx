@@ -18,6 +18,7 @@ const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
 const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
 const setDaySelector = (state: RootState) => state.plan.setDay;
+const planListSelector = (state: RootState) => state.plan.planList;
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
 const SelectedOption: FC = () => {
@@ -26,6 +27,7 @@ const SelectedOption: FC = () => {
     const setDay = useSelector(setDaySelector);
     const grabPlanId = useSelector(grabPlanIdSelector);
     const shareMode = useSelector(shareModeSelector);
+    const planList = useSelector(planListSelector);
     const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
@@ -72,6 +74,10 @@ const SelectedOption: FC = () => {
     const onDropContainer = useCallback(
         (e: React.DragEvent<HTMLElement>) => {
             if (!grabPlanId) return;
+
+            const column = planList[setDay]
+                .map((p) => p.id)
+                .indexOf(grabPlanId);
 
             e.currentTarget.classList.remove('drag-over');
             dispatch(

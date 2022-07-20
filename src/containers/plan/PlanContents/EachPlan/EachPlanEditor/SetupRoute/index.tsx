@@ -8,6 +8,7 @@ import {
     grabPlaceOption,
     movePlaceOptionToPlan,
     sortPlanList,
+    sortPlanListFailCheck,
 } from 'store/modules/plan/plan';
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
@@ -109,8 +110,14 @@ const SetupRoute: FC = () => {
     const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
         if (shareMode) return;
+        dispatch(sortPlanList(list));
         dispatch(
-            sortPlanList({ planId: '', index: setDay, planDetails: list }),
+            sortPlanListFailCheck({
+                planId: '',
+                index: setDay,
+                preplanDetails: planList[setDay],
+                curDetails: list,
+            }),
         );
     };
 

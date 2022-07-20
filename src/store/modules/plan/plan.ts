@@ -15,7 +15,7 @@ import {
     changePlanModel2PlanState,
     movePlaceOptionToPlanFulfilledController,
     movePlanToPlaceOptionFulfilledController,
-    sortPlanListFulfilledController,
+    sortPlanListController,
 } from './plan.controller';
 import { PlanDetailModel, PlanModel } from './plan.model';
 
@@ -129,28 +129,35 @@ const movePlanToPlaceOption = createAsyncThunk(
     },
 );
 
-const sortPlanList = createAsyncThunk(
+// reject 될때를 체크합니다
+const sortPlanListFailCheck = createAsyncThunk(
     'PATCH/plan/updateOrder',
     async (
         {
             planId,
             index,
-            planDetails,
-        }: { planId: string; index: number; planDetails: PlanDetailModel[] },
+            preplanDetails,
+            curDetails,
+        }: {
+            planId: string;
+            index: number;
+            preplanDetails: PlanDetailModel[];
+            curDetails: PlanDetailModel[];
+        },
         { rejectWithValue },
     ) => {
         const data = {
             planId: mockid,
             index,
             // eslint-disable-next-line no-underscore-dangle
-            planDetails: planDetails.map((data) => ({ planDetail: data._id })),
+            planDetails: curDetails.map((data) => ({ planDetail: data._id })),
         };
         try {
             const result = await axios.patch('/planDetails/order', data);
-            if (result) return planDetails;
+            if (result) return curDetails;
             return [];
         } catch (err) {
-            return rejectWithValue(err);
+            return rejectWithValue(preplanDetails);
         }
     },
 );
@@ -198,7 +205,9 @@ const extraReducers = (builder: ActionReducerMapBuilder<PlanState>) => {
         movePlanToPlaceOption.fulfilled,
         movePlanToPlaceOptionFulfilledController,
     );
-    builder.addCase(sortPlanList.fulfilled, sortPlanListFulfilledController);
+    builder.addCase(sortPlanListFailCheck.rejected, (state, action: any) => {
+        sortPlanListController(state, action.payload);
+    });
 };
 
 const planDetailSlice = createSlice({
@@ -236,12 +245,9 @@ const planDetailSlice = createSlice({
             state.setDay = selectedDay;
             setPointRelatedOptions(state);
         },
-        // sortPlanList(state: PlanState, action) {
-        //     const { list } = action.payload;
-        //     state.planList[state.setDay] = [...list];
-        //     // calc distance
-        //     setPointRelatedOptions(state);
-        // },
+        sortPlanList(state: PlanState, action) {
+            sortPlanListController(state, action.payload);
+        },
         sortplaceOptionList(state: PlanState, action) {
             const { list } = action.payload;
             state.placeOptionList = [...list];
@@ -301,6 +307,7 @@ export const {
     setTitle,
     setUpDay,
     sortplaceOptionList,
+    sortPlanList,
     grabPlan,
     grabPlaceOption,
     setClickPlaceDetailId,
@@ -311,7 +318,7 @@ export {
     getPlanInfoById,
     movePlaceOptionToPlan,
     movePlanToPlaceOption,
-    sortPlanList,
+    sortPlanListFailCheck,
 };
 
 export default reducer;
