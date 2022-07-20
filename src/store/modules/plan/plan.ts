@@ -11,10 +11,15 @@ import {
     getPosition2bound,
 } from 'utils/mapPointHelper';
 import { Place, Position } from '.';
-import { changePlanModel2PlanState } from './plan.controller';
-import { PlanDetailModel } from './plan.model';
+import {
+    changePlanModel2PlanState,
+    movePlaceOptionToPlanFulfilledController,
+    movePlanToPlaceOptionFulfilledController,
+} from './plan.controller';
+import { PlanDetailModel, PlanModel } from './plan.model';
 
-export interface planState {
+export interface PlanState
+    extends Omit<PlanModel, 'startDate' | 'lastDate' | 'planDetails'> {
     title: string;
     startDate: Date;
     lastDate: Date;
@@ -31,7 +36,7 @@ export interface planState {
     shareMode: boolean;
 }
 
-const initialState: planState = {
+const initialState: PlanState = {
     title: '부산 바캉스',
     startDate: new Date(20, 11, 3),
     lastDate: new Date(20, 11, 10),
@@ -46,20 +51,19 @@ const initialState: planState = {
     placeDistanceCenter: [],
     mapCenterBound: null,
     shareMode: false,
-};
-const setPointRelatedOptions = (state: planState) => {
-    state.placeDistance = changePosition2DistanceArray(
-        state.planList[state.setDay],
-    );
-    state.placeDistanceCenter = changePosition2DistanceCenter(
-        state.planList[state.setDay],
-    );
-    state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
+
+    _id: '',
+    userId: '',
+    area: '',
+    imgUrl: '',
+    createdAt: '',
+    updatedAt: '',
+    __v: 0,
 };
 
 // Thunk
 
-const mockid = '';
+const mockid = '62d6e63ab306296d6896cc84';
 
 const getPlanInfoById = createAsyncThunk(
     'GET/plan/getPlan',
@@ -73,8 +77,8 @@ const getPlanInfoById = createAsyncThunk(
     },
 );
 
-const movePlaceOptionToPlan2 = createAsyncThunk(
-    'POST/plan/addPlanDetail',
+const movePlaceOptionToPlan = createAsyncThunk(
+    'POST/plan/planDetails',
     async (
         { place, setDay }: { place: Place; setDay: number },
         { rejectWithValue },
@@ -84,7 +88,7 @@ const movePlaceOptionToPlan2 = createAsyncThunk(
                 planId: mockid,
                 imgUrl: place.imgUrl,
                 index: setDay,
-                placeId: place.id,
+                id: place.id,
                 name: place.name,
                 latitude: place.latitude,
                 longitude: place.longitude,
@@ -97,23 +101,23 @@ const movePlaceOptionToPlan2 = createAsyncThunk(
     },
 );
 
-const planDetails = createAsyncThunk(
+const movePlanToPlaceOption = createAsyncThunk(
     'DELETE/plan/planDetails',
     async (
         {
             planId,
             index,
-            placeId,
-        }: { planId: string; index: number; placeId: string },
+            id, // placeId
+        }: { planId: string; index: number; id: string },
         { rejectWithValue },
     ) => {
         try {
             const data = {
                 planId: mockid,
                 index,
-                placeId,
+                id,
             };
-            const result = await axios.delete('/planDetail', {
+            const result = await axios.delete('/planDetails', {
                 headers: {},
                 data,
             });
@@ -123,6 +127,31 @@ const planDetails = createAsyncThunk(
         }
     },
 );
+
+const updateOrder = createAsyncThunk(
+    'PATCH/plan/updateOrder',
+    async (
+        {
+            planId,
+            list, // placeId
+            index,
+        }: { planId: string; list: PlanDetailModel; index: number },
+        { rejectWithValue },
+    ) => {
+        try {
+            const data = {
+                planId: mockid,
+                list,
+                index,
+            };
+            const result = await axios.patch('/planDetails/order', data);
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
 const getPlanDetail = createAsyncThunk(
     'GET/plan/getPlanDetails',
     async (placeId: string, { rejectWithValue }) => {
@@ -153,27 +182,18 @@ const updatePlanDetail = createAsyncThunk(
         }
     },
 );
-const extraReducers = (builder: ActionReducerMapBuilder<planState>) => {
-    builder.addCase(getPlanInfoById.fulfilled, (state: planState, action) => {
+const extraReducers = (builder: ActionReducerMapBuilder<PlanState>) => {
+    builder.addCase(getPlanInfoById.fulfilled, (state: PlanState, action) => {
         const { data } = action.payload;
         changePlanModel2PlanState(state, data);
     });
     builder.addCase(
-        movePlaceOptionToPlan2.fulfilled,
-        (state: planState, action) => {
-            // add Place Data
-            const { data } = action.payload;
-            console.log('API CALL', data);
-            const droppedPlaceOption = state.placeOptionList.find(
-                (option) => option.id === state.grabPlaceOptionId,
-            ) as Place;
-
-            const idx = state.placeOptionList.indexOf(droppedPlaceOption);
-            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
-            state.placeOptionList.splice(idx, 1);
-            // state.planList[state.setDay].push(droppedPlaceOption);
-            setPointRelatedOptions(state);
-        },
+        movePlaceOptionToPlan.fulfilled,
+        movePlaceOptionToPlanFulfilledController,
+    );
+    builder.addCase(
+        movePlanToPlaceOption.fulfilled,
+        movePlanToPlaceOptionFulfilledController,
     );
 };
 
@@ -181,13 +201,13 @@ const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
     reducers: {
-        initializeData(state: planState, action) {
+        initializeData(state: PlanState, action) {
             const { initPlaceOptionList, initPlanDetailList } = action.payload;
             state.placeOptionList = [...initPlaceOptionList];
             // state.planList = [...initPlanDetailList];
         },
         insertPlaceOptionList(
-            state: planState,
+            state: PlanState,
             action: PayloadAction<Place[]>,
         ) {
             const selectedPlaces = action.payload;
@@ -196,46 +216,46 @@ const planDetailSlice = createSlice({
                 ...selectedPlaces,
             ];
         },
-        deletePlaceOptionList(state: planState, action: PayloadAction<string>) {
+        deletePlaceOptionList(state: PlanState, action: PayloadAction<string>) {
             const optionPlaceId = action.payload;
             state.placeOptionList = state.placeOptionList.filter(
                 (place) => place.id !== optionPlaceId,
             );
         },
-        createPlanListArray(state: planState, action) {
+        createPlanListArray(state: PlanState, action) {
             const days = action.payload.days ?? 1;
             const arr = new Array<PlanDetailModel[]>(days).fill([]);
             state.planList = arr;
         },
-        setTitle(state: planState, action) {
+        setTitle(state: PlanState, action) {
             const { newTitle } = action.payload;
             state.title = newTitle;
         },
-        setUpDay(state: planState, action) {
+        setUpDay(state: PlanState, action) {
             const { selectedDay } = action.payload;
             state.setDay = selectedDay;
             setPointRelatedOptions(state);
         },
-        sortPlanList(state: planState, action) {
+        sortPlanList(state: PlanState, action) {
             const { list } = action.payload;
             state.planList[state.setDay] = [...list];
             // calc distance
             setPointRelatedOptions(state);
         },
-        sortplaceOptionList(state: planState, action) {
+        sortplaceOptionList(state: PlanState, action) {
             const { list } = action.payload;
             state.placeOptionList = [...list];
         },
-        grabPlan(state: planState, action) {
+        grabPlan(state: PlanState, action) {
             const { id } = action.payload;
             state.grabPlanId = id;
         },
-        grabPlaceOption(state: planState, action) {
+        grabPlaceOption(state: PlanState, action) {
             const { id } = action.payload;
             state.grabPlaceOptionId = id;
         },
         setClickPlaceDetailId(
-            state: planState,
+            state: PlanState,
             action: PayloadAction<string | undefined>,
         ) {
             if (!action.payload) {
@@ -244,7 +264,7 @@ const planDetailSlice = createSlice({
             }
             state.clickPlaceDetailId = action.payload;
         },
-        movePlanToPlaceOption(state: planState) {
+        movePlanToPlaceOption(state: PlanState) {
             // dropPlan
             const droppedPlan = state.planList[state.setDay].find(
                 (plan) => plan.id === state.grabPlanId,
@@ -254,25 +274,23 @@ const planDetailSlice = createSlice({
             state.planList[state.setDay].splice(idx, 1);
             state.placeOptionList.push(droppedPlan);
         },
-        movePlaceOptionToPlan(state: planState) {
-            // dropPlaceOption
-            const droppedPlaceOption = state.placeOptionList.find(
-                (option) => option.id === state.grabPlaceOptionId,
-            ) as PlanDetailModel;
-
-            const idx = state.placeOptionList.indexOf(droppedPlaceOption);
-            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
-            state.placeOptionList.splice(idx, 1);
-            state.planList[state.setDay].push(droppedPlaceOption);
-            setPointRelatedOptions(state);
-        },
-        changeShareMode(state: planState) {
+        changeShareMode(state: PlanState) {
             state.shareMode = true;
             console.log('CUSTOM SHARE', state.shareMode);
         },
     },
     extraReducers,
 });
+
+export const setPointRelatedOptions = (state: PlanState) => {
+    state.placeDistance = changePosition2DistanceArray(
+        state.planList[state.setDay],
+    );
+    state.placeDistanceCenter = changePosition2DistanceCenter(
+        state.planList[state.setDay],
+    );
+    state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
+};
 
 const { reducer, actions } = planDetailSlice;
 
@@ -288,9 +306,9 @@ export const {
     sortPlanList,
     grabPlaceOption,
     setClickPlaceDetailId,
-    movePlanToPlaceOption,
-    movePlaceOptionToPlan,
     changeShareMode,
 } = actions;
+
+export { getPlanInfoById, movePlaceOptionToPlan, movePlanToPlaceOption };
 
 export default reducer;

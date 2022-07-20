@@ -13,6 +13,8 @@ import { Place } from 'store/modules/plan';
 import RoutItem from './RoutItem';
 
 const planListSelector = (state: RootState) => state.plan.planList;
+const planOptionListSelector = (state: RootState) => state.plan.placeOptionList;
+
 const setDaySelector = (state: RootState) => state.plan.setDay;
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
@@ -20,11 +22,12 @@ const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
 const SetupRoute: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const planList = useSelector(planListSelector);
     const setDay = useSelector(setDaySelector);
     const shareMode = useSelector(shareModeSelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
+    const placeOptionList = useSelector(planOptionListSelector);
     const [isDrop, setIsDrop] = useState(false);
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
@@ -78,7 +81,11 @@ const SetupRoute: FC = () => {
             if (shareMode) return;
             if (!grabPlaceOptionId) return;
             e.currentTarget.classList.remove('drag-over');
-            dispatch(movePlaceOptionToPlan());
+            const selected = placeOptionList.find(
+                (place) => place.id === grabPlaceOptionId,
+            );
+            if (selected)
+                dispatch(movePlaceOptionToPlan({ place: selected, setDay }));
             setIsDrop(true);
         },
         [grabPlaceOptionId, shareMode],

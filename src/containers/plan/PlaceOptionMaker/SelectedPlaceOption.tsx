@@ -18,10 +18,12 @@ import { deleteSelectedPlaces } from 'store/modules/plan/search';
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
 const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
+const setDaySelector = (state: RootState) => state.plan.setDay;
 
 const SelectedOption: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const placeOptionList = useSelector(placeOptionListSelector);
+    const setDay = useSelector(setDaySelector);
     const grabPlanId = useSelector(grabPlanIdSelector);
     const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
@@ -71,7 +73,13 @@ const SelectedOption: FC = () => {
             if (!grabPlanId) return;
 
             e.currentTarget.classList.remove('drag-over');
-            dispatch(movePlanToPlaceOption());
+            dispatch(
+                movePlanToPlaceOption({
+                    planId: '',
+                    index: setDay,
+                    id: grabPlanId,
+                }),
+            );
             setIsDrop(true);
         },
         [grabPlanId],
@@ -233,9 +241,13 @@ const Container = styled.div`
 const PlaceItem = styled.div`
     margin: 0 10px;
 
-    &:first-of-type { margin-left: 20px;}
-    &:last-of-type { margin-right: 20px; }
-    
+    &:first-of-type {
+        margin-left: 20px;
+    }
+    &:last-of-type {
+        margin-right: 20px;
+    }
+
     cursor: grab;
     position: relative;
 

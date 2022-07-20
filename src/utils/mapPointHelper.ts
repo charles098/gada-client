@@ -1,8 +1,9 @@
-import { Place } from 'store/modules/plan';
-
 // lat : X lng: Y
+
+import { PlanDetailModel } from 'store/modules/plan/plan.model';
+
 // https://genius3k.tistory.com/entry/%EA%B5%AC%EC%97%90%EC%84%9C-%EB%91%90-%EC%A2%8C%ED%91%9C%EC%9D%98-%EA%B1%B0%EB%A6%AC-%EA%B5%AC%ED%95%98%EA%B8%B0
-export function getDistance(pos1: Place, pos2: Place) {
+export function getDistance(pos1: PlanDetailModel, pos2: PlanDetailModel) {
     const lat1 = Number(pos1.latitude);
     const lng1 = Number(pos1.longitude);
     const lat2 = Number(pos2.latitude);
@@ -25,7 +26,7 @@ export function getDistance(pos1: Place, pos2: Place) {
     return Math.round(d * 1000);
 }
 
-export function changePosition2DistanceArray(positions: Place[]) {
+export function changePosition2DistanceArray(positions: PlanDetailModel[]) {
     const distance: number[] = [];
     if (positions && positions.length > 0) {
         positions.reduce((pre, cur) => {
@@ -37,7 +38,7 @@ export function changePosition2DistanceArray(positions: Place[]) {
     return distance;
 }
 
-export function changePosition2DistanceCenter(positions: Place[]) {
+export function changePosition2DistanceCenter(positions: PlanDetailModel[]) {
     const nodeCenter: { lng: number; lat: number }[] = [];
     if (positions && positions.length > 0) {
         positions.reduce((pre, cur) => {
@@ -56,7 +57,7 @@ export function changePosition2DistanceCenter(positions: Place[]) {
     return nodeCenter;
 }
 
-export function getPosition2bound(place: Place[]) {
+export function getPosition2bound(place: PlanDetailModel[]) {
     const bound = new kakao.maps.LatLngBounds();
     if (place) {
         place.forEach((value) => {

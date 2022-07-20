@@ -3,14 +3,15 @@ import { Place } from '.';
 interface PlanDetailModel extends Place {
     _id: string;
     userId: string;
+    placeId?: string;
     id: string;
     name: string;
     latitude: string;
     longitude: string;
     address: string;
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
+    createdAt?: string;
+    updatedAt?: string;
+    __v?: number;
 }
 
 interface PlanModel {

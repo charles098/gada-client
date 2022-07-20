@@ -27,11 +27,11 @@ const PlanDetailModal: FC = () => {
     /**
      * 이벤트 요청이 들어온 Place정보를 같아오는 Memo
      */
-    const SelectedDetailPlace: Place | undefined = useMemo(() => {
-        if (!detailId) return undefined;
-        const Place = planList[setDay].find((p) => p.id === detailId);
-        return Place;
-    }, [detailId]);
+    // const SelectedDetailPlace: Place | undefined = useMemo(() => {
+    //     if (!detailId) return undefined;
+    //     const Place = planList[setDay].find((p) => p.id === detailId);
+    //     return Place;
+    // }, [detailId]);
 
     const [details, setDetails] = useState({
         description: '',
@@ -39,17 +39,17 @@ const PlanDetailModal: FC = () => {
         cost: '',
     });
 
-    useEffect(() => {
-        // setDetails
-        if (SelectedDetailPlace) {
-            setDetails({
-                description: SelectedDetailPlace?.description ?? '',
-                time: SelectedDetailPlace?.time ?? '',
-                cost: SelectedDetailPlace?.cost ?? '',
-            });
-        }
-        console.log('CUSTOM: It is State When you enter Detail', details);
-    }, []);
+    // useEffect(() => {
+    //     // setDetails
+    //     if (SelectedDetailPlace) {
+    //         setDetails({
+    //             description: SelectedDetailPlace?.description ?? '',
+    //             time: SelectedDetailPlace?.time ?? '',
+    //             cost: SelectedDetailPlace?.cost ?? '',
+    //         });
+    //     }
+    //     console.log('CUSTOM: It is State When you enter Detail', details);
+    // }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -70,27 +70,20 @@ const PlanDetailModal: FC = () => {
     };
 
     return (
-        <Modal
-        width={500}
-        height={770}
-        >
-            <PlaceDetailThumbnail
+        <Modal width={500} height={770}>
+            {/* <PlaceDetailThumbnail
                 src={SelectedDetailPlace?.imgUrl ?? jeju}
-            />
+            /> */}
             <PlaceDetailContents>
                 <PlaceDetailTitle>
-                    <p className="title">{SelectedDetailPlace?.name}</p>
+                    {/* <p className="title">{SelectedDetailPlace?.name}</p>
                     <p className="subtitle">
                         {SelectedDetailPlace?.address}
-                    </p>
+                    </p> */}
                 </PlaceDetailTitle>
                 <PlaceDetailMemo>
                     <MemoHeader className="head">
-                        <PencilIcon
-                            color="#666"
-                            width={20}
-                            height={20}
-                        />
+                        <PencilIcon color="#666" width={20} height={20} />
                         <p>메모하기</p>
                     </MemoHeader>
                     <textarea
@@ -101,11 +94,7 @@ const PlanDetailModal: FC = () => {
                 </PlaceDetailMemo>
                 <PlaceDetailTime>
                     <MemoHeader className="head">
-                        <ClockIcon
-                            color="#666"
-                            width={22}
-                            height={22}
-                        />
+                        <ClockIcon color="#666" width={22} height={22} />
                         <p>시간</p>
                     </MemoHeader>
                     <Input
@@ -117,11 +106,7 @@ const PlanDetailModal: FC = () => {
                 </PlaceDetailTime>
                 <PlaceDetailCost>
                     <MemoHeader className="head">
-                        <WonIcon
-                            color="#666"
-                            width={20}
-                            height={20}
-                        />
+                        <WonIcon color="#666" width={20} height={20} />
                         <p>비용</p>
                     </MemoHeader>
                     <Input
@@ -132,11 +117,12 @@ const PlanDetailModal: FC = () => {
                     />
                 </PlaceDetailCost>
             </PlaceDetailContents>
-            <SubmitButton 
-            width={250} 
-            height={50} 
-            fontSize={18}
-            onClick={removeHandler}>
+            <SubmitButton
+                width={250}
+                height={50}
+                fontSize={18}
+                onClick={removeHandler}
+            >
                 메모하기
             </SubmitButton>
         </Modal>
@@ -171,7 +157,7 @@ const PlaceDetailThumbnail = styled.img`
     border-radius: 50%;
     object-fit: cover;
     margin-top: 30px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 `;
 const PlaceDetailTitle = styled.div`
     height: 72px;
@@ -199,7 +185,7 @@ const PlaceDetailTitle = styled.div`
 const MemoHeader = styled.div`
     display: flex;
     align-items: center;
-`
+`;
 
 const PlaceDetailMemo = styled.div`
     margin-top: 30px;
@@ -229,7 +215,7 @@ const Input = styled.input`
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     padding: 0 20px;
     color: #666;
-`
+`;
 
 const Backdrop = styled.div`
     width: 100vw;
