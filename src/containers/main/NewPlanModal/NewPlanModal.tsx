@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import Modal from 'components/Modal';
 import NewPlanForm from 'containers/main/NewPlanModal/NewPlanForm';
 import { useDispatch } from 'react-redux';
-import { changeLocationState } from 'store/modules/location';
+import { changeLocationState } from 'store/modules/main/location';
 
 const NewPlanModal: FC = () => {
     const dispatch = useDispatch();

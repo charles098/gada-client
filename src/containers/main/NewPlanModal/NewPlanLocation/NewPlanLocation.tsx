@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Select from 'react-select';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
 
 const selectOptions = [
     "전국",
@@ -61,8 +63,24 @@ const customStyles = {
     })
 };
 
+const LoactionSelector = (state: RootState) => state.location;
+
 const NewPlanlocation = ( { setLocation }: any ) => {
     const options = selectOptions.map((x) => ({ value: x, label: x }));
+
+    const { locationName, isClickedLocation } = useSelector(LoactionSelector);
+
+    useEffect(() => {
+        if (isClickedLocation) {
+            setLocation(locationName);
+        }
+    }, [])
+    
+    const defaultValue = {
+        label: locationName,
+        value: locationName,
+    }
+
     const handleChange = (value: any) => {
         setLocation(value.value);
     }
@@ -78,7 +96,9 @@ const NewPlanlocation = ( { setLocation }: any ) => {
                     options={options}
                     styles={customStyles}
                     placeholder="지역을 선택해주세요."
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    defaultValue={isClickedLocation ? defaultValue : ''}
+                    />
             </InputWrapper>
         </LocationWrapper>
     )

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import useModal from 'hooks/useModal';
 import { useDispatch } from 'react-redux';
-import { changeLocationState } from 'store/modules/location';
+import { changeLocationState } from 'store/modules/main/location';
 
 interface CardProps {
     imgUrl: string;
