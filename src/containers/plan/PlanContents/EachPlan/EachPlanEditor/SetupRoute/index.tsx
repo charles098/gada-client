@@ -44,6 +44,10 @@ const SetupRoute: FC = () => {
         }
     }, [planList]);
 
+    useEffect(() => {
+        // hi
+    }, [planList[setDay]]);
+
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
             if (shareMode) return;

@@ -63,7 +63,7 @@ const initialState: PlanState = {
 
 // Thunk
 
-const mockid = '62d6e63ab306296d6896cc84';
+const mockid = '62d79015bac11f6c17315241';
 
 const getPlanInfoById = createAsyncThunk(
     'GET/plan/getPlan',
@@ -133,16 +133,16 @@ const updateOrder = createAsyncThunk(
     async (
         {
             planId,
-            list, // placeId
             index,
-        }: { planId: string; list: PlanDetailModel; index: number },
+            planDetails, //
+        }: { planId: string; planDetails: PlanDetailModel[]; index: number },
         { rejectWithValue },
     ) => {
         try {
             const data = {
                 planId: mockid,
-                list,
                 index,
+                planDetails,
             };
             const result = await axios.patch('/planDetails/order', data);
             return result;
@@ -222,11 +222,7 @@ const planDetailSlice = createSlice({
                 (place) => place.id !== optionPlaceId,
             );
         },
-        createPlanListArray(state: PlanState, action) {
-            const days = action.payload.days ?? 1;
-            const arr = new Array<PlanDetailModel[]>(days).fill([]);
-            state.planList = arr;
-        },
+
         setTitle(state: PlanState, action) {
             const { newTitle } = action.payload;
             state.title = newTitle;
@@ -296,7 +292,6 @@ const { reducer, actions } = planDetailSlice;
 
 export const {
     initializeData,
-    createPlanListArray,
     insertPlaceOptionList,
     deletePlaceOptionList,
     setTitle,

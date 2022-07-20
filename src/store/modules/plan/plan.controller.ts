@@ -12,22 +12,37 @@ export const changePlanModel2PlanState = (
     state: PlanState,
     data: PlanModel,
 ) => {
-    state.title = data.title;
-    // eslint-disable-next-line no-underscore-dangle
-    state._id = data._id;
-    state.startDate = new Date(data.startDate);
-    state.lastDate = new Date(data.lastDate);
-    state.period = getPeriod(new Date(data.startDate), new Date(data.lastDate));
-    state.setDay = 0;
-    state.planList = data.planDetails;
-    state.shareMode = false;
-    state.placeDistance = changePosition2DistanceArray(
-        state.planList[state.setDay],
-    );
-    state.placeDistanceCenter = changePosition2DistanceCenter(
-        state.planList[state.setDay],
-    );
-    state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
+    // new Array<PlanDetailModel[]>(days).fill([]);
+    const infoByAPI = (state: PlanState): void => {
+        state.title = data.title;
+        state.startDate = new Date(data.startDate);
+        state.lastDate = new Date(data.lastDate);
+        state.period = getPeriod(
+            new Date(data.startDate),
+            new Date(data.lastDate),
+        );
+        state.setDay = 0;
+        state.planList = data.planDetails;
+        state.placeDistance = changePosition2DistanceArray(data.planDetails[0]);
+        state.placeDistanceCenter = changePosition2DistanceCenter(
+            data.planDetails[0],
+        );
+        state.mapCenterBound = getPosition2bound(data.planDetails[0]);
+        state.shareMode = false;
+        // eslint-disable-next-line no-underscore-dangle
+        state._id = data._id;
+        state.userId = data.userId;
+        state.area = data.area;
+        state.imgUrl = data.imgUrl;
+        state.createdAt = data.createdAt;
+        state.updatedAt = data.updatedAt;
+        state.grabPlanId = null;
+        state.grabPlaceOptionId = null;
+        state.clickPlaceDetailId = null;
+        state.placeOptionList = [];
+    };
+
+    infoByAPI(state);
 };
 
 export const movePlaceOptionToPlanFulfilledController = (
@@ -62,7 +77,8 @@ export const movePlanToPlaceOptionFulfilledController = (
     action: any,
 ) => {
     const { data } = action.payload;
-    console.log('API CALL', data);
+    // 성공적으로 지워졌는지 확인
+    data.planDetails[state.setDay].indexOf(state.grabPlanId);
 
     const droppedPlan = state.planList[state.setDay].find(
         (plan) => plan.id === state.grabPlanId,
