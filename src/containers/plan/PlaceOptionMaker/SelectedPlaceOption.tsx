@@ -75,15 +75,14 @@ const SelectedOption: FC = () => {
         (e: React.DragEvent<HTMLElement>) => {
             if (!grabPlanId) return;
 
-            const column = planList[setDay]
-                .map((p) => p.id)
-                .indexOf(grabPlanId);
+            const col = planList[setDay].map((p) => p.id).indexOf(grabPlanId);
 
             e.currentTarget.classList.remove('drag-over');
             dispatch(
                 movePlanToPlaceOption({
                     planId: '',
-                    index: setDay,
+                    row: setDay,
+                    col,
                     id: grabPlanId,
                 }),
             );

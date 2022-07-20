@@ -107,15 +107,17 @@ const movePlanToPlaceOption = createAsyncThunk(
     async (
         {
             planId,
-            index,
+            row,
+            col,
             id, // placeId
-        }: { planId: string; index: number; id: string },
+        }: { planId: string; row: number; col: number; id: string },
         { rejectWithValue },
     ) => {
         try {
             const data = {
                 planId: mockid,
-                index,
+                row,
+                col,
                 id,
             };
             const result = await axios.delete('/planDetails', {
