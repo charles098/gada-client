@@ -18,6 +18,7 @@ interface SlickSliderProps {
     arrowSize: number;
     itemCursor?: string | undefined;
     boxShadow?: boolean | undefined;
+    children: any;
 }
 
 interface styledProps {

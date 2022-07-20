@@ -4,7 +4,7 @@ import { LocationIcon } from 'components/icons';
 import LocationCard from 'containers/main/LocationList/LocationCard';
 import jejuImg from 'images/jeju.jpg';
 
-const PlanList : FC = () => {
+const LocationList : FC = () => {
     const defaultProps = {
         src: jejuImg,
         location: '제주'
@@ -31,7 +31,7 @@ const PlanList : FC = () => {
     )
 }
 
-export default PlanList;
+export default LocationList;
 
 const LocationWrapper = styled.section`
     width: 1287px;
