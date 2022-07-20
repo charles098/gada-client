@@ -1,5 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import useModal from 'hooks/useModal';
+import useConfirmModal from 'hooks/useConfirmModal';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import PlanPeriod from 'components/PlanPeriod';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,12 +9,33 @@ import { changeShareMode } from 'store/modules/plan/plan';
 import { RootState } from 'store/modules';
 
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
+const confirmPropsPayload = {
+    width: 400,
+    height: 310,
+    message: '계획 공유를 취소하시겠습니까?',
+}
 
 const PlanInfo: FC = () => {
+    const openShareModal = useModal("ShareModal");
+    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(confirmPropsPayload, "cancelShare");
     const dispatch = useDispatch();
     const shareMode = useSelector(shareModeSelector);
 
-    const onClickSwitch = (e: any) => dispatch(changeShareMode(!shareMode))
+    useEffect(() => {
+        if (confirmState && confirmType === 'cancelShare') {
+            dispatch(changeShareMode(!shareMode))
+        }
+    }, [confirmState])
+    
+    const onClickSwitch = () => {
+        if (shareMode) {
+            // true -> false 니깐 공유 취소인 경우
+            confirmModalHandler();            
+        } else {
+            // false -> true니깐 공유하는 경우
+            openShareModal();
+        }
+    }
 
     return (
         <Container>
@@ -25,6 +48,7 @@ const PlanInfo: FC = () => {
                 </PlanSwitchLabel>
                 <CheckBoxWrapper>
                     <CheckBox
+                        checked={shareMode}
                         onClick={onClickSwitch}
                         id="checkbox"
                         type="checkbox" />

@@ -2,13 +2,20 @@ import React, { FC, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import useModal from 'hooks/useModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeShareMode } from 'store/modules/plan/plan';
+import { RootState } from 'store/modules';
 import ShareHeader from './ShareHeader';
 import ShareTitle from './ShareTitle';
 import ShareTheme from './ShareTheme';
 
+const shareModeSelector = (state: RootState) => state.plan.shareMode;
+
 const ShareForm: FC = () => {
     const [ theme, setTheme ] = useState<string>("");
     const closeModal = useModal("ShareForm");
+    const dispatch = useDispatch();
+    const shareMode = useSelector(shareModeSelector);
 
     const submitHandler = (e: any) => {
         e.preventDefault();
@@ -23,6 +30,7 @@ const ShareForm: FC = () => {
         else {
             console.log(title.value);
             console.log(theme);
+            dispatch(changeShareMode(!shareMode))
             closeModal();
         }
     }
