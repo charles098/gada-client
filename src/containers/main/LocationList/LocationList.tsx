@@ -6,7 +6,7 @@ import jejuImg from 'images/jeju.jpg';
 
 const LocationList : FC = () => {
     const defaultProps = {
-        src: jejuImg,
+        imgUrl: jejuImg,
         location: '제주'
     }
 
@@ -22,7 +22,7 @@ const LocationList : FC = () => {
             <LocationContainer>
                 {[...Array(7)].map(() => (
                     <LocationCard 
-                    src={defaultProps.src}
+                    imgUrl={defaultProps.imgUrl}
                     location={defaultProps.location}
                     />
                 ))}

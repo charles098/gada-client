@@ -1,14 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import useModal from 'hooks/useModal';
+import { useDispatch } from 'react-redux';
+import { changeLocationState } from 'store/modules/location';
 
 interface CardProps {
-    src: string;
+    imgUrl: string;
     location: string;
 }
 
-const LocationCard = ({ src, location } : CardProps) => {
+const LocationCard = ({ imgUrl, location } : CardProps) => {
+    const dispatch = useDispatch();
+    const openModal = useModal("NewPlanModal");
+
+    const payload = {
+        isClickedLocation: true,
+        imageUrl: imgUrl,
+        locationName: location
+    }
+
+    const clickHandler = () => {
+        dispatch(changeLocationState(payload))
+        openModal();
+    }
+
     return (
-        <Wrapper src={src}>
+        <Wrapper 
+        onClick={clickHandler}
+        imgUrl={imgUrl}>
             <LocationCardOpacity>{location}</LocationCardOpacity>
         </Wrapper>
     )
@@ -16,11 +35,11 @@ const LocationCard = ({ src, location } : CardProps) => {
 
 export default LocationCard;
 
-const Wrapper = styled.div<{ src : string }>`
+const Wrapper = styled.div<{ imgUrl : string }>`
     position: relative;
     width: 235px;
     height: 235px;
-    background-image: url('${({src}) => src}');
+    background-image: url('${({imgUrl}) => imgUrl}');
     background-repeat : no-repeat;
     background-size : cover;
     border-radius: 10px;
