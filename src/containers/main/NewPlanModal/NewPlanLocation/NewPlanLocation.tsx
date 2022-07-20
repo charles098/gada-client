@@ -84,6 +84,7 @@ const NewPlanlocation = ( { setLocation }: any ) => {
     const handleChange = (value: any) => {
         setLocation(value.value);
     }
+    
     return (
         <LocationWrapper>
             <LocationLabel
