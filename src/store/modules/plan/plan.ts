@@ -164,7 +164,7 @@ const sortPlanListFailCheck = createAsyncThunk(
     },
 );
 
-const getPlanDetail = createAsyncThunk(
+const memoPlanDetail = createAsyncThunk(
     'GET/plan/getPlanDetails',
     async (placeId: string, { rejectWithValue }) => {
         try {
@@ -177,16 +177,10 @@ const getPlanDetail = createAsyncThunk(
 );
 const updatePlanDetail = createAsyncThunk(
     'PATCH/plan/updatePlanDetail',
-    async (
-        { _id, ...place }: Partial<PlanDetailModel>,
-        { rejectWithValue },
-    ) => {
+    async (planDetail: PlanDetailModel, { rejectWithValue }) => {
         try {
             const result = await axios.patch(`/planDetails`, {
-                planDetail: {
-                    _id,
-                    ...place,
-                },
+                planDetail,
             });
             return result;
         } catch (err) {
@@ -321,6 +315,7 @@ export {
     movePlaceOptionToPlan,
     movePlanToPlaceOption,
     sortPlanListFailCheck,
+    updatePlanDetail,
 };
 
 export default reducer;

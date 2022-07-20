@@ -62,7 +62,7 @@ const PlanDetailModal: FC = () => {
     };
 
     // click 이벤트 핸들러 - 모달 삭제 함수
-    const removeHandler = (e: React.MouseEvent) => {
+    const submitHandler = (e: React.MouseEvent) => {
         e.preventDefault();
 
         console.log('CUSTOM: It is State When you leave Detail', details);
@@ -75,10 +75,8 @@ const PlanDetailModal: FC = () => {
             <PlaceDetailThumbnail src={SelectedDetailPlace?.imgUrl ?? jeju} />
             <PlaceDetailContents>
                 <PlaceDetailTitle>
-                    {/* <p className="title">{SelectedDetailPlace?.name}</p>
-                    <p className="subtitle">
-                        {SelectedDetailPlace?.address}
-                    </p> */}
+                    <p className="title">{SelectedDetailPlace?.name}</p>
+                    <p className="subtitle">{SelectedDetailPlace?.address}</p>
                 </PlaceDetailTitle>
                 <PlaceDetailMemo>
                     <MemoHeader className="head">
@@ -97,7 +95,7 @@ const PlanDetailModal: FC = () => {
                         <p>시간</p>
                     </MemoHeader>
                     <Input
-                        type="text"
+                        type="time"
                         name="time"
                         value={details.time}
                         onChange={handleChange}
@@ -110,6 +108,7 @@ const PlanDetailModal: FC = () => {
                     </MemoHeader>
                     <Input
                         type="text"
+                        pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
                         name="cost"
                         value={details.cost}
                         onChange={handleChange}
@@ -120,7 +119,7 @@ const PlanDetailModal: FC = () => {
                 width={250}
                 height={50}
                 fontSize={18}
-                onClick={removeHandler}
+                onClick={submitHandler}
             >
                 메모하기
             </SubmitButton>
@@ -132,6 +131,24 @@ const PlaceDetailCost = styled.div`
 `;
 const PlaceDetailTime = styled.div`
     margin: 20px 0;
+
+    input[type='time'] {
+        background: #fefefe;
+        border: none;
+        border-bottom: 4px solid #7c8cff;
+        display: block;
+        margin-bottom: 0.625em;
+        margin-top: 0.3em;
+        outline-offset: 3px;
+        padding: 0.25em 0.45em 0.25em 0.65em;
+        font-size: 15px;
+        font-family: Noto-sans;
+        width: 150px;
+    }
+    input[type='time']:-webkit-calendar-picker-indicator {
+        filter: invert(100%) sepia(0%) saturate(3207%) hue-rotate(130deg)
+            brightness(95%) contrast(80%);
+    }
 `;
 const PlaceDetailContents = styled.div`
     width: calc(100% - 100px);

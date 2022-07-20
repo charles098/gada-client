@@ -33,7 +33,6 @@ const SetupRoute: FC = () => {
     const [isDrop, setIsDrop] = useState(false);
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
-
     useEffect(() => {
         if (isDrop) {
             setIsDrop(false);
