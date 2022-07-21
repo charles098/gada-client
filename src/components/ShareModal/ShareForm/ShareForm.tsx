@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import getAuthHeader from 'utils/getAuthHeader';
 import useModal from 'hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
@@ -15,6 +16,7 @@ const ShareForm: FC = () => {
     const [ theme, setTheme ] = useState<string>("");
     const closeModal = useModal("ShareForm");
     const dispatch = useDispatch();
+    const headers = getAuthHeader();
     const { shareMode, _id } = useSelector(planSelector);
 
     const submitHandler = (e: any) => {
@@ -41,7 +43,7 @@ const ShareForm: FC = () => {
                     }
 
                     // 공유하기
-                    const result = await axios.post(`shares/${_id}`, data);
+                    const result = await axios.post(`shares/${_id}`, data, { headers });
 
                     dispatch(changeShareMode(!shareMode))
                     closeModal();
