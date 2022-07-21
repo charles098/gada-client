@@ -34,7 +34,7 @@ const NicknameForm = ({ profileData, setProfileData }: any) => {
 
             (async () => {
                 try {
-                    await axios.patch('/api/users/username', data, { headers });
+                    await axios.patch('/users/username', data, { headers });
                     setProfileData({
                         ...profileData, 
                         username: nicknameRef.current.value}

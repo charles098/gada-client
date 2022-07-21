@@ -26,13 +26,13 @@ const Login = () => {
     return (
         <LoginContainer>
             <KakaoLogin
-            href='http://localhost:5000/api/users/login/kakao'
+            href='http://localhost:5000/users/login/kakao'
             >
                 <ChatIcon style={LoginIconStyle} />
                 <LoginText>카카오 로그인</LoginText>
             </KakaoLogin>
             <GoogleLogin
-            href="http://localhost:5000/api/users/login/google"
+            href="http://localhost:5000/users/login/google"
             >
                 <GoogleIcon style={LoginIconStyle} />
                 <LoginText>구글 로그인</LoginText>

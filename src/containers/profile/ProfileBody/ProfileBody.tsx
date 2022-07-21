@@ -26,7 +26,7 @@ const ProfileBody: FC = () => {
     useEffect(() => {
         (async ()  => {
             try{
-                const results = await axios.get('/api/users/info/user',{ headers });
+                const results = await axios.get('/users/info/user',{ headers });
                 console.log(results);
                 setProfileData(results.data.data);
             } catch(err) {
