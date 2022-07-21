@@ -9,31 +9,48 @@ import ShareHeader from './ShareHeader';
 import ShareTitle from './ShareTitle';
 import ShareTheme from './ShareTheme';
 
-const shareModeSelector = (state: RootState) => state.plan.shareMode;
+const planSelector = (state: RootState) => state.plan;
 
 const ShareForm: FC = () => {
     const [ theme, setTheme ] = useState<string>("");
     const closeModal = useModal("ShareForm");
     const dispatch = useDispatch();
-    const shareMode = useSelector(shareModeSelector);
+    const { shareMode, _id } = useSelector(planSelector);
 
     const submitHandler = (e: any) => {
         e.preventDefault();
-        const { title } = e.target;
-        console.log('submit')
-        if (!title.value) {
-            alert('제목을 입력해주세요!');
-        }
-        else if (!theme) {
-            alert('주제를 선택해주세요!');
-        }
-        else {
-            // console.log(title.value);
-            // console.log(theme);
-            console.log("shareMode", shareMode);
-            dispatch(changeShareMode(!shareMode))
-            closeModal();
-        }
+
+        (async () => {
+            try{
+                const { title } = e.target;
+                console.log('submit')
+                if (!title.value) {
+                    alert('제목을 입력해주세요!');
+                }
+                else if (!theme) {
+                    alert('주제를 선택해주세요!');
+                }
+                else {
+                    // console.log(title.value);
+                    // console.log(theme);
+                    // !shareMode가 현재 항태 
+                    const data = {
+                        shareTitle: title.value,
+                        tag: theme,
+                        toggle: !shareMode
+                    }
+
+                    // 공유하기
+                    const result = await axios.post(`shares/${_id}`, data);
+
+                    dispatch(changeShareMode(!shareMode))
+                    closeModal();
+                }
+            } catch(err) {
+                console.log(err);
+            }
+            
+        })()
     }
 
     return (

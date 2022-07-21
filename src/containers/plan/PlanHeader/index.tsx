@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import useModal from 'hooks/useModal';
 import useConfirmModal from 'hooks/useConfirmModal';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
@@ -8,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
 import { RootState } from 'store/modules';
 
-const shareModeSelector = (state: RootState) => state.plan.shareMode;
+const planSelector = (state: RootState) => state.plan;
+
 const confirmPropsPayload = {
     width: 400,
     height: 310,
@@ -22,12 +24,24 @@ const PlanInfo: FC = () => {
         'cancelShare',
     );
     const dispatch = useDispatch();
-    const shareMode = useSelector(shareModeSelector);
+    const { shareMode, _id } = useSelector(planSelector);
 
     useEffect(() => {
-        if (confirmState && confirmType === 'cancelShare') {
-            dispatch(changeShareMode(!shareMode));
-        }
+        (async () => {
+            try {
+                if (confirmState && confirmType === 'cancelShare') {
+                    const data = { toggle: !shareMode };
+
+                    // 공유취소
+                    const result = await axios.post(`shares/${_id}`, data);
+                    console.log(result);
+                    console.log(data);
+                    dispatch(changeShareMode(!shareMode));
+                }
+            } catch(err) {
+                console.log(err)
+            }
+        })()
     }, [confirmState]);
 
     const onClickSwitch = () => {
