@@ -5,17 +5,10 @@ export interface SearchedPlaceInfo {
     latitude: string;
     longitude: string;
 }
-export interface SelectedPlace extends SearchedPlaceInfo {
+export interface Place extends SearchedPlaceInfo {
     id: string;
 }
 
-export interface Place extends SelectedPlace {
-    day?: number;
-    description?: string;
-    cost?: string;
-    time?: string;
-    category?: string;
-}
 export interface Position {
     lat: number;
     lng: number;

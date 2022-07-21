@@ -17,13 +17,17 @@ import { CancelDetailIcon } from 'components/icons';
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
 const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
+const setDaySelector = (state: RootState) => state.plan.setDay;
+const planListSelector = (state: RootState) => state.plan.planList;
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
 const SelectedOption: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const placeOptionList = useSelector(placeOptionListSelector);
+    const setDay = useSelector(setDaySelector);
     const grabPlanId = useSelector(grabPlanIdSelector);
     const shareMode = useSelector(shareModeSelector);
+    const planList = useSelector(planListSelector);
     const enterCnt = useRef(0);
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
@@ -71,8 +75,17 @@ const SelectedOption: FC = () => {
         (e: React.DragEvent<HTMLElement>) => {
             if (!grabPlanId) return;
 
+            const col = planList[setDay].map((p) => p.id).indexOf(grabPlanId);
+
             e.currentTarget.classList.remove('drag-over');
-            dispatch(movePlanToPlaceOption());
+            dispatch(
+                movePlanToPlaceOption({
+                    planId: '',
+                    row: setDay,
+                    col,
+                    id: grabPlanId,
+                }),
+            );
             setIsDrop(true);
         },
         [grabPlanId],
@@ -96,13 +109,11 @@ const SelectedOption: FC = () => {
             onDrop={onDropContainer}
             onDragOver={(e) => e.preventDefault()}
         >
-            <DragInfo
-            shareMode={shareMode}>
-                <Message
-                shareMode={shareMode}>
-                    { shareMode ? 
-                    "공유한 계획은 수정할 수 없습니다!" :
-                    "장소를 드레그해서 일정에 추가해보세요!" }
+            <DragInfo shareMode={shareMode}>
+                <Message shareMode={shareMode}>
+                    {shareMode
+                        ? '공유한 계획은 수정할 수 없습니다!'
+                        : '장소를 드레그해서 일정에 추가해보세요!'}
                 </Message>
             </DragInfo>
             <ReactSortable
@@ -179,15 +190,13 @@ const SelectedOption: FC = () => {
     );
 };
 
-const DragInfo = styled.div<{ shareMode : boolean }>`
+const DragInfo = styled.div<{ shareMode: boolean }>`
     position: absolute;
     top: -54px;
     right: 300px;
     width: 310px;
     height: 40px;
-    background-color: ${({ shareMode }) => (
-        shareMode ? "#FFE4E4" : "#E4F0FF"
-    )};
+    background-color: ${({ shareMode }) => (shareMode ? '#FFE4E4' : '#E4F0FF')};
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -203,21 +212,18 @@ const DragInfo = styled.div<{ shareMode : boolean }>`
         right: 140px;
         border: 12px solid transparent;
         border-top-width: 0;
-        border-bottom-color: ${({ shareMode }) => (
-            shareMode ? "#FFE4E4" : "#E4F0FF"
-        )};
+        border-bottom-color: ${({ shareMode }) =>
+            shareMode ? '#FFE4E4' : '#E4F0FF'};
         transform: rotate(180deg);
     }
-`
+`;
 
 const Message = styled.p<{ shareMode: boolean }>`
-    color: ${({ shareMode }) => (
-        shareMode ? "#FA6565" : "#60A5F8"
-    )};
+    color: ${({ shareMode }) => (shareMode ? '#FA6565' : '#60A5F8')};
     font-size: 15px;
     font-weight: bold;
     letter-spacing: 1px;
-`
+`;
 
 const Container = styled.div`
     position: relative;
@@ -231,7 +237,7 @@ const Container = styled.div`
         padding: 8px 5px;
         display: flex;
         align-items: center;
-        overflow-y: hidden;        
+        overflow-y: hidden;
 
         &::-webkit-scrollbar {
             height: 10px;
@@ -260,9 +266,13 @@ const Container = styled.div`
 const PlaceItem = styled.div`
     margin: 0 10px;
 
-    &:first-of-type { margin-left: 20px;}
-    &:last-of-type { margin-right: 20px; }
-    
+    &:first-of-type {
+        margin-left: 20px;
+    }
+    &:last-of-type {
+        margin-right: 20px;
+    }
+
     cursor: grab;
     position: relative;
 

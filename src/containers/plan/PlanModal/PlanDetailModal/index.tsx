@@ -9,6 +9,8 @@ import { PencilIcon, ClockIcon, WonIcon } from 'components/icons';
 import { theme } from 'styles/theme';
 import SubmitButton from 'components/StyledSmitButton';
 import { Place } from 'store/modules/plan';
+import { PlanDetailModel } from 'store/modules/plan/plan.model';
+import { memoPlanDetail } from 'store/modules/plan/plan';
 
 const ModalSelector = (state: RootState) => state.modal;
 const PlanSelector = (state: RootState) => state.plan;
@@ -16,7 +18,7 @@ const setDay = (state: RootState) => state.plan.setDay;
 const detailIdSelector = (state: RootState) => state.plan.clickPlaceDetailId;
 
 const PlanDetailModal: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const { modalIsOpen } = useSelector(ModalSelector);
     const {
         planList,
@@ -27,7 +29,7 @@ const PlanDetailModal: FC = () => {
     /**
      * 이벤트 요청이 들어온 Place정보를 같아오는 Memo
      */
-    const SelectedDetailPlace: Place | undefined = useMemo(() => {
+    const SelectedDetailPlace: PlanDetailModel | undefined = useMemo(() => {
         if (!detailId) return undefined;
         const Place = planList[setDay].find((p) => p.id === detailId);
         return Place;
@@ -61,36 +63,34 @@ const PlanDetailModal: FC = () => {
     };
 
     // click 이벤트 핸들러 - 모달 삭제 함수
-    const removeHandler = (e: React.MouseEvent) => {
+    const submitHandler = (e: React.MouseEvent) => {
         e.preventDefault();
 
         console.log('CUSTOM: It is State When you leave Detail', details);
-
+        if (SelectedDetailPlace) {
+            const { description, cost, time } = details;
+            const memo = {
+                ...SelectedDetailPlace,
+                description,
+                cost,
+                time,
+            } as PlanDetailModel;
+            dispatch(memoPlanDetail(memo));
+        }
         dispatch(changeOpenState(!modalIsOpen));
     };
 
     return (
-        <Modal
-        width={500}
-        height={770}
-        >
-            <PlaceDetailThumbnail
-                src={SelectedDetailPlace?.imgUrl ?? jeju}
-            />
+        <Modal width={500} height={770}>
+            <PlaceDetailThumbnail src={SelectedDetailPlace?.imgUrl ?? jeju} />
             <PlaceDetailContents>
                 <PlaceDetailTitle>
                     <p className="title">{SelectedDetailPlace?.name}</p>
-                    <p className="subtitle">
-                        {SelectedDetailPlace?.address}
-                    </p>
+                    <p className="subtitle">{SelectedDetailPlace?.address}</p>
                 </PlaceDetailTitle>
                 <PlaceDetailMemo>
                     <MemoHeader className="head">
-                        <PencilIcon
-                            color="#666"
-                            width={20}
-                            height={20}
-                        />
+                        <PencilIcon color="#666" width={20} height={20} />
                         <p>메모하기</p>
                     </MemoHeader>
                     <textarea
@@ -101,15 +101,11 @@ const PlanDetailModal: FC = () => {
                 </PlaceDetailMemo>
                 <PlaceDetailTime>
                     <MemoHeader className="head">
-                        <ClockIcon
-                            color="#666"
-                            width={22}
-                            height={22}
-                        />
+                        <ClockIcon color="#666" width={22} height={22} />
                         <p>시간</p>
                     </MemoHeader>
                     <Input
-                        type="text"
+                        type="time"
                         name="time"
                         value={details.time}
                         onChange={handleChange}
@@ -117,26 +113,24 @@ const PlanDetailModal: FC = () => {
                 </PlaceDetailTime>
                 <PlaceDetailCost>
                     <MemoHeader className="head">
-                        <WonIcon
-                            color="#666"
-                            width={20}
-                            height={20}
-                        />
+                        <WonIcon color="#666" width={20} height={20} />
                         <p>비용</p>
                     </MemoHeader>
                     <Input
                         type="text"
+                        pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$"
                         name="cost"
                         value={details.cost}
                         onChange={handleChange}
                     />
                 </PlaceDetailCost>
             </PlaceDetailContents>
-            <SubmitButton 
-            width={250} 
-            height={50} 
-            fontSize={18}
-            onClick={removeHandler}>
+            <SubmitButton
+                width={250}
+                height={50}
+                fontSize={18}
+                onClick={submitHandler}
+            >
                 메모하기
             </SubmitButton>
         </Modal>
@@ -147,6 +141,24 @@ const PlaceDetailCost = styled.div`
 `;
 const PlaceDetailTime = styled.div`
     margin: 20px 0;
+
+    input[type='time'] {
+        background: #fefefe;
+        border: none;
+        border-bottom: 4px solid #7c8cff;
+        display: block;
+        margin-bottom: 0.625em;
+        margin-top: 0.3em;
+        outline-offset: 3px;
+        padding: 0.25em 0.45em 0.25em 0.65em;
+        font-size: 15px;
+        font-family: Noto-sans;
+        width: 150px;
+    }
+    input[type='time']:-webkit-calendar-picker-indicator {
+        filter: invert(100%) sepia(0%) saturate(3207%) hue-rotate(130deg)
+            brightness(95%) contrast(80%);
+    }
 `;
 const PlaceDetailContents = styled.div`
     width: calc(100% - 100px);
@@ -171,7 +183,7 @@ const PlaceDetailThumbnail = styled.img`
     border-radius: 50%;
     object-fit: cover;
     margin-top: 30px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 `;
 const PlaceDetailTitle = styled.div`
     height: 72px;
@@ -199,7 +211,7 @@ const PlaceDetailTitle = styled.div`
 const MemoHeader = styled.div`
     display: flex;
     align-items: center;
-`
+`;
 
 const PlaceDetailMemo = styled.div`
     margin-top: 30px;
@@ -229,7 +241,7 @@ const Input = styled.input`
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
     padding: 0 20px;
     color: #666;
-`
+`;
 
 const Backdrop = styled.div`
     width: 100vw;

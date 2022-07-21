@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import useModal from 'hooks/useModal';
 import useConfirmModal from 'hooks/useConfirmModal';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
@@ -8,42 +9,57 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
 import { RootState } from 'store/modules';
 
-const shareModeSelector = (state: RootState) => state.plan.shareMode;
+const planSelector = (state: RootState) => state.plan;
+
 const confirmPropsPayload = {
     width: 400,
     height: 310,
     message: '계획 공유를 취소하시겠습니까?',
-}
+};
 
 const PlanInfo: FC = () => {
-    const openShareModal = useModal("ShareModal");
-    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(confirmPropsPayload, "cancelShare");
+    const openShareModal = useModal('ShareModal');
+    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(
+        confirmPropsPayload,
+        'cancelShare',
+    );
     const dispatch = useDispatch();
-    const shareMode = useSelector(shareModeSelector);
+    const { shareMode, _id } = useSelector(planSelector);
 
     useEffect(() => {
-        if (confirmState && confirmType === 'cancelShare') {
-            dispatch(changeShareMode(!shareMode))
-        }
-    }, [confirmState])
-    
+        (async () => {
+            try {
+                if (confirmState && confirmType === 'cancelShare') {
+                    const data = { toggle: !shareMode };
+
+                    // 공유취소
+                    const result = await axios.post(`shares/${_id}`, data);
+                    console.log(result);
+                    console.log(data);
+                    dispatch(changeShareMode(!shareMode));
+                }
+            } catch(err) {
+                console.log(err)
+            }
+        })()
+    }, [confirmState]);
+
     const onClickSwitch = () => {
         if (shareMode) {
             // true -> false 니깐 공유 취소인 경우
-            confirmModalHandler();            
+            confirmModalHandler();
         } else {
             // false -> true니깐 공유하는 경우
             openShareModal();
         }
-    }
+    };
 
     return (
         <Container>
             <PlanTitle />
             <PlanPeriod />
             <PlanSwitch>
-                <PlanSwitchLabel
-                    shareMode={shareMode}>
+                <PlanSwitchLabel shareMode={shareMode}>
                     공유하기
                 </PlanSwitchLabel>
                 <CheckBoxWrapper>
@@ -51,7 +67,8 @@ const PlanInfo: FC = () => {
                         checked={shareMode}
                         onClick={onClickSwitch}
                         id="checkbox"
-                        type="checkbox" />
+                        type="checkbox"
+                    />
                     <CheckBoxLabel htmlFor="checkbox" />
                 </CheckBoxWrapper>
             </PlanSwitch>
@@ -88,11 +105,9 @@ const PlanSwitchLabel = styled.p<{ shareMode: boolean }>`
     height: 30px;
     line-height: 26px;
     font-weight: bold;
-    color: ${({ shareMode }) => (
-        shareMode ? "#60A5F8" : "#999"
-    )};
+    color: ${({ shareMode }) => (shareMode ? '#60A5F8' : '#999')};
     cursor: default;
-`
+`;
 
 const CheckBoxWrapper = styled.div`
     position: relative;
@@ -108,7 +123,7 @@ const CheckBoxLabel = styled.label`
     background: #bebebe;
     cursor: pointer;
     &::after {
-        content: "";
+        content: '';
         display: block;
         border-radius: 50%;
         width: 18px;
@@ -126,9 +141,9 @@ const CheckBox = styled.input`
     width: 42px;
     height: 26px;
     &:checked + ${CheckBoxLabel} {
-        background: #60A5F8;
+        background: #60a5f8;
         &::after {
-            content: "";
+            content: '';
             display: block;
             border-radius: 50%;
             width: 18px;
@@ -138,6 +153,5 @@ const CheckBox = styled.input`
         }
     }
 `;
-
 
 export default PlanInfo;

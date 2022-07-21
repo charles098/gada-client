@@ -1,12 +1,30 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+    ActionReducerMapBuilder,
+    createAsyncThunk,
+    createSlice,
+    PayloadAction,
+} from '@reduxjs/toolkit';
+import axios, { AxiosRequestConfig } from 'axios';
 import {
     changePosition2DistanceArray,
     changePosition2DistanceCenter,
     getPosition2bound,
 } from 'utils/mapPointHelper';
 import { Place, Position } from '.';
+import {
+    changePlanModel2PlanState,
+    memoPlanDetailFulfilledController,
+    movePlaceOptionToPlanFulfilledController,
+    movePlanToPlaceOptionFulfilledController,
+    sortPlanListController,
+} from './plan.controller';
+import { PlanDetailModel, PlanModel } from './plan.model';
 
-export interface planState {
+export interface PlanState
+    extends Omit<
+        PlanModel,
+        'startDate' | 'lastDate' | 'planDetails' | 'isEdited' | 'isShared'
+    > {
     title: string;
     startDate: Date;
     lastDate: Date;
@@ -15,7 +33,7 @@ export interface planState {
     grabPlanId: string | null;
     grabPlaceOptionId: string | null;
     clickPlaceDetailId: string | null;
-    planList: Place[][];
+    planList: PlanDetailModel[][];
     placeOptionList: Place[];
     placeDistance: number[];
     placeDistanceCenter: Position[];
@@ -23,7 +41,7 @@ export interface planState {
     shareMode: boolean;
 }
 
-const initialState: planState = {
+const initialState: PlanState = {
     title: '부산 바캉스',
     startDate: new Date(20, 11, 3),
     lastDate: new Date(20, 11, 10),
@@ -38,8 +56,233 @@ const initialState: planState = {
     placeDistanceCenter: [],
     mapCenterBound: null,
     shareMode: false,
+
+    _id: '',
+    userId: '',
+    area: '',
+    imgUrl: '',
+    createdAt: '',
+    updatedAt: '',
+    __v: 0,
 };
-const setPointRelatedOptions = (state: planState) => {
+
+// Thunk
+
+const mockid = '62d79015bac11f6c17315241';
+
+const getPlanInfoById = createAsyncThunk(
+    'GET/plan/getPlan',
+    async (planObjectId: string, { rejectWithValue }) => {
+        try {
+            const result = await axios.get(`/plans/${mockid}`);
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+const movePlaceOptionToPlan = createAsyncThunk(
+    'POST/plan/planDetails',
+    async (
+        { place, setDay }: { place: Place; setDay: number },
+        { rejectWithValue },
+    ) => {
+        try {
+            const result = await axios.post(`/planDetails`, {
+                planId: mockid,
+                imgUrl: place.imgUrl,
+                index: setDay,
+                id: place.id,
+                name: place.name,
+                latitude: place.latitude,
+                longitude: place.longitude,
+                address: place.address,
+            });
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+const movePlanToPlaceOption = createAsyncThunk(
+    'DELETE/plan/planDetails',
+    async (
+        {
+            planId,
+            row,
+            col,
+            id, // placeId
+        }: { planId: string; row: number; col: number; id: string },
+        { rejectWithValue },
+    ) => {
+        try {
+            const data = {
+                planId: mockid,
+                row,
+                col,
+                id,
+            };
+            const result = await axios.delete('/planDetails', {
+                headers: {},
+                data,
+            });
+            return result;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+// reject 될때를 체크합니다
+const sortPlanListFailCheck = createAsyncThunk(
+    'PATCH/plan/updateOrder',
+    async (
+        {
+            planId,
+            index,
+            preplanDetails,
+            curDetails,
+        }: {
+            planId: string;
+            index: number;
+            preplanDetails: PlanDetailModel[];
+            curDetails: PlanDetailModel[];
+        },
+        { rejectWithValue },
+    ) => {
+        const data = {
+            planId: mockid,
+            index,
+            // eslint-disable-next-line no-underscore-dangle
+            planDetails: curDetails.map((data) => ({ planDetail: data._id })),
+        };
+        try {
+            const result = await axios.patch('/planDetails/order', data);
+            if (result) return curDetails;
+            return [];
+        } catch (err) {
+            return rejectWithValue(preplanDetails);
+        }
+    },
+);
+
+const memoPlanDetail = createAsyncThunk(
+    'PATCH/plan/updatePlanDetail',
+    async (planDetail: PlanDetailModel, { rejectWithValue }) => {
+        try {
+            const result = await axios.patch(`/planDetails`, {
+                plan: planDetail,
+            });
+            return planDetail;
+        } catch (err) {
+            return rejectWithValue(err);
+        }
+    },
+);
+
+const extraReducers = (builder: ActionReducerMapBuilder<PlanState>) => {
+    builder.addCase(getPlanInfoById.fulfilled, (state: PlanState, action) => {
+        const { data } = action.payload;
+        changePlanModel2PlanState(state, data);
+    });
+    builder.addCase(
+        movePlaceOptionToPlan.fulfilled,
+        movePlaceOptionToPlanFulfilledController,
+    );
+    builder.addCase(
+        movePlanToPlaceOption.fulfilled,
+        movePlanToPlaceOptionFulfilledController,
+    );
+    builder.addCase(sortPlanListFailCheck.rejected, (state, action: any) => {
+        sortPlanListController(state, action.payload);
+    });
+    builder.addCase(
+        memoPlanDetail.fulfilled,
+        memoPlanDetailFulfilledController,
+    );
+};
+
+const planDetailSlice = createSlice({
+    name: 'plan',
+    initialState,
+    reducers: {
+        initializeData(state: PlanState, action) {
+            const { initPlaceOptionList, initPlanDetailList } = action.payload;
+            state.placeOptionList = [...initPlaceOptionList];
+            // state.planList = [...initPlanDetailList];
+        },
+        insertPlaceOptionList(
+            state: PlanState,
+            action: PayloadAction<Place[]>,
+        ) {
+            const selectedPlaces = action.payload;
+            state.placeOptionList = [
+                ...state.placeOptionList,
+                ...selectedPlaces,
+            ];
+        },
+        deletePlaceOptionList(state: PlanState, action: PayloadAction<string>) {
+            const optionPlaceId = action.payload;
+            state.placeOptionList = state.placeOptionList.filter(
+                (place) => place.id !== optionPlaceId,
+            );
+        },
+
+        setTitle(state: PlanState, action) {
+            const { newTitle } = action.payload;
+            state.title = newTitle;
+        },
+        setUpDay(state: PlanState, action) {
+            const { selectedDay } = action.payload;
+            state.setDay = selectedDay;
+            setPointRelatedOptions(state);
+        },
+        sortPlanList(state: PlanState, action) {
+            sortPlanListController(state, action.payload);
+        },
+        sortplaceOptionList(state: PlanState, action) {
+            const { list } = action.payload;
+            state.placeOptionList = [...list];
+        },
+        grabPlan(state: PlanState, action) {
+            const { id } = action.payload;
+            state.grabPlanId = id;
+        },
+        grabPlaceOption(state: PlanState, action) {
+            const { id } = action.payload;
+            state.grabPlaceOptionId = id;
+        },
+        setClickPlaceDetailId(
+            state: PlanState,
+            action: PayloadAction<string | undefined>,
+        ) {
+            if (!action.payload) {
+                state.clickPlaceDetailId = null;
+                return;
+            }
+            state.clickPlaceDetailId = action.payload;
+        },
+        movePlanToPlaceOption(state: PlanState) {
+            // dropPlan
+            const droppedPlan = state.planList[state.setDay].find(
+                (plan) => plan.id === state.grabPlanId,
+            ) as PlanDetailModel;
+            const idx = state.planList[state.setDay].indexOf(droppedPlan);
+            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
+            state.planList[state.setDay].splice(idx, 1);
+            state.placeOptionList.push(droppedPlan);
+        },
+        changeShareMode(state: PlanState, action: PayloadAction<boolean>) {
+            state.shareMode = action.payload;
+            console.log('CUSTOM SHARE', state.shareMode);
+        },
+    },
+    extraReducers,
+});
+
+export const setPointRelatedOptions = (state: PlanState) => {
     state.placeDistance = changePosition2DistanceArray(
         state.planList[state.setDay],
     );
@@ -49,119 +292,28 @@ const setPointRelatedOptions = (state: planState) => {
     state.mapCenterBound = getPosition2bound(state.planList[state.setDay]);
 };
 
-const planDetailSlice = createSlice({
-    name: 'plan',
-    initialState,
-    reducers: {
-        initializeData(state: planState, action) {
-            const { initPlaceOptionList, initPlanDetailList } = action.payload;
-            state.placeOptionList = [...initPlaceOptionList];
-            // state.planList = [...initPlanDetailList];
-        },
-        insertPlaceOptionList(
-            state: planState,
-            action: PayloadAction<Place[]>,
-        ) {
-            const selectedPlaces = action.payload;
-            state.placeOptionList = [
-                ...state.placeOptionList,
-                ...selectedPlaces,
-            ];
-        },
-        deletePlaceOptionList(state: planState, action: PayloadAction<string>) {
-            const optionPlaceId = action.payload;
-            state.placeOptionList = state.placeOptionList.filter(
-                (place) => place.id !== optionPlaceId,
-            );
-        },
-        createPlanListArray(state: planState, action) {
-            const days = action.payload.days ?? 1;
-            const arr = new Array<Place[]>(days).fill([]);
-            state.planList = arr;
-        },
-        setTitle(state: planState, action) {
-            const { newTitle } = action.payload;
-            state.title = newTitle;
-        },
-        setUpDay(state: planState, action) {
-            const { selectedDay } = action.payload;
-            state.setDay = selectedDay;
-            setPointRelatedOptions(state);
-        },
-        sortPlanList(state: planState, action) {
-            const { list } = action.payload;
-            state.planList[state.setDay] = [...list];
-            // calc distance
-            setPointRelatedOptions(state);
-        },
-        sortplaceOptionList(state: planState, action) {
-            const { list } = action.payload;
-            state.placeOptionList = [...list];
-        },
-        grabPlan(state: planState, action) {
-            const { id } = action.payload;
-            state.grabPlanId = id;
-        },
-        grabPlaceOption(state: planState, action) {
-            const { id } = action.payload;
-            state.grabPlaceOptionId = id;
-        },
-        setClickPlaceDetailId(
-            state: planState,
-            action: PayloadAction<string | undefined>,
-        ) {
-            if (!action.payload) {
-                state.clickPlaceDetailId = null;
-                return;
-            }
-            state.clickPlaceDetailId = action.payload;
-        },
-        movePlanToPlaceOption(state: planState) {
-            // dropPlan
-            const droppedPlan = state.planList[state.setDay].find(
-                (plan) => plan.id === state.grabPlanId,
-            ) as Place;
-            const idx = state.planList[state.setDay].indexOf(droppedPlan);
-            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
-            state.planList[state.setDay].splice(idx, 1);
-            state.placeOptionList.push(droppedPlan);
-        },
-        movePlaceOptionToPlan(state: planState) {
-            // dropPlaceOption
-            const droppedPlaceOption = state.placeOptionList.find(
-                (option) => option.id === state.grabPlaceOptionId,
-            ) as Place;
-
-            const idx = state.placeOptionList.indexOf(droppedPlaceOption);
-            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
-            state.placeOptionList.splice(idx, 1);
-            state.planList[state.setDay].push(droppedPlaceOption);
-            setPointRelatedOptions(state);
-        },
-        changeShareMode(state: planState, action:PayloadAction<boolean>) {
-            state.shareMode = action.payload;
-            console.log('CUSTOM SHARE', state.shareMode);
-        },
-    },
-});
-
 const { reducer, actions } = planDetailSlice;
 
 export const {
     initializeData,
-    createPlanListArray,
     insertPlaceOptionList,
     deletePlaceOptionList,
     setTitle,
     setUpDay,
     sortplaceOptionList,
-    grabPlan,
     sortPlanList,
+    grabPlan,
     grabPlaceOption,
     setClickPlaceDetailId,
-    movePlanToPlaceOption,
-    movePlaceOptionToPlan,
     changeShareMode,
 } = actions;
+
+export {
+    getPlanInfoById,
+    movePlaceOptionToPlan,
+    movePlanToPlaceOption,
+    sortPlanListFailCheck,
+    memoPlanDetail,
+};
 
 export default reducer;

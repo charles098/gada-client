@@ -51,7 +51,9 @@ const CourseMap = () => {
                     placeList[setDay].map((placeDetail, index) => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
-                            <>
+                            <React.Fragment
+                                key={`frag-${placeDetail.id}-${placeDetail.latitude}-${placeDetail.longitude}`}
+                            >
                                 <PlaceMarker
                                     key={`marker-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     position={position}
@@ -61,7 +63,7 @@ const CourseMap = () => {
                                     color={theme.USER_PLAN_COLOR[index]}
                                 />
                                 <PlacePolyline
-                                    key={`line-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
+                                    key={`line-${placeDetail.id}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     path={
                                         index > 0
                                             ? [
@@ -77,7 +79,7 @@ const CourseMap = () => {
                                     center={placeDistanceCenter[index - 1]}
                                     distance={placeDistance[index - 1]}
                                 />
-                            </>
+                            </React.Fragment>
                         );
                     })}
             </Map>

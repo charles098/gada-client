@@ -1,19 +1,53 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AddCard from 'containers/main/PlanList/AddCard';
 import PlanCard from 'containers/main/PlanList/PlanCard';
 import jejuImg from 'images/jeju.jpg';
 import SlickSlider from 'components/SlickSlider';
+import axios from 'axios';
+import { PlanModel } from 'store/modules/plan/plan.model'
+import { getDday, getTerm } from 'utils/usefulFunctions';
+import getAuthHeader from 'utils/getAuthHeader'
+
+const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
+    return planDataArray.map((data) => {
+        const { _id, area, title, imgUrl, startDate, lastDate } = data;
+        return {
+            id: _id,
+            area,
+            title,
+            imgUrl,
+            dDay: getDday(startDate),
+            term: getTerm(startDate, lastDate)
+        }
+    })
+}
+
+interface PreprocessedPlanModel {
+    id: string;
+    area: string;
+    title: string;
+    imgUrl: string;
+    dDay: string;
+    term: string;
+}
 
 const PlanList : FC = () => {
+    const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
+    const headers = getAuthHeader();
 
-    const defaultProps = {
-        dday: 'D-45',
-        src: jejuImg,
-        imageName: '제주',
-        title: '제주 여행',
-        date: '8.18(목) ~ 8.23(화)',
-    }
+    useEffect(() => {
+        (async () => {
+            try {
+                const { data } = await axios.get('/plans', { headers });
+                const preprocessedData = preprocessPlanDatas(data);
+                setPlanDatas(preprocessedData);
+                console.log(preprocessedData)
+            } catch(err) {
+                console.log(err);
+            }
+        })()
+    }, [])
 
     return (
         <PlanListWrapper>
@@ -28,13 +62,14 @@ const PlanList : FC = () => {
                 boxShadow
                 >
                     <AddCard />
-                    {[...Array(10)].map(() => (
+                    {planDatas?.map((data) => (
                         <PlanCard
-                            dday={defaultProps.dday}
-                            src={defaultProps.src}
-                            imageName={defaultProps.imageName}
-                            title={defaultProps.title}
-                            date={defaultProps.date}
+                            key={data.id}
+                            dday={data.dDay}
+                            src={jejuImg}
+                            imageName={data.area}
+                            title={data.title}
+                            term={data.term}
                         />
                     ))}
                 </SlickSlider>

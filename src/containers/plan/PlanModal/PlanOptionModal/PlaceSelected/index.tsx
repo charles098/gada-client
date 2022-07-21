@@ -6,7 +6,7 @@ import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteSelectedPlaces } from 'store/modules/plan/search';
 import SlickSlider from 'components/SlickSlider';
-import { SelectedPlace } from 'store/modules/plan';
+import { Place } from 'store/modules/plan';
 
 const selectedPlaces = (state: RootState) => state.search.selectedPlaces;
 const PlanPlaceSelected = () => {
@@ -25,7 +25,7 @@ const PlanPlaceSelected = () => {
                 itemCursor="default"
                 boxShadow={false}
             >
-                {userPlaces.map((place: SelectedPlace) => (
+                {userPlaces.map((place: Place) => (
                     <PlaceCard className="dasfasawfds" key={place.id}>
                         <button
                             type="button"
@@ -52,7 +52,7 @@ const Image = styled.img`
     height: 70px;
     border-radius: 50%;
     display: inline-block;
-`
+`;
 
 const P = styled.p`
     margin: 0 auto !important;
@@ -62,13 +62,13 @@ const P = styled.p`
     text-overflow: ellipsis;
     white-space: nowrap;
     text-align: center;
-    
+
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
     margin-top: 2px;
-`
+`;
 
 const SelectedContainer = styled.div`
     box-sizing: border-box;
@@ -108,7 +108,7 @@ const PlaceCard = styled.div`
     &:hover > button {
         display: block;
     }
-    
+
     & > button {
         display: inline-block;
         cursor: pointer;

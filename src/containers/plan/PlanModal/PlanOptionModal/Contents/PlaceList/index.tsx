@@ -12,22 +12,19 @@ const PlaceList = () => {
     const dispatch = useDispatch();
     const placeList = useSelector(places);
     return (
-        <>
-            <Header> 검색결과</Header>
-            <div className="contents">
-                {placeList.map((place) => (
-                    <PlaceListItem
-                        key={`item-${place.name}-${place.address}`}
-                        imgUrl={place.imgUrl}
-                        name={place.name}
-                        address={place.address}
-                        onClick={() => {
-                            dispatch(insertSelectedPlaces(place));
-                        }}
-                    />
-                ))}
-            </div>
-        </>
+        <div className="contents">
+            {placeList.map((place) => (
+                <PlaceListItem
+                    key={`item-${place.name}-${place.address}`}
+                    imgUrl={place.imgUrl}
+                    name={place.name}
+                    address={place.address}
+                    onClick={() => {
+                        dispatch(insertSelectedPlaces(place));
+                    }}
+                />
+            ))}
+        </div>
     );
 };
 

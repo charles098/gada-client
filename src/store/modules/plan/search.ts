@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 import { pickByKeyword, searchByKeyword } from 'utils/searchScenario';
-import { Position, SearchedPlaceInfo, SelectedPlace } from '.';
+import { Position, SearchedPlaceInfo, Place } from '.';
 // Types
 
 export interface SearchInputs {
@@ -11,7 +11,7 @@ export interface SearchInputs {
 
 export interface searchState {
     state: boolean;
-    selectedPlaces: SelectedPlace[];
+    selectedPlaces: Place[];
     placeList: SearchedPlaceInfo[];
     center: Position;
     moving?: Position;
@@ -67,7 +67,7 @@ const userSlice = createSlice({
             state: searchState,
             action: PayloadAction<SearchedPlaceInfo>,
         ) {
-            const place: SelectedPlace = { ...action.payload, id: nanoid() };
+            const place: Place = { ...action.payload, id: nanoid() };
             state.selectedPlaces = [...state.selectedPlaces, place];
         },
         deleteSelectedPlaces(
