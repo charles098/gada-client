@@ -33,12 +33,12 @@ interface PreprocessedPlanModel {
     term: string;
 }
 
-const ModalIsOpenSelector = (state: RootState) => state.modal.modalIsOpen;
+const modalSelector = (state: RootState) => state.modal;
 
 const PlanList : FC = () => {
     const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
     const headers = getAuthHeader();
-    const modalIsOpen = useSelector(ModalIsOpenSelector);
+    const { modalIsOpen, deletePlan} = useSelector(modalSelector);
 
     useEffect(() => {
         (async () => {
@@ -51,7 +51,7 @@ const PlanList : FC = () => {
                 console.log(err);
             }
         })()
-    }, [modalIsOpen])
+    }, [modalIsOpen, deletePlan]);
 
     return (
         <PlanListWrapper>

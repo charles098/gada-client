@@ -6,7 +6,7 @@ export const getDday = (startDate: string) => {
     let returnVal;
     
     if (dDay === 0) returnVal = 'D-day'
-    else if (dDay > 0) returnVal = `D-${dDay}`
+    else if (dDay < 0) returnVal = `D${dDay}`
     else returnVal = `D+${dDay}`
 
     return returnVal;
