@@ -30,7 +30,7 @@ const Header: FC = () => {
 
     const logoutClickHandler = () => {
         axios
-            .get('/api/users/logout',{
+            .get('/users/logout',{
                 headers: {
                     Authorization: `Bearer ${cookies.accessToken}`,
                 }
