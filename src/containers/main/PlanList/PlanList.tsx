@@ -66,7 +66,7 @@ const PlanList : FC = () => {
                         <PlanCard
                             key={data.id}
                             dday={data.dDay}
-                            src={jejuImg}
+                            src={data.imgUrl}
                             imageName={data.area}
                             title={data.title}
                             term={data.term}
