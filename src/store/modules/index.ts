@@ -4,12 +4,14 @@ import user from './user';
 import plan from './plan/plan';
 import modal from './modal';
 import search from './plan/search';
+import location from './main/location';
 
 const rootReducer = combineReducers({
     user,
     plan,
     modal,
     search,
+    location,
 });
 
 export default rootReducer;

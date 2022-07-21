@@ -1,9 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { PlusIcon } from 'components/icons'
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+
+const LoactionSelector = (state: RootState) => state.location;
 
 const NewPlanImage: FC = () => {
     const [imageSrc, setImageSrc] = useState<any>('');
+    const { imageUrl, isClickedLocation } = useSelector(LoactionSelector);
+
+    useEffect(() => {
+      if (isClickedLocation){
+        setImageSrc(imageUrl);
+      }
+    }, []);
 
     const encodeFileToBase64 = (fileBlob: any) => {
         const reader = new FileReader();

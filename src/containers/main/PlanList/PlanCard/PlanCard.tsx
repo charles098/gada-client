@@ -7,7 +7,7 @@ interface CardProps {
     src: string;
     imageName: string;
     title: string;
-    date: string;
+    term: string;
 }
 
 const PlanCard = ( {
@@ -15,7 +15,7 @@ const PlanCard = ( {
     src,
     imageName,
     title,
-    date
+    term
 } : CardProps) => {
     const navigate = useNavigate();
     const navigateHandler = () => {navigate("/plan")};
@@ -28,7 +28,7 @@ const PlanCard = ( {
                 <PlanImageOpacity/>
             </PlanImage>
             <PlanTitle>{title}</PlanTitle>
-            <PlanDate>{date}</PlanDate>
+            <PlanDate>{term}</PlanDate>
         </Wrapper>
     )
 }
