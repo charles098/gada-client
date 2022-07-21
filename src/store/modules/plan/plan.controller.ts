@@ -41,6 +41,7 @@ export const changePlanModel2PlanState = (
         state.grabPlaceOptionId = null;
         state.clickPlaceDetailId = null;
         state.placeOptionList = [];
+        state.shareMode = data.isShared;
     };
 
     infoByAPI(state);

@@ -1,14 +1,11 @@
-import React, { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { FC } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
 import DayPicker from 'components/DayPicker';
-import { getPeriod } from 'utils/planUtils';
 import ShowDistance from './ShowDistance';
 import SetupRoute from './SetupRoute';
 
-const startDateSelector = (state: RootState) => state.plan.startDate;
-const lastDateSelector = (state: RootState) => state.plan.lastDate;
 const periodSelector = (state: RootState) => state.plan.period;
 
 const PlanMaker: FC = () => {

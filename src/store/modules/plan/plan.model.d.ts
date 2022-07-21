@@ -29,4 +29,6 @@ interface PlanModel {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    isEdited: boolean;
+    isShared: boolean;
 }

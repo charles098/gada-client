@@ -41,7 +41,6 @@ const SetupRoute: FC = () => {
     const [isDrop, setIsDrop] = useState(false);
     const [firstRender, setFistRender] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate();
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
 
@@ -58,7 +57,6 @@ const SetupRoute: FC = () => {
     }, [planList]);
 
     useEffect(() => {
-        console.log('LOOOOOOOG    first Render');
         setFistRender(true);
     }, []);
 

@@ -21,7 +21,10 @@ import {
 import { PlanDetailModel, PlanModel } from './plan.model';
 
 export interface PlanState
-    extends Omit<PlanModel, 'startDate' | 'lastDate' | 'planDetails'> {
+    extends Omit<
+        PlanModel,
+        'startDate' | 'lastDate' | 'planDetails' | 'isEdited' | 'isShared'
+    > {
     title: string;
     startDate: Date;
     lastDate: Date;
