@@ -13,6 +13,7 @@ import {
 import { Place, Position } from '.';
 import {
     changePlanModel2PlanState,
+    memoPlanDetailFulfilledController,
     movePlaceOptionToPlanFulfilledController,
     movePlanToPlaceOptionFulfilledController,
     sortPlanListController,
@@ -165,29 +166,19 @@ const sortPlanListFailCheck = createAsyncThunk(
 );
 
 const memoPlanDetail = createAsyncThunk(
-    'GET/plan/getPlanDetails',
-    async (placeId: string, { rejectWithValue }) => {
-        try {
-            const result = await axios.get(`/planDetails/${placeId}`);
-            return result;
-        } catch (err) {
-            return rejectWithValue(err);
-        }
-    },
-);
-const updatePlanDetail = createAsyncThunk(
     'PATCH/plan/updatePlanDetail',
     async (planDetail: PlanDetailModel, { rejectWithValue }) => {
         try {
             const result = await axios.patch(`/planDetails`, {
-                planDetail,
+                plan: planDetail,
             });
-            return result;
+            return planDetail;
         } catch (err) {
             return rejectWithValue(err);
         }
     },
 );
+
 const extraReducers = (builder: ActionReducerMapBuilder<PlanState>) => {
     builder.addCase(getPlanInfoById.fulfilled, (state: PlanState, action) => {
         const { data } = action.payload;
@@ -204,6 +195,10 @@ const extraReducers = (builder: ActionReducerMapBuilder<PlanState>) => {
     builder.addCase(sortPlanListFailCheck.rejected, (state, action: any) => {
         sortPlanListController(state, action.payload);
     });
+    builder.addCase(
+        memoPlanDetail.fulfilled,
+        memoPlanDetailFulfilledController,
+    );
 };
 
 const planDetailSlice = createSlice({
@@ -315,7 +310,7 @@ export {
     movePlaceOptionToPlan,
     movePlanToPlaceOption,
     sortPlanListFailCheck,
-    updatePlanDetail,
+    memoPlanDetail,
 };
 
 export default reducer;

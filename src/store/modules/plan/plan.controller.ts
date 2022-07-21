@@ -1,4 +1,4 @@
-import { PayloadAction } from '@reduxjs/toolkit';
+import { isProxy } from 'util/types';
 import {
     changePosition2DistanceArray,
     changePosition2DistanceCenter,
@@ -89,7 +89,20 @@ export const movePlanToPlaceOptionFulfilledController = (
     state.planList[state.setDay].splice(idx, 1);
     state.placeOptionList.push(droppedPlan);
 };
+export const memoPlanDetailFulfilledController = (
+    state: PlanState,
+    action: any,
+) => {
+    const data = action.payload as PlanDetailModel;
+    const col = state.planList[state.setDay].map((p) => p.id).indexOf(data.id);
+    state.planList[state.setDay][col] = data;
+};
 
+/**
+ * sortPlanListController 사용 처
+ * 1. Pending 이전에 ReduxStore 값변경
+ * 2. Api Call reject 시 변경 값 취소 (롤백)
+ */
 export const sortPlanListController = (
     state: PlanState,
     data: PlanDetailModel[],

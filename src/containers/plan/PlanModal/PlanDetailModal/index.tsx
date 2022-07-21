@@ -10,6 +10,7 @@ import { theme } from 'styles/theme';
 import SubmitButton from 'components/StyledSmitButton';
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
+import { memoPlanDetail } from 'store/modules/plan/plan';
 
 const ModalSelector = (state: RootState) => state.modal;
 const PlanSelector = (state: RootState) => state.plan;
@@ -17,7 +18,7 @@ const setDay = (state: RootState) => state.plan.setDay;
 const detailIdSelector = (state: RootState) => state.plan.clickPlaceDetailId;
 
 const PlanDetailModal: FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<any>();
     const { modalIsOpen } = useSelector(ModalSelector);
     const {
         planList,
@@ -66,7 +67,16 @@ const PlanDetailModal: FC = () => {
         e.preventDefault();
 
         console.log('CUSTOM: It is State When you leave Detail', details);
-
+        if (SelectedDetailPlace) {
+            const { description, cost, time } = details;
+            const memo = {
+                ...SelectedDetailPlace,
+                description,
+                cost,
+                time,
+            } as PlanDetailModel;
+            dispatch(memoPlanDetail(memo));
+        }
         dispatch(changeOpenState(!modalIsOpen));
     };
 

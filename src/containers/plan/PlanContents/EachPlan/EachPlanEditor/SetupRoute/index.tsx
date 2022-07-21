@@ -39,7 +39,9 @@ const SetupRoute: FC = () => {
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
     const placeOptionList = useSelector(planOptionListSelector);
     const [isDrop, setIsDrop] = useState(false);
+    const [firstRender, setFistRender] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
 
@@ -56,8 +58,9 @@ const SetupRoute: FC = () => {
     }, [planList]);
 
     useEffect(() => {
-        // hi
-    }, [planList[setDay]]);
+        console.log('LOOOOOOOG    first Render');
+        setFistRender(true);
+    }, []);
 
     const onDragStartPlace = useCallback(
         (e: React.DragEvent<HTMLElement>): void => {
@@ -107,32 +110,51 @@ const SetupRoute: FC = () => {
     );
 
     // SortableJs Logic
-
-    const getSortableList = (list: PlanDetailModel[][]): PlanDetailModel[] => {
+    type PlanDetailSortableItem = PlanDetailModel & { chosen: boolean };
+    const getSortableList = (
+        list: PlanDetailModel[][],
+    ): PlanDetailSortableItem[] => {
         if (!(list.length > 1)) return [];
         if (shareMode) return [];
-        return list[setDay].map((x) => ({
-            ...x,
-            chosen: true,
-        }));
+        return list[setDay].map((x) => {
+            const temp: PlanDetailSortableItem = {
+                // eslint-disable-next-line no-underscore-dangle
+                _id: x._id,
+                userId: x.userId,
+                id: x.id,
+                name: x.name,
+                latitude: x.latitude,
+                longitude: x.longitude,
+                address: x.address,
+                chosen: true,
+            };
+            return temp;
+        });
     };
 
     const SortableList = useMemo(() => {
-        return getSortableList(planList);
-    }, [planList, location]);
+        const temp = getSortableList(planList);
+        if (location) {
+            return temp;
+        }
+        return temp;
+    }, [planList, location, setDay]);
 
     const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
         if (shareMode) return;
-        dispatch(sortPlanList(list));
-        dispatch(
-            sortPlanListFailCheck({
-                planId: '',
-                index: setDay,
-                preplanDetails: planList[setDay],
-                curDetails: list,
-            }),
-        );
+        console.log('LOOOOOOOG onSort', planList, list, location);
+        if (firstRender) {
+            dispatch(sortPlanList(list));
+            dispatch(
+                sortPlanListFailCheck({
+                    planId: '',
+                    index: setDay,
+                    preplanDetails: planList[setDay],
+                    curDetails: list,
+                }),
+            );
+        }
     };
 
     return (
@@ -143,7 +165,11 @@ const SetupRoute: FC = () => {
             onDragOver={(e) => e.preventDefault()}
         >
             {SortableList && (
-                <ReactSortable animation={150} list={[]} setList={onSort}>
+                <ReactSortable
+                    animation={150}
+                    list={SortableList}
+                    setList={onSort}
+                >
                     {planList.length > 1 &&
                         planList[setDay].map((plan: Place, index: number) => {
                             return (
