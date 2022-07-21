@@ -105,7 +105,7 @@ const SetupRoute: FC = () => {
             const selected = placeOptionList.find(
                 (place) => place.id === grabPlaceOptionId,
             );
-            if (selected)
+            if (selected) {
                 dispatch(
                     movePlaceOptionToPlan({
                         headers,
@@ -114,7 +114,8 @@ const SetupRoute: FC = () => {
                         setDay,
                     }),
                 );
-            setIsDrop(true);
+                setIsDrop(true);
+            }
         },
         [grabPlaceOptionId, shareMode],
     );
@@ -127,19 +128,10 @@ const SetupRoute: FC = () => {
         if (!(list.length > 1)) return [];
         if (shareMode) return [];
         return list[setDay].map((x) => {
-            const temp: PlanDetailSortableItem = {
-                // eslint-disable-next-line no-underscore-dangle
-                _id: x._id,
-                userId: x.userId,
-                id: x.id,
-                imgUrl: x.imgUrl,
-                name: x.name,
-                latitude: x.latitude,
-                longitude: x.longitude,
-                address: x.address,
+            return {
+                ...x,
                 chosen: true,
             };
-            return temp;
         });
     };
 

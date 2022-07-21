@@ -22,9 +22,9 @@ const ShowDistance: FC = () => {
 
     return (
         <Container>
-            {planListLength > 0 &&
-                [...new Array(planListLength)].map((value, index) => (
-                    <LocationPointBox key={`${setDay}-${placeDistance[index]}`}>
+            {planList.length > 0 &&
+                planList[setDay].map((value, index) => (
+                    <LocationPointBox key={`${setDay}-${value.id}`}>
                         <CustomMarker
                             size={32}
                             border={20}

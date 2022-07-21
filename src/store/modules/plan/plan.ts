@@ -22,6 +22,8 @@ import {
 } from './plan.controller';
 import { PlanDetailModel, PlanModel } from './plan.model';
 
+axios.defaults.withCredentials = true;
+
 export interface PlanState
     extends Omit<
         PlanModel,
@@ -182,11 +184,9 @@ const sortPlanListFailCheck = createAsyncThunk(
             planDetails: curDetails.map((data) => ({ planDetail: data._id })),
         };
         try {
-            const result = await axios.patch(
-                '/planDetails/order',
-                data,
+            const result = await axios.patch('/planDetails/order', data, {
                 headers,
-            );
+            });
             if (result) return curDetails;
             return [];
         } catch (err) {
@@ -207,8 +207,9 @@ const memoPlanDetail = createAsyncThunk(
                 {
                     planDetail,
                 },
-                headers,
+                { headers },
             );
+            console.log('0000000000000000000000000000000');
             return planDetail;
         } catch (err) {
             return rejectWithValue(err);
