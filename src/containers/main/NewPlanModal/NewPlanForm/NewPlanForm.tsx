@@ -12,13 +12,28 @@ const NewPlanForm: FC = () => {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         let { image } = e.target;
-        const { title, date } = e.target;
+        const formData = new FormData();
 
         if (image.files.length > 0) {
             setImageData(image.files[0]);
             [image] = image.files;
         } else {
             image = imageData;
+        }
+
+        if (image) {
+            formData.append("files", image);
+            image = formData;
+        }
+
+        const { title, date } = e.target;
+        const [startDate, lastDate] = date.value.split(' ~ ');
+        const data = {
+            image,
+            title: title.value,
+            area: location,
+            startDate,
+            lastDate
         }
 
         // 유효성 검사
@@ -33,10 +48,7 @@ const NewPlanForm: FC = () => {
         }
         else {
             // 이거 그대로 서버에 post
-            console.log(image);
-            console.log(title.value);
-            console.log(location);
-            console.log(date.value);
+            console.log(data);
         }
     }
 

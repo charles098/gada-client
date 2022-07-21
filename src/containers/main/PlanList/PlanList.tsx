@@ -7,6 +7,7 @@ import SlickSlider from 'components/SlickSlider';
 import axios from 'axios';
 import { PlanModel } from 'store/modules/plan/plan.model'
 import { getDday, getTerm } from 'utils/usefulFunctions';
+import getAuthHeader from 'utils/getAuthHeader'
 
 const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
     return planDataArray.map((data) => {
@@ -33,11 +34,12 @@ interface PreprocessedPlanModel {
 
 const PlanList : FC = () => {
     const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
+    const headers = getAuthHeader();
 
     useEffect(() => {
         (async () => {
             try {
-                const { data } = await axios.get('/plans');
+                const { data } = await axios.get('/plans', { headers });
                 const preprocessedData = preprocessPlanDatas(data);
                 setPlanDatas(preprocessedData);
                 console.log(preprocessedData)

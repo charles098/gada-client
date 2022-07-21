@@ -16,8 +16,8 @@ const NewPlanDate: FC = () => {
     ])
 
     const getDateInput = useCallback((calendar: any) => {
-        const start = calendar.startDate.toLocaleDateString();
-        const end = calendar.endDate.toLocaleDateString();
+        const start = calendar.startDate.toISOString().split('T')[0];
+        const end = calendar.endDate.toISOString().split('T')[0];
         return `${start} ~ ${end}`
     }, [calendar])
 
