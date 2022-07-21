@@ -173,7 +173,7 @@ const memoPlanDetail = createAsyncThunk(
     async (planDetail: PlanDetailModel, { rejectWithValue }) => {
         try {
             const result = await axios.patch(`/planDetails`, {
-                plan: planDetail,
+                planDetail,
             });
             return planDetail;
         } catch (err) {
