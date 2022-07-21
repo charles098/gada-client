@@ -1,7 +1,22 @@
-import React, { useState } from 'react';
+import SharedPlan from 'containers/share/SharedPlan';
+import PlanMaker from 'containers/share/SharedPlan/SharedRoute';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { getSharedPlanInfoById } from 'store/modules/plan/share';
 import styled, { css } from 'styled-components';
+import getAuthHeader from 'utils/getAuthHeader';
 
 const Share = () => {
+    const dispatch = useDispatch<any>();
+    const { id } = useParams<'id'>();
+    const headers = getAuthHeader();
+
+    useEffect(() => {
+        console.log(id);
+        if (id) dispatch(getSharedPlanInfoById({ headers, planId: id }));
+    }, []);
+
     return (
         <>
             <ShareHeader>
@@ -13,7 +28,11 @@ const Share = () => {
                     </SubTitle2>
                 </TitleContainer>
             </ShareHeader>
-            <ShareBody>ㅎㅎ</ShareBody>
+            <ShareBody>
+                <ShareContents>
+                    <SharedPlan />
+                </ShareContents>
+            </ShareBody>
         </>
     );
 };
@@ -58,4 +77,12 @@ const ShareBody = styled.main`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+`;
+
+const ShareContents = styled.article`
+    margin-top: 25px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 `;

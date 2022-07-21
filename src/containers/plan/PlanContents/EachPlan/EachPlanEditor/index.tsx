@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
-import DayPicker from 'components/DayPicker';
+import DayPicker from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/DayPicker';
 import ShowDistance from './ShowDistance';
 import SetupRoute from './SetupRoute';
 
