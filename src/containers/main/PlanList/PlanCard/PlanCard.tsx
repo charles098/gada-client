@@ -8,6 +8,7 @@ interface CardProps {
     imageName: string;
     title: string;
     term: string;
+    id: string;
 }
 
 const PlanCard = ( {
@@ -15,10 +16,11 @@ const PlanCard = ( {
     src,
     imageName,
     title,
-    term
+    term,
+    id
 } : CardProps) => {
     const navigate = useNavigate();
-    const navigateHandler = () => {navigate("/plan")};
+    const navigateHandler = () => {navigate(`/plan/${id}`)};
 
     return (
         <Wrapper onClick={navigateHandler}>

@@ -1,14 +1,40 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { LocationIcon } from 'components/icons';
 import LocationCard from 'containers/main/LocationList/LocationCard';
+import axios from 'axios';
+import getAuthHeader from 'utils/getAuthHeader';
 import jejuImg from 'images/jeju.jpg';
+
+const preprocessLocationDatas = (locations: any) => {
+    return Object.entries(locations).map((data) => {
+        return {
+            location: data[0],
+            imgUrl: data[1]
+        }
+    })
+}
 
 const LocationList : FC = () => {
     const defaultProps = {
         imgUrl: jejuImg,
         location: '제주'
     }
+    const [locations, setLocations] = useState<any>();
+    const headers = getAuthHeader();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const results = await axios.get("/plans/locations", { headers });
+                const preprocessedLocationDatas = preprocessLocationDatas(results.data);
+                setLocations(preprocessedLocationDatas);
+                console.log(locations);
+            } catch (err) {
+                 console.log(err);
+            }
+        })()
+    }, [])
 
     return (
         <LocationWrapper>
@@ -20,10 +46,11 @@ const LocationList : FC = () => {
                 <LocationTitle>국내 여행지</LocationTitle>
             </LocationHeader>
             <LocationContainer>
-                {[...Array(7)].map(() => (
+                {locations?.map((data: any) => (
                     <LocationCard 
-                    imgUrl={defaultProps.imgUrl}
-                    location={defaultProps.location}
+                    key={data.location}
+                    imgUrl={data.imgUrl}
+                    location={data.location}
                     />
                 ))}
             </LocationContainer>
