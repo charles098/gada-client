@@ -1,55 +1,69 @@
 import React, { FC, useState, useRef } from 'react';
 import styled from 'styled-components';
+import axios from 'axios'
 import NewPlanImage from 'containers/main/NewPlanModal/NewPlanImage';
 import NewPlanTitle from 'containers/main/NewPlanModal/NewPlanTitle';
 import NewPlanLocation from 'containers/main/NewPlanModal/NewPlanLocation';
 import NewPlanDate from 'containers/main/NewPlanModal/NewPlanDate';
+import getAuthHeader from 'utils/getAuthHeader'
+import useModal from 'hooks/useModal';
 
 const NewPlanForm: FC = () => {
     const [imageData, setImageData] = useState<any>(null);
     const [location, setLocation] = useState<string>("");
-    
+    const headers = getAuthHeader();
+    const closeModal = useModal("NewPlanModal");;
+
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        let { image } = e.target;
-        const formData = new FormData();
 
-        if (image.files.length > 0) {
-            setImageData(image.files[0]);
-            [image] = image.files;
-        } else {
-            image = imageData;
-        }
+        (async () => {
+            try {
+                let { image } = e.target;
+                const formData = new FormData();
 
-        if (image) {
-            formData.append("files", image);
-            image = formData;
-        }
+                if (image.files.length > 0) {
+                    setImageData(image.files[0]);
+                    [image] = image.files;
+                } else {
+                    image = imageData;
+                }
 
-        const { title, date } = e.target;
-        const [startDate, lastDate] = date.value.split(' ~ ');
-        const data = {
-            image,
-            title: title.value,
-            area: location,
-            startDate,
-            lastDate
-        }
+                if (image) {
+                    formData.append("image", image);
+                    image = formData;
+                }
 
-        // 유효성 검사
-        // if (!image) {
-        //     alert('이미지를 삽입해주세요!');
-        // }
-        if (!title.value) {
-            alert('제목을 입력해 주세요!');
-        }
-        else if (!location) {
-            alert('지역을 선택해주세요!');
-        }
-        else {
-            // 이거 그대로 서버에 post
-            console.log(data);
-        }
+                const { title, date } = e.target;
+                const [startDate, lastDate] = date.value.split(' ~ ');
+                const data = {
+                    image,
+                    title: title.value,
+                    area: location,
+                    startDate,
+                    lastDate
+                }
+
+                // 유효성 검사
+                // if (!image) {
+                //     alert('이미지를 삽입해주세요!');
+                // }
+                if (!title.value) {
+                    alert('제목을 입력해 주세요!');
+                }
+                else if (!location) {
+                    alert('지역을 선택해주세요!');
+                }
+                else {
+                    // 이거 그대로 서버에 post
+                    await axios.post("plans", data, { headers });
+                    closeModal();
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        })()
+        
     }
 
     return (
