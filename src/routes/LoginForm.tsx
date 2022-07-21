@@ -24,7 +24,7 @@ const LoginForm = () => {
             }
 
             axios
-                .post('/api/users/login', data).then((response) => {
+                .post('/users/login', data).then((response) => {
                     navigate('/main');
                 })
                 .catch((err) => {
