@@ -2,12 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AddCard from 'containers/main/PlanList/AddCard';
 import PlanCard from 'containers/main/PlanList/PlanCard';
-import jejuImg from 'images/jeju.jpg';
 import SlickSlider from 'components/SlickSlider';
 import axios from 'axios';
 import { PlanModel } from 'store/modules/plan/plan.model'
 import { getDday, getTerm } from 'utils/usefulFunctions';
 import getAuthHeader from 'utils/getAuthHeader'
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
 
 const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
     return planDataArray.map((data) => {
@@ -32,9 +33,12 @@ interface PreprocessedPlanModel {
     term: string;
 }
 
+const ModalIsOpenSelector = (state: RootState) => state.modal.modalIsOpen;
+
 const PlanList : FC = () => {
     const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
     const headers = getAuthHeader();
+    const modalIsOpen = useSelector(ModalIsOpenSelector);
 
     useEffect(() => {
         (async () => {
@@ -47,7 +51,7 @@ const PlanList : FC = () => {
                 console.log(err);
             }
         })()
-    }, [])
+    }, [modalIsOpen])
 
     return (
         <PlanListWrapper>
