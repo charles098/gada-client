@@ -275,7 +275,7 @@ const planDetailSlice = createSlice({
             state.placeOptionList.push(droppedPlan);
         },
         changeShareMode(state: PlanState, action: PayloadAction<boolean>) {
-            state.shareMode = !action.payload;
+            state.shareMode = action.payload;
             console.log('CUSTOM SHARE', state.shareMode);
         },
     },

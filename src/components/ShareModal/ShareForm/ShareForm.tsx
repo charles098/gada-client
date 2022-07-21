@@ -20,7 +20,7 @@ const ShareForm: FC = () => {
     const submitHandler = (e: any) => {
         e.preventDefault();
         const { title } = e.target;
-
+        console.log('submit')
         if (!title.value) {
             alert('제목을 입력해주세요!');
         }
@@ -28,8 +28,9 @@ const ShareForm: FC = () => {
             alert('주제를 선택해주세요!');
         }
         else {
-            console.log(title.value);
-            console.log(theme);
+            // console.log(title.value);
+            // console.log(theme);
+            console.log("shareMode", shareMode);
             dispatch(changeShareMode(!shareMode))
             closeModal();
         }
