@@ -13,6 +13,7 @@ import {
 import jejuImg from 'images/jeju.jpg';
 import { Place } from 'store/modules/plan';
 import { CancelDetailIcon } from 'components/icons';
+import getAuthHeader from 'utils/getAuthHeader';
 
 const placeOptionListSelector = (state: RootState) =>
     state.plan.placeOptionList;
@@ -20,6 +21,8 @@ const grabPlanIdSelector = (state: RootState) => state.plan.grabPlanId;
 const setDaySelector = (state: RootState) => state.plan.setDay;
 const planListSelector = (state: RootState) => state.plan.planList;
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
+// eslint-disable-next-line no-underscore-dangle
+const planIdSelector = (state: RootState) => state.plan._id;
 
 const SelectedOption: FC = () => {
     const dispatch = useDispatch<any>();
@@ -28,7 +31,10 @@ const SelectedOption: FC = () => {
     const grabPlanId = useSelector(grabPlanIdSelector);
     const shareMode = useSelector(shareModeSelector);
     const planList = useSelector(planListSelector);
+    const planId = useSelector(planIdSelector);
     const enterCnt = useRef(0);
+    const headers = getAuthHeader();
+
     const droppedRef = useRef<HTMLElement | null>(null);
     const [isDrop, setIsDrop] = useState(false);
 
@@ -80,7 +86,8 @@ const SelectedOption: FC = () => {
             e.currentTarget.classList.remove('drag-over');
             dispatch(
                 movePlanToPlaceOption({
-                    planId: '',
+                    headers,
+                    planId,
                     row: setDay,
                     col,
                     id: grabPlanId,

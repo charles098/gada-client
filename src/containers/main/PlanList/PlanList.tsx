@@ -5,9 +5,9 @@ import PlanCard from 'containers/main/PlanList/PlanCard';
 import jejuImg from 'images/jeju.jpg';
 import SlickSlider from 'components/SlickSlider';
 import axios from 'axios';
-import { PlanModel } from 'store/modules/plan/plan.model'
+import { PlanModel } from 'store/modules/plan/plan.model';
 import { getDday, getTerm } from 'utils/usefulFunctions';
-import getAuthHeader from 'utils/getAuthHeader'
+import getAuthHeader from 'utils/getAuthHeader';
 
 const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
     return planDataArray.map((data) => {
@@ -18,10 +18,10 @@ const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
             title,
             imgUrl,
             dDay: getDday(startDate),
-            term: getTerm(startDate, lastDate)
-        }
-    })
-}
+            term: getTerm(startDate, lastDate),
+        };
+    });
+};
 
 interface PreprocessedPlanModel {
     id: string;
@@ -32,8 +32,8 @@ interface PreprocessedPlanModel {
     term: string;
 }
 
-const PlanList : FC = () => {
-    const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
+const PlanList: FC = () => {
+    const [planDatas, setPlanDatas] = useState<PreprocessedPlanModel[]>();
     const headers = getAuthHeader();
 
     useEffect(() => {
@@ -42,29 +42,30 @@ const PlanList : FC = () => {
                 const { data } = await axios.get('/plans', { headers });
                 const preprocessedData = preprocessPlanDatas(data);
                 setPlanDatas(preprocessedData);
-                console.log(preprocessedData)
-            } catch(err) {
+                console.log(preprocessedData);
+            } catch (err) {
                 console.log(err);
             }
-        })()
-    }, [])
+        })();
+    }, []);
 
     return (
         <PlanListWrapper>
             <PlanListTitle>유저님, 여행을 준비하세요.</PlanListTitle>
             <PlanListContainer>
                 <SlickSlider
-                width={1200}
-                slidesToShow={5}
-                slidesToScroll={2}
-                arrowPadding={50}
-                arrowSize={25}
-                boxShadow
+                    width={1200}
+                    slidesToShow={5}
+                    slidesToScroll={2}
+                    arrowPadding={50}
+                    arrowSize={25}
+                    boxShadow
                 >
                     <AddCard />
                     {planDatas?.map((data) => (
                         <PlanCard
                             key={data.id}
+                            id={data.id}
                             dday={data.dDay}
                             src={data.imgUrl}
                             imageName={data.area}
@@ -75,8 +76,8 @@ const PlanList : FC = () => {
                 </SlickSlider>
             </PlanListContainer>
         </PlanListWrapper>
-    )
-}
+    );
+};
 
 export default PlanList;
 
@@ -93,6 +94,6 @@ const PlanListTitle = styled.h2`
 
 const PlanListContainer = styled.div`
     padding: 20px 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 `;

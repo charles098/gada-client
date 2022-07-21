@@ -49,7 +49,7 @@ const App: FC = () => {
                         </Route>
                         <Route element={<Header />}>
                             <Route path="/home" element={<Home />} />
-                            <Route path="/plan" element={<Plan />} />
+                            <Route path="/plan/:id" element={<Plan />} />
                             <Route path="/main" element={<Main />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/board" element={<Board />} />

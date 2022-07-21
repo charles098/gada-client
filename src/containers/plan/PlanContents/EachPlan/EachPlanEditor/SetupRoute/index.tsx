@@ -20,6 +20,7 @@ import {
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
 import { useLocation, useNavigate } from 'react-router-dom';
+import getAuthHeader from 'utils/getAuthHeader';
 import RoutItem from './RoutItem';
 
 const planListSelector = (state: RootState) => state.plan.planList;
@@ -27,7 +28,8 @@ const planOptionListSelector = (state: RootState) => state.plan.placeOptionList;
 
 const setDaySelector = (state: RootState) => state.plan.setDay;
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
-
+// eslint-disable-next-line no-underscore-dangle
+const planIdSelector = (state: RootState) => state.plan._id;
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
@@ -38,9 +40,12 @@ const SetupRoute: FC = () => {
     const shareMode = useSelector(shareModeSelector);
     const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
     const placeOptionList = useSelector(planOptionListSelector);
+    const planId = useSelector(planIdSelector);
     const [isDrop, setIsDrop] = useState(false);
     const [firstRender, setFistRender] = useState(false);
     const location = useLocation();
+    const headers = getAuthHeader();
+
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
 
@@ -101,7 +106,14 @@ const SetupRoute: FC = () => {
                 (place) => place.id === grabPlaceOptionId,
             );
             if (selected)
-                dispatch(movePlaceOptionToPlan({ place: selected, setDay }));
+                dispatch(
+                    movePlaceOptionToPlan({
+                        headers,
+                        planId,
+                        place: selected,
+                        setDay,
+                    }),
+                );
             setIsDrop(true);
         },
         [grabPlaceOptionId, shareMode],
@@ -142,12 +154,12 @@ const SetupRoute: FC = () => {
     const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
         if (shareMode) return;
-        console.log('LOOOOOOOG onSort', planList, list, location);
         if (firstRender) {
             dispatch(sortPlanList(list));
             dispatch(
                 sortPlanListFailCheck({
-                    planId: '',
+                    headers,
+                    planId,
                     index: setDay,
                     preplanDetails: planList[setDay],
                     curDetails: list,

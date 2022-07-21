@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 interface CardProps {
+    id: string;
     dday: string;
     src: string;
     imageName: string;
@@ -10,28 +11,24 @@ interface CardProps {
     term: string;
 }
 
-const PlanCard = ( {
-    dday,
-    src,
-    imageName,
-    title,
-    term
-} : CardProps) => {
+const PlanCard = ({ dday, id, src, imageName, title, term }: CardProps) => {
     const navigate = useNavigate();
-    const navigateHandler = () => {navigate("/plan")};
+    const navigateHandler = () => {
+        navigate(`/plan/${id}`);
+    };
 
     return (
         <Wrapper onClick={navigateHandler}>
             <Dday>{dday}</Dday>
             <PlanImage src={src}>
                 <PlanImageName>{imageName}</PlanImageName>
-                <PlanImageOpacity/>
+                <PlanImageOpacity />
             </PlanImage>
             <PlanTitle>{title}</PlanTitle>
             <PlanDate>{term}</PlanDate>
         </Wrapper>
-    )
-}
+    );
+};
 
 export default PlanCard;
 
@@ -44,8 +41,8 @@ const Wrapper = styled.div`
 `;
 
 const Dday = styled.div`
-    color: #6AA9F9;
-    background-color: #EEF6FE;
+    color: #6aa9f9;
+    background-color: #eef6fe;
     text-align: center;
     padding: 8px 18px;
     border-radius: 10px;
@@ -54,12 +51,12 @@ const Dday = styled.div`
     margin-bottom: 10px;
 `;
 
-const PlanImage = styled.div<{ src : string }>`
+const PlanImage = styled.div<{ src: string }>`
     width: 115px;
     height: 115px;
-    background-image: url('${({src}) => src}');
-    background-repeat : no-repeat;
-    background-size : cover;
+    background-image: url('${({ src }) => src}');
+    background-repeat: no-repeat;
+    background-size: cover;
     margin-bottom: 20px;
     position: relative;
     border-radius: 50%;
@@ -73,7 +70,7 @@ const PlanImageOpacity = styled.div`
     position: absolute;
     top: 0;
     border-radius: 50%;
-`
+`;
 
 const PlanImageName = styled.div`
     color: white;
@@ -85,7 +82,7 @@ const PlanImageName = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     letter-spacing: 3px;
-`
+`;
 
 const PlanTitle = styled.div`
     font-size: 18px;

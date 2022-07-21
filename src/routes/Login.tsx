@@ -1,39 +1,37 @@
-import React from "react";
+import React from 'react';
 import styled from 'styled-components';
 import { ChatIcon, GoogleIcon } from 'components/icons';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { changeOpenState, changeModalName } from 'store/modules/modal';
 
-const ModalSelector = (state: RootState) => state.modal
+const ModalSelector = (state: RootState) => state.modal;
 
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { modalIsOpen } = useSelector(ModalSelector);
-    
-    const handleLocalLoginClick = () => {navigate("/login-form")};
+
+    const handleLocalLoginClick = () => {
+        navigate('/login-form');
+    };
     const handleRegisterClick = () => {
-        dispatch(changeModalName("EmailAuthModal"));
+        dispatch(changeModalName('EmailAuthModal'));
         dispatch(changeOpenState(!modalIsOpen));
     };
 
     const toMain = () => {
-        navigate("/main");
-    }
+        navigate('/main');
+    };
 
     return (
         <LoginContainer>
-            <KakaoLogin
-            href='http://localhost:5000/api/users/login/kakao'
-            >
+            <KakaoLogin href="http://localhost:5000/users/login/kakao">
                 <ChatIcon style={LoginIconStyle} />
                 <LoginText>카카오 로그인</LoginText>
             </KakaoLogin>
-            <GoogleLogin
-            href="http://localhost:5000/api/users/login/google"
-            >
+            <GoogleLogin href="http://localhost:5000/users/login/google">
                 <GoogleIcon style={LoginIconStyle} />
                 <LoginText>구글 로그인</LoginText>
             </GoogleLogin>
@@ -43,15 +41,15 @@ const Login = () => {
             <Register onClick={handleRegisterClick}>회원가입</Register>
             <Register onClick={toMain}>메인 바로가기</Register>
         </LoginContainer>
-    )
-}
+    );
+};
 
 export default Login;
 
 const ToMain = styled.div`
     margin-top: 30px;
     cursor: pointer;
-`
+`;
 
 const LoginContainer = styled.div`
     display: flex;
@@ -65,9 +63,9 @@ const LoginContainer = styled.div`
     }
 
     & > div:hover {
-        box-shadow: 0 0 5px rgba(0,0,0,0.4);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
     }
-`
+`;
 
 const LoginWrapper = styled.a`
     display: flex;
@@ -79,36 +77,35 @@ const LoginWrapper = styled.a`
     position: relative;
     border-radius: 5px;
     text-decoration: none;
-`
+`;
 
 const KakaoLogin = styled(LoginWrapper)`
-    background-color: #FEE500;
-    color: #4B2F1B;
-`
+    background-color: #fee500;
+    color: #4b2f1b;
+`;
 
 const GoogleLogin = styled(LoginWrapper)`
     background-color: #ffffff;
     color: #666666;
     margin: 10px 0;
-`
+`;
 
 const LocalLogin = styled(LoginWrapper)`
     background-color: #222222;
     color: #ffffff;
-`
+`;
 
 const LoginText = styled.span`
     diplay: inline-block;
     font-weight: 500;
     font-size: 17px;
-`
+`;
 
 const LoginIconStyle = {
     position: 'absolute',
     top: '50%',
     left: '15px',
-    transform: 'translate(0, -50%)'
-
+    transform: 'translate(0, -50%)',
 } as React.CSSProperties;
 
 const Register = styled.span`
@@ -118,4 +115,4 @@ const Register = styled.span`
     font-size: 14px;
     cursor: pointer;
     color: #ffffff;
-`
+`;

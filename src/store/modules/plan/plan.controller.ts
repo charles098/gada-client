@@ -13,6 +13,7 @@ export const changePlanModel2PlanState = (
     state: PlanState,
     data: PlanModel,
 ) => {
+    console.log(data);
     // new Array<PlanDetailModel[]>(days).fill([]);
     const infoByAPI = (state: PlanState): void => {
         state.title = data.title;
