@@ -52,7 +52,7 @@ const CourseMap = () => {
                         const position = getPositionByIPlace(placeDetail);
                         return (
                             <React.Fragment
-                                key={`frag-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
+                                key={`frag-${placeDetail.id}-${placeDetail.latitude}-${placeDetail.longitude}`}
                             >
                                 <PlaceMarker
                                     key={`marker-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
@@ -63,7 +63,7 @@ const CourseMap = () => {
                                     color={theme.USER_PLAN_COLOR[index]}
                                 />
                                 <PlacePolyline
-                                    key={`line-${placeDetail.name}-${placeDetail.latitude}-${placeDetail.longitude}`}
+                                    key={`line-${placeDetail.id}-${placeDetail.latitude}-${placeDetail.longitude}`}
                                     path={
                                         index > 0
                                             ? [

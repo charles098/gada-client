@@ -122,6 +122,7 @@ const SetupRoute: FC = () => {
                 _id: x._id,
                 userId: x.userId,
                 id: x.id,
+                imgUrl: x.imgUrl,
                 name: x.name,
                 latitude: x.latitude,
                 longitude: x.longitude,
