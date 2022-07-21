@@ -69,6 +69,7 @@ const PlanList : FC = () => {
                     {planDatas?.map((data) => (
                         <PlanCard
                             key={data.id}
+                            id={data.id}
                             dday={data.dDay}
                             src={data.imgUrl}
                             imageName={data.area}
