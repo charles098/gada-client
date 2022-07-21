@@ -1,11 +1,11 @@
 import { useCookies } from 'react-cookie';
 
-const getAuthHeader = () => {
+const getAuthHeader: any = () => {
     const [cookies] = useCookies(['accessToken']);
     const { accessToken } = cookies;
     
     const headers = {
-        Authorization: `Bearer ${cookies.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
     }
 
     return headers;

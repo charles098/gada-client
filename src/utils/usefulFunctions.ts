@@ -1,7 +1,7 @@
 export const getDday = (startDate: string) => {
     const start = Date.parse(startDate);
     const now = Date.now();
-    const diffTime = Math.abs(now - start);
+    const diffTime = now - start;
     const dDay = Math.ceil(diffTime / ( 1000 * 60 * 60 * 24));
     let returnVal;
     

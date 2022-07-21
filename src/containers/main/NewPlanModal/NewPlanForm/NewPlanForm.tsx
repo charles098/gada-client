@@ -30,19 +30,26 @@ const NewPlanForm: FC = () => {
                 }
 
                 if (image) {
+                    console.log(image);
                     formData.append("image", image);
                     image = formData;
                 }
 
                 const { title, date } = e.target;
                 const [startDate, lastDate] = date.value.split(' ~ ');
-                const data = {
+
+                formData.append('title', title.value);
+                formData.append('area', location);
+                formData.append('startDate', startDate);
+                formData.append('lastDate', lastDate);
+                
+                /* const data = {
                     image,
                     title: title.value,
                     area: location,
                     startDate,
                     lastDate
-                }
+                } */
 
                 // 유효성 검사
                 // if (!image) {
@@ -56,7 +63,7 @@ const NewPlanForm: FC = () => {
                 }
                 else {
                     // 이거 그대로 서버에 post
-                    await axios.post("plans", data, { headers });
+                    await axios.post("plans", formData, { headers });
                     closeModal();
                 }
             } catch(err) {
