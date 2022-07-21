@@ -37,6 +37,7 @@ const modalSelector = (state: RootState) => state.modal;
 
 const PlanList : FC = () => {
     const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
+    const [ nickname, setNickname ] = useState<string>(".");
     const headers = getAuthHeader();
     const { modalIsOpen, deletePlan} = useSelector(modalSelector);
 
@@ -44,7 +45,8 @@ const PlanList : FC = () => {
         (async () => {
             try {
                 const { data } = await axios.get('/plans', { headers });
-                const preprocessedData = preprocessPlanDatas(data);
+                setNickname(`${data.username}님, 여행을 준비하세요.`);
+                const preprocessedData = preprocessPlanDatas(data.plans);
                 setPlanDatas(preprocessedData);
                 console.log(preprocessedData)
             } catch(err) {
@@ -55,7 +57,7 @@ const PlanList : FC = () => {
 
     return (
         <PlanListWrapper>
-            <PlanListTitle>유저님, 여행을 준비하세요.</PlanListTitle>
+            <PlanListTitle>{nickname}</PlanListTitle>
             <PlanListContainer>
                 <SlickSlider
                 width={1200}
