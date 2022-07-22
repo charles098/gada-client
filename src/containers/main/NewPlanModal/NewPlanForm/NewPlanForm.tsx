@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import NewPlanImage from 'containers/main/NewPlanModal/NewPlanImage';
@@ -7,7 +7,6 @@ import NewPlanLocation from 'containers/main/NewPlanModal/NewPlanLocation';
 import NewPlanDate from 'containers/main/NewPlanModal/NewPlanDate';
 import getAuthHeader from 'utils/getAuthHeader';
 import useModal from 'hooks/useModal';
-import { useNavigate } from 'react-router-dom';
 
 const NewPlanForm: FC = () => {
     const [imageData, setImageData] = useState<any>(null);
@@ -42,18 +41,6 @@ const NewPlanForm: FC = () => {
                 formData.append('startDate', startDate);
                 formData.append('lastDate', lastDate);
 
-                /* const data = {
-                    image,
-                    title: title.value,
-                    area: location,
-                    startDate,
-                    lastDate
-                } */
-
-                // 유효성 검사
-                // if (!image) {
-                //     alert('이미지를 삽입해주세요!');
-                // }
                 if (!title.value) {
                     alert('제목을 입력해 주세요!');
                 } else if (!location) {

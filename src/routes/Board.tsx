@@ -6,80 +6,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
 import useConfirmModal from 'hooks/useConfirmModal';
-
-const selectOptions = [
-    '전체',
-    '전국',
-    '강원',
-    '제주',
-    '부산',
-    '서울',
-    '경기',
-    '인천',
-    '울산',
-    '대전',
-    '광주',
-    '충북',
-    '충남',
-    '경북',
-    '경남',
-];
-
-const customStyles = {
-    control: (styles: any) => ({
-        ...styles,
-        color: 'white',
-        backgroundColor: '#60A5F8',
-        borderRadius: '5px',
-        '&:hover': { borderColor: 'white' },
-        border: 'none',
-        boxShadow: 'none',
-        height: '30px',
-        fontSize: '15px',
-        cursor: 'pointer',
-    }),
-    option: (base: any, { isFocused }: any) => ({
-        ...base,
-        cursor: 'pointer',
-        backgroundColor: isFocused ? '#ECF3FD' : '',
-        color: isFocused ? '#444' : '',
-        ':hover': {
-            backgroundColor: '#ECF3FD',
-        },
-    }),
-    menuList: (base: any) => ({
-        ...base,
-        transition: 'all .2s',
-        '::-webkit-scrollbar': {
-            width: '6px',
-            height: '0px',
-        },
-        '::-webkit-scrollbar-thumb': {
-            background: '#aaa',
-            borderRadius: '10px',
-        },
-        '::-webkit-scrollbar-thumb:hover': {
-            background: '#ccc',
-        },
-    }),
-    singleValue: (base: any) => ({
-        ...base,
-        color: 'white',
-    }),
-    placeholder: (base: any) => ({
-        ...base,
-        color: 'white',
-    }),
-    dropdownIndicator: (base: any) => ({
-        ...base,
-        color: 'white',
-        ':hover': {
-            color: 'white',
-        },
-    }),
-};
-
-const tags = ['전체', '맛집', '힐링', '포토', '명소', '자연'];
+import { boardCustomStyles, selectOptions, tags } from 'utils/usefulFunctions';
 
 const selectDefaultValue = {
     label: '전체',
@@ -272,7 +199,7 @@ const Board = () => {
                         <SelectWrapper>
                             <Select
                                 options={options}
-                                styles={customStyles}
+                                styles={boardCustomStyles}
                                 placeholder="지역"
                                 onChange={changeLocationHandler}
                                 defaultValue={selectDefaultValue}
@@ -293,7 +220,7 @@ const Board = () => {
                                 </CardHeader>
                                 <CardTitle>{data.shareTitle}</CardTitle>
                                 <CardButtons>
-                                    {pageType === 'myShare' && (
+                                    {pageType === 'myShare' ? (
                                         <CancelButton
                                             onClick={(e) =>
                                                 cancelCardHandler(
@@ -304,6 +231,8 @@ const Board = () => {
                                         >
                                             공유취소
                                         </CancelButton>
+                                    ) : (
+                                        <Helper />
                                     )}
                                     {data.clickedLike ? (
                                         <LikeButton
@@ -509,6 +438,12 @@ const CardButtons = styled.div`
     border-bottom: solid #ccc 1px;
     margin-bottom: 15px;
 `;
+
+const Helper = styled.div`
+    width: 1px;
+    height: 28px;
+`;
+
 const CancelButton = styled.button`
     cursor: pointer;
     border: none;
