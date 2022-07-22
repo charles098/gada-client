@@ -18,7 +18,6 @@ const searchImageByKakaoAPI = async (
         );
 
         const data = await res.json();
-        // console.log(keyword, data);
         return data.documents[0]?.thumbnail_url;
     } catch (e) {
         return '';
