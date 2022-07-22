@@ -104,6 +104,10 @@ const Board = () => {
     const options = selectOptions.map((option) => ({ value: option, label: option }));
 
     useEffect(() => {
+        /**
+         * redux plan list -> []
+         */
+         setDatas([]);
         setPageType(searchParams.get('type'));
     }, [searchParams.get('type')])
 
@@ -133,6 +137,7 @@ const Board = () => {
                     })
                 })
                 setDatas(sharedPlans);
+                console.log('ab')
             } catch(err) {
                 console.log(err);
             }
@@ -239,9 +244,9 @@ const Board = () => {
                                 </CardHeader>
                                 <CardTitle>{data.shareTitle}</CardTitle>
                                 <CardButtons>
-                                    <CancelButton
+                                    {pageType === 'myShare' &&<CancelButton
                                         onClick={cancelCardHandler}
-                                    >공유취소</CancelButton>
+                                    >공유취소</CancelButton>}
                                     {data.clickedLike ?
                                         <LikeButton
                                             onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)} /> :
