@@ -105,7 +105,7 @@ const Board = () => {
 
     useEffect(() => {
         setPageType(searchParams.get('type'));
-    })
+    }, [searchParams.get('type')])
 
     // 초기 데이터 받아오기
     useEffect(() => {
