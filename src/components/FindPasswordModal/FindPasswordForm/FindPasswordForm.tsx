@@ -10,7 +10,7 @@ const FindPasswordForm: FC = () => {
         const data = { email: emailRef.current.value };
         
         axios
-            .post('/api/users/reset', data).then((response) => {
+            .post('/users/reset', data).then((response) => {
                 setSendEmail(!sendEmail);
                 console.log(response.data);
             })

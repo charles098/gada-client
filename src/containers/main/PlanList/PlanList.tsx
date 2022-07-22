@@ -2,12 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AddCard from 'containers/main/PlanList/AddCard';
 import PlanCard from 'containers/main/PlanList/PlanCard';
-import jejuImg from 'images/jeju.jpg';
 import SlickSlider from 'components/SlickSlider';
 import axios from 'axios';
-import { PlanModel } from 'store/modules/plan/plan.model';
 import { getDday, getTerm } from 'utils/usefulFunctions';
 import getAuthHeader from 'utils/getAuthHeader';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+import { PlanModel } from 'store/modules/plan/plan.model';
 
 const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
     return planDataArray.map((data) => {
@@ -32,26 +33,31 @@ interface PreprocessedPlanModel {
     term: string;
 }
 
+const modalSelector = (state: RootState) => state.modal;
+
 const PlanList: FC = () => {
     const [planDatas, setPlanDatas] = useState<PreprocessedPlanModel[]>();
+    const [nickname, setNickname] = useState<string>('.');
     const headers = getAuthHeader();
+    const { modalIsOpen, deletePlan } = useSelector(modalSelector);
 
     useEffect(() => {
         (async () => {
             try {
                 const { data } = await axios.get('/plans', { headers });
-                const preprocessedData = preprocessPlanDatas(data);
+                setNickname(`${data.username}님, 여행을 준비하세요.`);
+                const preprocessedData = preprocessPlanDatas(data.plans);
                 setPlanDatas(preprocessedData);
                 console.log(preprocessedData);
             } catch (err) {
                 console.log(err);
             }
         })();
-    }, []);
+    }, [modalIsOpen, deletePlan]);
 
     return (
         <PlanListWrapper>
-            <PlanListTitle>유저님, 여행을 준비하세요.</PlanListTitle>
+            <PlanListTitle>{nickname}</PlanListTitle>
             <PlanListContainer>
                 <SlickSlider
                     width={1200}

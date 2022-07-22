@@ -9,6 +9,7 @@ interface InitialState {
     confirmHeight: number;
     confirmMessage: string;
     confirmType: string;
+    deletePlan: boolean;
 }
 
 // InitialState
@@ -20,6 +21,7 @@ const initialState: InitialState = {
     confirmHeight: 310,
     confirmMessage: 'this is default message',
     confirmType: '',
+    deletePlan: false // 계획 삭제시 리렌더링을 위해 생성. useEffect에 사용됨
 };
 
 // Reducer Slice
@@ -41,6 +43,9 @@ const modalSlice = createSlice({
             state.confirmHeight = action.payload.height;
             state.confirmMessage = action.payload.message;
             state.confirmType = action.payload.type;
+        },
+        changeDeletePlan(state, action:PayloadAction<boolean>) {
+            state.deletePlan = action.payload;
         }
     },
 });
@@ -49,7 +54,8 @@ export const {
     changeOpenState,
     changeModalName,
     changeConfirmState,
-    changeConfirmProps
+    changeConfirmProps,
+    changeDeletePlan
 } = modalSlice.actions;
 
 export default modalSlice.reducer

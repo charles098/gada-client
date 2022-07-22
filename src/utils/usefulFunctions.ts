@@ -1,12 +1,12 @@
 export const getDday = (startDate: string) => {
     const start = Date.parse(startDate);
     const now = Date.now();
-    const diffTime = Math.abs(now - start);
+    const diffTime = now - start;
     const dDay = Math.ceil(diffTime / ( 1000 * 60 * 60 * 24));
     let returnVal;
     
     if (dDay === 0) returnVal = 'D-day'
-    else if (dDay > 0) returnVal = `D-${dDay}`
+    else if (dDay < 0) returnVal = `D${dDay}`
     else returnVal = `D+${dDay}`
 
     return returnVal;

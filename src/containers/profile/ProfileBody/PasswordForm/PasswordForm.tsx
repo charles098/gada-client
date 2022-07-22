@@ -41,7 +41,7 @@ const PasswordForm = () => {
 
             (async () => {
                 try {
-                    await axios.patch('/api/users/password', data, { headers });
+                    await axios.patch('/users/password', data, { headers });
                     setPasswordMessage("");
                     passwordRef.current.value = '';
                     newPasswordRef.current.value = '';

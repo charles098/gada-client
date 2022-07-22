@@ -23,7 +23,7 @@ const NicknameForm = () => {
         if (withdrawlState && withdrawlType === 'withdrawl') {
             (async () => {
                 try {
-                    axios.delete('/api/users/withdraw', { headers });
+                    axios.delete('/users/withdraw', { headers });
                     navigate("/");
                 } catch(err) {
                     console.log(err);

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled, { css } from 'styled-components';
 import { LikeIcon, UnlikeIcon } from 'components/icons';
 import Select from 'react-select';
+import axios from 'axios';
+import getAuthHeader from 'utils/getAuthHeader';
 
 const selectOptions = [
     "전체",
@@ -133,6 +135,18 @@ const tags = [
 const Board = () => {
     const [clickedTag, setClickedTag] = useState<string>("전체");
     const [datas, setDatas] = useState<any>(initDatas);
+    const headers = getAuthHeader();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const results = await axios.get("/shares", { headers });
+                console.log(results);
+            } catch(err) {
+                console.log(err);
+            }
+        })()
+    }, [])
 
     const options = selectOptions.map((option) => ({ value: option, label: option }));
 

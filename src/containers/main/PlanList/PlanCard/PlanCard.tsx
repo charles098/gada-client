@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store/modules';
+import { changeDeletePlan } from 'store/modules/modal';
 import { useNavigate } from 'react-router-dom';
+import { CancelDetailIcon } from 'components/icons';
+import useConfirmModal from 'hooks/useConfirmModal';
+import getAuthHeader from 'utils/getAuthHeader';
 
 interface CardProps {
     id: string;
@@ -10,15 +17,55 @@ interface CardProps {
     title: string;
     term: string;
 }
+// 속성 id가 2개여서 하나 삭제함
 
-const PlanCard = ({ dday, id, src, imageName, title, term }: CardProps) => {
+const confirmNicknamePayload = {
+    width: 400,
+    height: 300,
+    message: '계획을 삭제하시겠습니까?',
+};
+
+const deletePlanSelector = (state: RootState) => state.modal.deletePlan;
+
+const PlanCard = ({ dday, src, imageName, title, term, id }: CardProps) => {
     const navigate = useNavigate();
-    const navigateHandler = () => {
+    const dispatch = useDispatch();
+    const [removeState, removeType, removeModalHandler] = useConfirmModal(
+        confirmNicknamePayload,
+        id,
+    );
+    const headers = getAuthHeader();
+    const deletePlan = useSelector(deletePlanSelector);
+
+    const navigateHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation();
         navigate(`/plan/${id}`);
     };
 
+    const removeClickHandler = (e: React.MouseEvent<SVGSVGElement>) => {
+        e.stopPropagation();
+        removeModalHandler();
+    };
+
+    useEffect(() => {
+        if (removeState && removeType === id) {
+            (async () => {
+                try {
+                    await axios.delete(`/plans/${id}`, { headers });
+                    dispatch(changeDeletePlan(!deletePlan));
+                } catch (err) {
+                    console.log(err);
+                }
+            })();
+        }
+    }, [removeState]);
+
     return (
         <Wrapper onClick={navigateHandler}>
+            <RemoveButton
+                onClick={removeClickHandler}
+                className="remove-button"
+            />
             <Dday>{dday}</Dday>
             <PlanImage src={src}>
                 <PlanImageName>{imageName}</PlanImageName>
@@ -34,10 +81,32 @@ export default PlanCard;
 
 const Wrapper = styled.div`
     height: 230px;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .remove-button {
+        display: none;
+    }
+
+    :hover {
+        .remove-button {
+            display: block;
+        }
+    }
+`;
+
+const RemoveButton = styled(CancelDetailIcon)`
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    opacity: 0.7;
+
+    :hover {
+        opacity: 1;
+    }
 `;
 
 const Dday = styled.div`

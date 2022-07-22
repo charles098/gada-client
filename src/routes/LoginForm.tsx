@@ -12,27 +12,25 @@ const LoginForm = () => {
     const handleSubmit = (e: any) => {
         e.preventDefault();
 
-        const { email, password } = e.target;
+        (async () => {
+            try {
+                const { email, password } = e.target;
 
-        if (!email.value) alert('이메일을 입력해주세요!');
-        else if (!password.value) alert('비밀번호를 입력해주세요!');
-        else {
-            // 이거 그대로 post 보내면 된다.
-            const data = {
-                email: email.value,
-                password: password.value,
-            };
-
-            axios
-                .post('/users/login', data)
-                .then((response) => {
+                if (!email.value) alert('이메일을 입력해주세요!');
+                else if (!password.value) alert('비밀번호를 입력해주세요!');
+                else {
+                    // 이거 그대로 post 보내면 된다.
+                    const data = {
+                        email: email.value,
+                        password: password.value,
+                    };
+                    await axios.post('/users/login', data);
                     navigate('/main');
-                })
-                .catch((err) => {
-                    console.log(err.response.data.message);
-                    alert(err.response.data.message);
-                });
-        }
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     };
 
     return (

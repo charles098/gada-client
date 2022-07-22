@@ -36,13 +36,19 @@ const NewPlanForm: FC = () => {
 
                 const { title, date } = e.target;
                 const [startDate, lastDate] = date.value.split(' ~ ');
-                const data = {
+
+                formData.append('title', title.value);
+                formData.append('area', location);
+                formData.append('startDate', startDate);
+                formData.append('lastDate', lastDate);
+
+                /* const data = {
                     image,
                     title: title.value,
                     area: location,
                     startDate,
-                    lastDate,
-                };
+                    lastDate
+                } */
 
                 // 유효성 검사
                 // if (!image) {
@@ -54,7 +60,7 @@ const NewPlanForm: FC = () => {
                     alert('지역을 선택해주세요!');
                 } else {
                     // 이거 그대로 서버에 post
-                    const result = await axios.post('plans', data, { headers });
+                    await axios.post('plans', formData, { headers });
                     closeModal();
                 }
             } catch (err) {
