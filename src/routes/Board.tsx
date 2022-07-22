@@ -5,6 +5,7 @@ import { LikeIcon, UnlikeIcon } from 'components/icons';
 import Select from 'react-select';
 import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
+import useConfirmModal from 'hooks/useConfirmModal';
 
 const selectOptions = [
     "전체",
@@ -92,16 +93,63 @@ const selectDefaultValue = {
     value: "전체",
 }
 
+const confirmPropsPayload = {
+    width: 400,
+    height: 310,
+    message: '계획 공유를 취소하시겠습니까?',
+};
+
 const Board = () => {
     const [ searchParams ] = useSearchParams();
     const [clickedTag, setClickedTag] = useState<string>("전체");
     const [location, setLocation] = useState<string>("전체")
     const [datas, setDatas] = useState<any>();
     const [checkLike, setCheckLike] = useState<any>();
+    const [clickedId, setClickedId] = useState<any>();
+    const [shareState, setShareState] = useState<any>();
     const [pageType, setPageType] = useState<any>(searchParams.get('type'));
     const headers = getAuthHeader();
+    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(
+        confirmPropsPayload,
+        'cancelShare',
+    );
     const navigate = useNavigate();
     const options = selectOptions.map((option) => ({ value: option, label: option }));
+
+    const changeLocationHandler = (value: any) => {
+        setLocation(value.value);
+    }
+
+    const clickCardHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, planId: string) => {
+        navigate(`/share/${planId}`);
+    }
+
+    const cancelCardHandler = (e: any, planId: string) => {
+        e.stopPropagation();
+        setClickedId(planId);
+        confirmModalHandler();
+    }
+
+    const clickLikeHandler = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, planId: string, clickedLike: boolean) => {
+        e.stopPropagation();
+
+        (async () => {
+            try {
+                const body = {
+                    planId,
+                    toggle: !clickedLike
+                }
+                await axios.post("/likes", body, { headers });
+                setCheckLike(body);
+            } catch(err) {
+                console.log(err)
+            }
+        })()
+    }
+
+    const clickTagHandler = (e: any) => {
+        setClickedTag(e.target.value);
+    }
 
     useEffect(() => {
         /**
@@ -111,6 +159,26 @@ const Board = () => {
         setPageType(searchParams.get('type'));
     }, [searchParams.get('type')])
 
+    // 공유 취소 관련
+    useEffect(() => {
+        (async () => {
+            try {
+                if (confirmState && confirmType === 'cancelShare') {
+                    const data = {
+                        toggle: false
+                    }
+                    // 공유취소
+                    await axios.post(`shares/${clickedId}`, data, {
+                        headers,
+                    });
+                    setShareState(!shareState);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    }, [confirmState])
+    
     // 초기 데이터 받아오기
     useEffect(() => {
         (async () => {
@@ -142,7 +210,7 @@ const Board = () => {
                 console.log(err);
             }
         })()
-    }, [clickedTag, location, pageType])
+    }, [clickedTag, location, pageType, shareState])
 
     // 좋아요 관련 side effect
     useEffect(() => {
@@ -167,41 +235,6 @@ const Board = () => {
             setDatas(newData);
         }
     }, [checkLike])
-
-    const changeLocationHandler = (value: any) => {
-        console.log(value.value);
-        setLocation(value.value);
-    }
-
-    const clickCardHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, planId: string) => {
-        navigate(`/share/${planId}`);
-    }
-
-    const cancelCardHandler = (e: any) => {
-        e.stopPropagation();
-        console.log('취소 버튼 클릭')
-    }
-
-    const clickLikeHandler = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, planId: string, clickedLike: boolean) => {
-        e.stopPropagation();
-
-        (async () => {
-            try {
-                const body = {
-                    planId,
-                    toggle: !clickedLike
-                }
-                await axios.post("/likes", body, { headers });
-                setCheckLike(body);
-            } catch(err) {
-                console.log(err)
-            }
-        })()
-    }
-
-    const clickTagHandler = (e: any) => {
-        setClickedTag(e.target.value);
-    }
 
     return (
         <>
@@ -245,13 +278,15 @@ const Board = () => {
                                 <CardTitle>{data.shareTitle}</CardTitle>
                                 <CardButtons>
                                     {pageType === 'myShare' &&<CancelButton
-                                        onClick={cancelCardHandler}
+                                        onClick={(e) => cancelCardHandler(e, data.planId)}
                                     >공유취소</CancelButton>}
                                     {data.clickedLike ?
                                         <LikeButton
-                                            onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)} /> :
+                                            onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)}
+                                            pageType={pageType} /> :
                                         <UnlikeButton
-                                            onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)} />
+                                            onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)}
+                                            pageType={pageType} />
                                     }
 
                                 </CardButtons>
@@ -455,7 +490,7 @@ const CancelButton = styled.button`
     }
 `
 
-const LikeButton = styled(LikeIcon)`
+const LikeButton = styled(LikeIcon)<{pageType: string}>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -464,9 +499,15 @@ const LikeButton = styled(LikeIcon)`
     &:hover {
         transform: translate(0, -3px);
     }
+
+    ${({ pageType }) => 
+        (pageType === 'all') &&
+        css`
+          margin-left: auto;
+    `}
 `
 
-const UnlikeButton = styled(UnlikeIcon)`
+const UnlikeButton = styled(UnlikeIcon)<{pageType: string}>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -475,6 +516,12 @@ const UnlikeButton = styled(UnlikeIcon)`
     &:hover {
         transform: translate(0, -3px);
     }
+
+    ${({ pageType }) => 
+        (pageType === 'all') &&
+        css`
+          margin-left: auto;
+    `}
 `
 
 const CardInfo = styled.div`
