@@ -36,7 +36,7 @@ const PlanDetailModal: FC = () => {
         if (!detailId) return undefined;
         const Place = planList[setDay].find((p) => p.id === detailId);
         return Place;
-    }, [detailId]);
+    }, [detailId, setDay]);
 
     const [details, setDetails] = useState({
         description: '',
