@@ -3,70 +3,12 @@ import styled from 'styled-components';
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
-
-const selectOptions = [
-    "전국",
-    "강원",
-    "제주",
-    "부산",
-    "서울",
-    "경기",
-    "인천",
-    "울산",
-    "대전",
-    "광주",
-    "충북",
-    "충남",
-    "경북",
-    "경남"
-];
-
-const customStyles = {
-    control: (styles: any) => ({
-        ...styles,
-        color: "#444",
-        backgroundColor: "#ECF3FD",
-        borderRadius: "5px",
-        "&:hover": { borderColor: "gray" },
-        border: "none",
-        boxShadow: "none",
-        height: "30px",
-        fontSize: "15px",
-        cursor: "pointer",
-        paddingLeft: "10px"
-    }),
-    option: (base: any, { isFocused }: any) => ({
-        ...base,
-        cursor: "pointer",
-        backgroundColor: isFocused ? "#ECF3FD" : "",
-        color: isFocused ? "#444" : "",
-        ":hover": {
-            backgroundColor: "#ECF3FD"
-        }
-    }),
-    menuList: (base: any) => ({
-        ...base,
-        "::-webkit-scrollbar": {
-            width: "6px",
-            height: "0px"
-        },
-        "::-webkit-scrollbar-thumb": {
-            background: "#aaa",
-            borderRadius: "10px"
-        },
-        "::-webkit-scrollbar-thumb:hover": {
-            background: "#ccc"
-        }
-    }),
-    singleValue: (base: any) => ({
-        ...base
-    })
-};
+import { newPlanSelectOptions, newPlanCustomStyles } from 'utils/usefulFunctions'
 
 const LoactionSelector = (state: RootState) => state.location;
 
 const NewPlanlocation = ( { setLocation }: any ) => {
-    const options = selectOptions.map((x) => ({ value: x, label: x }));
+    const options = newPlanSelectOptions.map((x) => ({ value: x, label: x }));
 
     const { locationName, isClickedLocation } = useSelector(LoactionSelector);
 
@@ -95,7 +37,7 @@ const NewPlanlocation = ( { setLocation }: any ) => {
             <InputWrapper>
                 <Select
                     options={options}
-                    styles={customStyles}
+                    styles={newPlanCustomStyles}
                     placeholder="지역을 선택해주세요."
                     onChange={handleChange} 
                     defaultValue={isClickedLocation ? defaultValue : ''}
