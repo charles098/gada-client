@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { LikeIcon, UnlikeIcon } from 'components/icons';
 import Select from 'react-select';
 import axios from 'axios';
@@ -77,52 +78,6 @@ const customStyles = {
     }),
 };
 
-const initDatas = [
-    {
-        planId: '12f',
-        tag: '맛집',
-        area: '제주',
-        shareTitle: '제주도 맛집 여행 코스 강추합니다!',
-        username: '뚱인데요',
-        likeCount: 14,
-        clickedLike: true,
-    }, {
-        planId: '1fq',
-        tag: '맛집',
-        area: '경북',
-        shareTitle: '경북 맛집 여행 코스 강추합니다!',
-        username: '어둠을부르는',
-        likeCount: 5,
-        clickedLike: true,
-    }, {
-        planId: 'ber1',
-        tag: '맛집',
-        area: '울산',
-        shareTitle: '울산 맛집 여행 코스 강추합니다!',
-        username: '김하나',
-        likeCount: 1,
-        clickedLike: false,
-    },
-    {
-        planId: 'baswer',
-        tag: '맛집',
-        area: '부산',
-        shareTitle: '부산 맛집 여행 코스 강추합니다!',
-        username: '니머하노',
-        likeCount: 4,
-        clickedLike: true,
-    }, {
-        planId: 'srtw',
-        tag: '맛집',
-        area: '강원',
-        shareTitle: '강원 맛집 여행 코스 강추합니다!',
-        username: '서른마흔다섯',
-        likeCount: 0,
-        clickedLike: false,
-    }
-
-]
-
 const tags = [
     "전체",
     "맛집",
@@ -132,17 +87,25 @@ const tags = [
     "자연"
 ]
 
+const selectDefaultValue = {
+    label: "전체",
+    value: "전체",
+}
+
 const Board = () => {
     const [clickedTag, setClickedTag] = useState<string>("전체");
+    const [location, setLocation] = useState<string>("전체")
     const [datas, setDatas] = useState<any>();
     const headers = getAuthHeader();
     const [checkLike, setCheckLike] = useState<any>();
+    const navigate = useNavigate();
+    const options = selectOptions.map((option) => ({ value: option, label: option }));
 
     // 초기 데이터 받아오기
     useEffect(() => {
         (async () => {
             try {
-                const results = await axios.get("/shares", { headers });
+                const results = await axios.get(`/shares/${clickedTag}/${location}`, { headers });
                 const { myLikes } = results.data.data;
                 let { sharedPlans } = results.data.data;
                 
@@ -162,7 +125,7 @@ const Board = () => {
                 console.log(err);
             }
         })()
-    }, [])
+    }, [clickedTag, location])
 
     // 좋아요 관련 side effect
     useEffect(() => {
@@ -188,14 +151,13 @@ const Board = () => {
         }
     }, [checkLike])
 
-    const options = selectOptions.map((option) => ({ value: option, label: option }));
-
     const changeLocationHandler = (value: any) => {
         console.log(value.value);
+        setLocation(value.value);
     }
 
-    const clickCardHandler = () => {
-        console.log('카드 클릭');
+    const clickCardHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, planId: string) => {
+        navigate(`/share/${planId}`);
     }
 
     const cancelCardHandler = (e: any) => {
@@ -203,7 +165,7 @@ const Board = () => {
         console.log('취소 버튼 클릭')
     }
 
-    const clickLikeHandler = (e: any, planId: string, clickedLike: boolean) => {
+    const clickLikeHandler = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, planId: string, clickedLike: boolean) => {
         e.stopPropagation();
 
         (async () => {
@@ -212,7 +174,7 @@ const Board = () => {
                     planId,
                     toggle: !clickedLike
                 }
-                const result = await axios.post("/likes", body, { headers });
+                await axios.post("/likes", body, { headers });
                 setCheckLike(body);
             } catch(err) {
                 console.log(err)
@@ -221,8 +183,6 @@ const Board = () => {
     }
 
     const clickTagHandler = (e: any) => {
-        console.log('태그 클릭');
-        console.log(e.target.value);
         setClickedTag(e.target.value);
     }
 
@@ -252,14 +212,15 @@ const Board = () => {
                                 options={options}
                                 styles={customStyles}
                                 placeholder="지역"
-                                onChange={changeLocationHandler} />
+                                onChange={changeLocationHandler}
+                                defaultValue={selectDefaultValue} />
                         </SelectWrapper>
                     </ButtonContainer>
                     <CardListContainer>
                         {datas?.map((data: any) => (
                             <BoardCard
                                 key={data.planId}
-                                onClick={clickCardHandler}>
+                                onClick={(e) => clickCardHandler(e, data.planId)}>
                                 <CardHeader>
                                     <Tag>{data.tag}</Tag>
                                     <Location>{data.area}</Location>
