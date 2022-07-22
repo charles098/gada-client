@@ -33,10 +33,22 @@ const SetupRoute: FC = () => {
     const setDay = useSelector(setDaySelector);
     const planId = useSelector(planIdSelector);
     const location = useLocation();
+    const [isDrop, setIsDrop] = useState(false);
 
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
 
+    useEffect(() => {
+        if (isDrop) {
+            setIsDrop(false);
+            const node = droppedRef.current;
+            node?.classList.add('focus');
+            node?.scrollIntoView();
+            setTimeout(() => {
+                node?.classList.remove('focus');
+            }, 500);
+        }
+    }, [planList]);
     // SortableJs Logic
     type PlanDetailSortableItem = PlanDetailModel & { chosen: boolean };
     const getSortableList = (
@@ -57,15 +69,18 @@ const SetupRoute: FC = () => {
             return temp;
         }
         return temp;
-    }, [planList, setDay]);
+    }, [planList, location, setDay]);
 
     const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
-        dispatch(sortSharedPlanList(list));
+        dispatch(sortSharedPlanList({ list }));
     };
 
     return (
-        <Container onDragOver={(e) => e.preventDefault()}>
+        <Container
+            onDrop={() => setIsDrop(true)}
+            onDragOver={(e) => e.preventDefault()}
+        >
             {SortableList && (
                 <ReactSortable
                     animation={150}
