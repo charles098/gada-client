@@ -23,11 +23,11 @@ const Login = () => {
 
     return (
         <LoginContainer>
-            <KakaoLogin href="http://kdt-sw2-seoul-team05.elicecoding.com:5000/login/kakao">
+            <KakaoLogin href="http://kdt-sw2-seoul-team05.elicecoding.com:5000/users/login/kakao">
                 <ChatIcon style={LoginIconStyle} />
                 <LoginText>카카오 로그인</LoginText>
             </KakaoLogin>
-            <GoogleLogin href="http://kdt-sw2-seoul-team05.elicecoding.com:5000/login/google">
+            <GoogleLogin href="http://kdt-sw2-seoul-team05.elicecoding.com:5000/users/login/google">
                 <GoogleIcon style={LoginIconStyle} />
                 <LoginText>구글 로그인</LoginText>
             </GoogleLogin>
