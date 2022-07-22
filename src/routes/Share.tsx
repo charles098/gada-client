@@ -1,7 +1,7 @@
 import SharedPlan from 'containers/share/SharedPlan';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { getSharedPlanInfoById } from 'store/modules/plan/share';
 import styled from 'styled-components';
@@ -16,6 +16,7 @@ const confirmSharePayload = {
 
 const Share = () => {
     const dispatch = useDispatch<any>();
+    const navigate = useNavigate();
     const { id } = useParams<'id'>();
     const headers = getAuthHeader();
     const [shareState, shareType, shareModalHandler] = useConfirmModal(confirmSharePayload, "share");
@@ -29,8 +30,8 @@ const Share = () => {
         if (shareState && shareType === 'share') {
             (async () => {
                 try {
-                    const result = await axios.post(`/shares/${id}/bring`, {}, { headers })
-                    console.log(result);
+                    await axios.post(`/shares/${id}/bring`, {}, { headers })
+                    navigate("/main");
                 } catch(err) {
                     console.log(err);
                 }
