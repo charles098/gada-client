@@ -47,7 +47,7 @@ export interface PlanState
 }
 
 const initialState: PlanState = {
-    title: '부산 바캉스',
+    title: '',
     startDate: new Date(20, 11, 3),
     lastDate: new Date(20, 11, 10),
     period: 1,
@@ -244,6 +244,9 @@ const planDetailSlice = createSlice({
     name: 'plan',
     initialState,
     reducers: {
+        initializePlanState() {
+            return initialState;
+        },
         initializeData(state: PlanState, action) {
             const { initPlaceOptionList, initPlanDetailList } = action.payload;
             state.placeOptionList = [...initPlaceOptionList];
@@ -331,6 +334,7 @@ export const setPointRelatedOptions = (state: PlanState) => {
 const { reducer, actions } = planDetailSlice;
 
 export const {
+    initializePlanState,
     initializeData,
     insertPlaceOptionList,
     deletePlaceOptionList,

@@ -5,38 +5,30 @@ import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTitle } from 'store/modules/plan/plan';
 
-const planTitleSelector = (state: RootState) => state.plan.title;
 const shareModeSelector = (state: RootState) => state.plan.shareMode;
-const planListSelector = (state: RootState) => state.plan.planList;
 
-const PlanTitle: FC = () => {
+const PlanTitle = ({ title }: any) => {
     const dispatch = useDispatch();
-    const title = useSelector(planTitleSelector);
     const shareMode = useSelector(shareModeSelector);
-    const planList = useSelector(planListSelector);
-
     const container = useRef<HTMLDivElement>(null);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [newTitle, setNewTitle] = useState<string>('');
 
     useEffect(() => {
         setNewTitle(title);
-    }, [title, planList]);
-
-    useEffect(() => {
-        document.addEventListener('mousedown', (e) => onClickOutside(e));
-    }, [newTitle]);
+    }, []);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setNewTitle(e.target.value);
 
     const onEnterKeyUp = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (shareMode) return;
             if (e.code !== 'Enter') return;
-
-            dispatch(setTitle({ newTitle }));
             setIsEdit(false);
+            setNewTitle(newTitle);
+
+            if (shareMode) return;
+            dispatch(setTitle({ newTitle }));
         },
         [newTitle],
     );
@@ -51,10 +43,11 @@ const PlanTitle: FC = () => {
     const onClickOutside = useCallback(
         (e: React.MouseEvent | MouseEvent): void => {
             if (container.current?.contains(e.target as Node)) return;
-            if (shareMode) {
-                dispatch(setTitle({ newTitle }));
-            }
             setIsEdit(false);
+            setNewTitle(newTitle);
+
+            if (shareMode) return;
+            dispatch(setTitle({ newTitle }));
         },
         [newTitle],
     );
@@ -78,7 +71,7 @@ const PlanTitle: FC = () => {
             ) : (
                 <Title>{title}</Title>
             )}
-            <EditButton type="button">
+            {/* <EditButton type="button">
                 {isEdit && !shareMode ? (
                     <ResetIcon
                         width="15px"
@@ -92,7 +85,7 @@ const PlanTitle: FC = () => {
                         onClick={onStartEdit}
                     />
                 )}
-            </EditButton>
+            </EditButton> */}
         </Container>
     );
 };

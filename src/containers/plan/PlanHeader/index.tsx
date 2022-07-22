@@ -1,16 +1,23 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import useModal from 'hooks/useModal';
 import getAuthHeader from 'utils/getAuthHeader';
 import useConfirmModal from 'hooks/useConfirmModal';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
-import PlanPeriod from 'components/PlanPeriod';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
 import { RootState } from 'store/modules';
+import { getDate } from 'date-fns';
+import { getDatePeriod } from 'utils/planUtils';
+import { render } from '@testing-library/react';
+import PlanPeriod from './PlanPeriod';
 
 const planSelector = (state: RootState) => state.plan;
+
+const stateDateSelector = (state: RootState) => state.plan.startDate;
+const lastDateSelector = (state: RootState) => state.plan.lastDate;
+const titleSelector = (state: RootState) => state.plan.title;
 
 const confirmPropsPayload = {
     width: 400,
@@ -24,10 +31,26 @@ const PlanInfo: FC = () => {
         confirmPropsPayload,
         'cancelShare',
     );
+    const title = useSelector(titleSelector);
+    const [render, setRender] = useState(false);
     const dispatch = useDispatch();
     const headers = getAuthHeader();
     const { shareMode, _id } = useSelector(planSelector);
+    const stateDate = useSelector(stateDateSelector);
+    const lastDate = useSelector(lastDateSelector);
+    const startDate = useMemo(
+        () => getDatePeriod(stateDate).slice(2),
+        [render, _id],
+    );
+    const endDate = useMemo(
+        () => getDatePeriod(lastDate).slice(2),
+        [render, _id],
+    );
 
+    useEffect(() => {
+        console.log(render, lastDate, startDate);
+        setRender(true);
+    }, []);
     useEffect(() => {
         (async () => {
             try {
@@ -38,8 +61,6 @@ const PlanInfo: FC = () => {
                     const result = await axios.post(`shares/${_id}`, data, {
                         headers,
                     });
-                    console.log(result);
-                    console.log(data);
                     dispatch(changeShareMode(!shareMode));
                 }
             } catch (err) {
@@ -60,8 +81,8 @@ const PlanInfo: FC = () => {
 
     return (
         <Container>
-            <PlanTitle />
-            <PlanPeriod />
+            <PlanTitle title={title} />
+            <PlanPeriod start={startDate} end={endDate} />
             <PlanSwitch>
                 <PlanSwitchLabel shareMode={shareMode}>
                     공유하기
