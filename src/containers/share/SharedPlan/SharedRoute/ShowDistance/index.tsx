@@ -6,9 +6,9 @@ import { theme } from 'styles/theme';
 import { setDistanceText } from 'utils/mapPointHelper';
 import CustomMarker from 'components/CustomMarker';
 
-const planListSelector = (state: RootState) => state.plan.planList;
-const setDaySelector = (state: RootState) => state.plan.setDay;
-const placeDistanceSelector = (state: RootState) => state.plan.placeDistance;
+const planListSelector = (state: RootState) => state.share.planList;
+const setDaySelector = (state: RootState) => state.share.setDay;
+const placeDistanceSelector = (state: RootState) => state.share.placeDistance;
 
 const ShowDistance: FC = () => {
     const planList = useSelector(planListSelector);

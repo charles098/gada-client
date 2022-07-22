@@ -6,37 +6,34 @@ import { RootState } from 'store/modules';
 import { changeDeletePlan } from 'store/modules/modal';
 import { useNavigate } from 'react-router-dom';
 import { CancelDetailIcon } from 'components/icons';
-import useConfirmModal from 'hooks/useConfirmModal'
+import useConfirmModal from 'hooks/useConfirmModal';
 import getAuthHeader from 'utils/getAuthHeader';
 
 interface CardProps {
+    id: string;
     dday: string;
     src: string;
     imageName: string;
     title: string;
     term: string;
-    id: string;
 }
+// 속성 id가 2개여서 하나 삭제함
 
 const confirmNicknamePayload = {
     width: 400,
     height: 300,
     message: '계획을 삭제하시겠습니까?',
-}
+};
 
-const deletePlanSelector = (state: RootState) => state.modal.deletePlan
+const deletePlanSelector = (state: RootState) => state.modal.deletePlan;
 
-const PlanCard = ( {
-    dday,
-    src,
-    imageName,
-    title,
-    term,
-    id
-} : CardProps) => {
+const PlanCard = ({ dday, src, imageName, title, term, id }: CardProps) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [removeState, removeType, removeModalHandler] = useConfirmModal(confirmNicknamePayload, id);
+    const [removeState, removeType, removeModalHandler] = useConfirmModal(
+        confirmNicknamePayload,
+        id,
+    );
     const headers = getAuthHeader();
     const deletePlan = useSelector(deletePlanSelector);
 
@@ -48,36 +45,37 @@ const PlanCard = ( {
     const removeClickHandler = (e: React.MouseEvent<SVGSVGElement>) => {
         e.stopPropagation();
         removeModalHandler();
-    }
+    };
 
     useEffect(() => {
         if (removeState && removeType === id) {
             (async () => {
                 try {
                     await axios.delete(`/plans/${id}`, { headers });
-                    dispatch(changeDeletePlan(!deletePlan))
-                } catch(err) {
+                    dispatch(changeDeletePlan(!deletePlan));
+                } catch (err) {
                     console.log(err);
                 }
-            })()
+            })();
         }
-    }, [removeState])
+    }, [removeState]);
 
     return (
         <Wrapper onClick={navigateHandler}>
-            <RemoveButton 
-            onClick={removeClickHandler}
-            className="remove-button"/>
+            <RemoveButton
+                onClick={removeClickHandler}
+                className="remove-button"
+            />
             <Dday>{dday}</Dday>
             <PlanImage src={src}>
                 <PlanImageName>{imageName}</PlanImageName>
-                <PlanImageOpacity/>
+                <PlanImageOpacity />
             </PlanImage>
             <PlanTitle>{title}</PlanTitle>
             <PlanDate>{term}</PlanDate>
         </Wrapper>
-    )
-}
+    );
+};
 
 export default PlanCard;
 
@@ -109,11 +107,11 @@ const RemoveButton = styled(CancelDetailIcon)`
     :hover {
         opacity: 1;
     }
-`
+`;
 
 const Dday = styled.div`
-    color: #6AA9F9;
-    background-color: #EEF6FE;
+    color: #6aa9f9;
+    background-color: #eef6fe;
     text-align: center;
     padding: 8px 18px;
     border-radius: 10px;
@@ -122,12 +120,12 @@ const Dday = styled.div`
     margin-bottom: 10px;
 `;
 
-const PlanImage = styled.div<{ src : string }>`
+const PlanImage = styled.div<{ src: string }>`
     width: 115px;
     height: 115px;
-    background-image: url('${({src}) => src}');
-    background-repeat : no-repeat;
-    background-size : cover;
+    background-image: url('${({ src }) => src}');
+    background-repeat: no-repeat;
+    background-size: cover;
     margin-bottom: 20px;
     position: relative;
     border-radius: 50%;
@@ -141,7 +139,7 @@ const PlanImageOpacity = styled.div`
     position: absolute;
     top: 0;
     border-radius: 50%;
-`
+`;
 
 const PlanImageName = styled.div`
     color: white;
@@ -153,7 +151,7 @@ const PlanImageName = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     letter-spacing: 3px;
-`
+`;
 
 const PlanTitle = styled.div`
     font-size: 18px;

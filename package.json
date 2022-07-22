@@ -29,6 +29,7 @@
         "react-select": "^5.4.0",
         "react-slick": "^0.29.0",
         "react-sortablejs": "^6.1.4",
+        "redux-cookies-middleware": "^0.2.1",
         "slick-carousel": "^1.8.1",
         "sortablejs": "^1.15.0",
         "styled-component": "^2.8.0",

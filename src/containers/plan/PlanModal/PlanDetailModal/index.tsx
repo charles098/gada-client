@@ -11,6 +11,7 @@ import SubmitButton from 'components/StyledSmitButton';
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
 import { memoPlanDetail } from 'store/modules/plan/plan';
+import getAuthHeader from 'utils/getAuthHeader';
 
 const ModalSelector = (state: RootState) => state.modal;
 const PlanSelector = (state: RootState) => state.plan;
@@ -20,6 +21,8 @@ const detailIdSelector = (state: RootState) => state.plan.clickPlaceDetailId;
 const PlanDetailModal: FC = () => {
     const dispatch = useDispatch<any>();
     const { modalIsOpen } = useSelector(ModalSelector);
+    const headers = getAuthHeader();
+
     const {
         planList,
         setDay,
@@ -75,7 +78,7 @@ const PlanDetailModal: FC = () => {
                 cost,
                 time,
             } as PlanDetailModel;
-            dispatch(memoPlanDetail(memo));
+            dispatch(memoPlanDetail({ headers, planDetail: memo }));
         }
         dispatch(changeOpenState(!modalIsOpen));
     };

@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from 'store/modules';
-import DayPicker from 'containers/plan/PlanContents/EachPlan/EachPlanEditor/DayPicker';
 import ShowDistance from './ShowDistance';
 import SetupRoute from './SetupRoute';
+import DayPicker from './DayPicker';
 
-const periodSelector = (state: RootState) => state.plan.period;
+const periodSelector = (state: RootState) => state.share.period;
 
 const PlanMaker: FC = () => {
     const period = useSelector(periodSelector);
@@ -24,7 +24,7 @@ const PlanMaker: FC = () => {
 
 const Container = styled.div`
     width: 635px;
-    height: 620px;
+    height: 540px;
     margin: 0 30px 30px 30px;
     display: flex;
     flex-direction: column;

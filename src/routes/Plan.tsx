@@ -13,12 +13,17 @@ import AllPlan from 'containers/plan/PlanContents/AllPlan';
 import { getPlanInfoById, initializeData } from 'store/modules/plan/plan';
 import { Place } from 'store/modules/plan';
 import EachPlan from 'containers/plan/PlanContents/EachPlan';
+import { useParams } from 'react-router-dom';
+import getAuthHeader from 'utils/getAuthHeader';
 
 const Plan: FC = () => {
     const dispatch = useDispatch<any>();
+    const { id } = useParams<'id'>();
+    const headers = getAuthHeader();
 
     useEffect(() => {
-        dispatch(getPlanInfoById(''));
+        console.log(id);
+        if (id) dispatch(getPlanInfoById({ headers, planId: id }));
     }, []);
 
     return (

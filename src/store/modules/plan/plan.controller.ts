@@ -13,7 +13,6 @@ export const changePlanModel2PlanState = (
     state: PlanState,
     data: PlanModel,
 ) => {
-    // new Array<PlanDetailModel[]>(days).fill([]);
     const infoByAPI = (state: PlanState): void => {
         state.title = data.title;
         state.startDate = new Date(data.startDate);
@@ -52,10 +51,8 @@ export const movePlaceOptionToPlanFulfilledController = (
     action: any,
 ) => {
     const { data } = action.payload;
-    // ㅠㅠ
     const lasted = data.planDetails[state.setDay].length - 1;
     const placeObjId = data.planDetails[state.setDay][lasted].planDetail;
-    console.log('API CALL', placeObjId);
     const droppedPlaceOption = state.placeOptionList.find(
         (option) => option.id === state.grabPlaceOptionId,
     ) as Place;
@@ -63,12 +60,10 @@ export const movePlaceOptionToPlanFulfilledController = (
     const tempDetailPlace: PlanDetailModel = {
         ...droppedPlaceOption,
         _id: placeObjId,
-        userId: 'parksang',
+        userId: state.userId,
     };
     const idx = state.placeOptionList.indexOf(droppedPlaceOption);
     state.placeOptionList.splice(idx, 1);
-
-    console.log('CUSTOM LOG: ', state.grabPlanId, idx, tempDetailPlace);
 
     state.planList[state.setDay].push(tempDetailPlace);
     setPointRelatedOptions(state);
@@ -85,8 +80,8 @@ export const movePlanToPlaceOptionFulfilledController = (
     const droppedPlan = state.planList[state.setDay].find(
         (plan) => plan.id === state.grabPlanId,
     ) as PlanDetailModel;
+
     const idx = state.planList[state.setDay].indexOf(droppedPlan);
-    console.log('CUSTOM LOG: ', state.grabPlanId, idx);
     state.planList[state.setDay].splice(idx, 1);
     state.placeOptionList.push(droppedPlan);
 };
@@ -96,7 +91,12 @@ export const memoPlanDetailFulfilledController = (
 ) => {
     const data = action.payload as PlanDetailModel;
     const col = state.planList[state.setDay].map((p) => p.id).indexOf(data.id);
-    state.planList[state.setDay][col] = data;
+    console.log('123123123123', data, col);
+    alert('성공적으로 변경했습니다');
+    state.planList[state.setDay][col] = {
+        ...state.planList[state.setDay][col],
+        ...data,
+    };
 };
 
 /**

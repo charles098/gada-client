@@ -13,8 +13,8 @@ import ShareTheme from './ShareTheme';
 const planSelector = (state: RootState) => state.plan;
 
 const ShareForm: FC = () => {
-    const [ theme, setTheme ] = useState<string>("");
-    const closeModal = useModal("ShareForm");
+    const [theme, setTheme] = useState<string>('');
+    const closeModal = useModal('ShareForm');
     const dispatch = useDispatch();
     const headers = getAuthHeader();
     const { shareMode, _id } = useSelector(planSelector);
@@ -23,52 +23,46 @@ const ShareForm: FC = () => {
         e.preventDefault();
 
         (async () => {
-            try{
+            try {
                 const { title } = e.target;
-                console.log('submit')
+                console.log('submit');
                 if (!title.value) {
                     alert('제목을 입력해주세요!');
-                }
-                else if (!theme) {
+                } else if (!theme) {
                     alert('주제를 선택해주세요!');
-                }
-                else {
+                } else {
                     // console.log(title.value);
                     // console.log(theme);
-                    // !shareMode가 현재 항태 
+                    // !shareMode가 현재 항태
                     const data = {
                         shareTitle: title.value,
                         tag: theme,
-                        toggle: !shareMode
-                    }
+                        toggle: !shareMode,
+                    };
 
                     // 공유하기
-                    const result = await axios.post(`shares/${_id}`, data, { headers });
+                    const result = await axios.post(`shares/${_id}`, data, {
+                        headers,
+                    });
 
-                    dispatch(changeShareMode(!shareMode))
+                    dispatch(changeShareMode(!shareMode));
                     closeModal();
                 }
-            } catch(err) {
+            } catch (err) {
                 console.log(err);
             }
-            
-        })()
-    }
+        })();
+    };
 
     return (
         <Form onSubmit={submitHandler}>
             <ShareHeader />
             <ShareTitle />
-            <ShareTheme
-            setTheme={setTheme}
-            />
-            <SubmitButton 
-                type="submit"
-                value="공유하기"
-            />
+            <ShareTheme setTheme={setTheme} />
+            <SubmitButton type="submit" value="공유하기" />
         </Form>
-    )
-}
+    );
+};
 
 export default ShareForm;
 
@@ -80,15 +74,15 @@ const Form = styled.form`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-`
+`;
 
 const SubmitButton = styled.input`
-  background-color: #60A5F8;
-  border: none;
-  padding: 10px 100px;
-  font-size: 18px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 60px;
-`
+    background-color: #60a5f8;
+    border: none;
+    padding: 10px 100px;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 60px;
+`;

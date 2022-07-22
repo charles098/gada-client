@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import useModal from 'hooks/useModal';
+import getAuthHeader from 'utils/getAuthHeader';
 import useConfirmModal from 'hooks/useConfirmModal';
 import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import PlanPeriod from 'components/PlanPeriod';
@@ -24,6 +25,7 @@ const PlanInfo: FC = () => {
         'cancelShare',
     );
     const dispatch = useDispatch();
+    const headers = getAuthHeader();
     const { shareMode, _id } = useSelector(planSelector);
 
     useEffect(() => {
@@ -33,15 +35,17 @@ const PlanInfo: FC = () => {
                     const data = { toggle: !shareMode };
 
                     // 공유취소
-                    const result = await axios.post(`shares/${_id}`, data);
+                    const result = await axios.post(`shares/${_id}`, data, {
+                        headers,
+                    });
                     console.log(result);
                     console.log(data);
                     dispatch(changeShareMode(!shareMode));
                 }
-            } catch(err) {
-                console.log(err)
+            } catch (err) {
+                console.log(err);
             }
-        })()
+        })();
     }, [confirmState]);
 
     const onClickSwitch = () => {

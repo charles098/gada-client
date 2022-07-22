@@ -10,26 +10,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
 import { RootState } from 'store/modules';
-import {
-    grabPlan,
-    grabPlaceOption,
-    movePlaceOptionToPlan,
-    sortPlanList,
-    sortPlanListFailCheck,
-} from 'store/modules/plan/plan';
+
+import { sortSharedPlanList } from 'store/modules/plan/share';
+
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import getAuthHeader from 'utils/getAuthHeader';
 import RoutItem from './RoutItem';
 
-const planListSelector = (state: RootState) => state.plan.planList;
-const planOptionListSelector = (state: RootState) => state.plan.placeOptionList;
+const planListSelector = (state: RootState) => state.share.planList;
 
-const setDaySelector = (state: RootState) => state.plan.setDay;
-const shareModeSelector = (state: RootState) => state.plan.shareMode;
+const setDaySelector = (state: RootState) => state.share.setDay;
 // eslint-disable-next-line no-underscore-dangle
-const planIdSelector = (state: RootState) => state.plan._id;
+const planIdSelector = (state: RootState) => state.share._id;
 const grabPlaceOptionIdSelector = (state: RootState) =>
     state.plan.grabPlaceOptionId;
 
@@ -37,14 +31,9 @@ const SetupRoute: FC = () => {
     const dispatch = useDispatch<any>();
     const planList = useSelector(planListSelector);
     const setDay = useSelector(setDaySelector);
-    const shareMode = useSelector(shareModeSelector);
-    const grabPlaceOptionId = useSelector(grabPlaceOptionIdSelector);
-    const placeOptionList = useSelector(planOptionListSelector);
     const planId = useSelector(planIdSelector);
-    const [isDrop, setIsDrop] = useState(false);
-    const [firstRender, setFistRender] = useState(false);
     const location = useLocation();
-    const headers = getAuthHeader();
+    const [isDrop, setIsDrop] = useState(false);
 
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
@@ -60,73 +49,12 @@ const SetupRoute: FC = () => {
             }, 500);
         }
     }, [planList]);
-
-    useEffect(() => {
-        setFistRender(true);
-    }, []);
-
-    const onDragStartPlace = useCallback(
-        (e: React.DragEvent<HTMLElement>): void => {
-            if (shareMode) return;
-            enterCnt.current = 0;
-            dispatch(grabPlaceOption({ id: null }));
-            dispatch(grabPlan({ id: e.currentTarget.dataset.id }));
-        },
-        [shareMode],
-    );
-
-    const onDragEnterConainer = useCallback(
-        (e: React.DragEvent<HTMLElement>) => {
-            if (shareMode) return;
-            if (!grabPlaceOptionId) return;
-            enterCnt.current += 1;
-            e.currentTarget.classList.add('drag-over');
-        },
-        [grabPlaceOptionId, shareMode],
-    );
-
-    const onDragLeaveConainer = useCallback(
-        (e: React.DragEvent<HTMLElement>) => {
-            if (shareMode) return;
-            if (!grabPlaceOptionId) return;
-            enterCnt.current -= 1;
-            if (enterCnt.current === 0) {
-                e.currentTarget.classList.remove('drag-over');
-            }
-        },
-        [grabPlaceOptionId, shareMode],
-    );
-
-    const onDropContainer = useCallback(
-        (e: React.DragEvent<HTMLElement>) => {
-            if (shareMode) return;
-            if (!grabPlaceOptionId) return;
-            e.currentTarget.classList.remove('drag-over');
-            const selected = placeOptionList.find(
-                (place) => place.id === grabPlaceOptionId,
-            );
-            if (selected) {
-                dispatch(
-                    movePlaceOptionToPlan({
-                        headers,
-                        planId,
-                        place: selected,
-                        setDay,
-                    }),
-                );
-                setIsDrop(true);
-            }
-        },
-        [grabPlaceOptionId, shareMode],
-    );
-
     // SortableJs Logic
     type PlanDetailSortableItem = PlanDetailModel & { chosen: boolean };
     const getSortableList = (
         list: PlanDetailModel[][],
     ): PlanDetailSortableItem[] => {
         if (!(list.length > 1)) return [];
-        if (shareMode) return [];
         return list[setDay].map((x) => {
             return {
                 ...x,
@@ -145,26 +73,12 @@ const SetupRoute: FC = () => {
 
     const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
-        if (shareMode) return;
-        if (firstRender) {
-            dispatch(sortPlanList(list));
-            dispatch(
-                sortPlanListFailCheck({
-                    headers,
-                    planId,
-                    index: setDay,
-                    preplanDetails: planList[setDay],
-                    curDetails: list,
-                }),
-            );
-        }
+        dispatch(sortSharedPlanList({ list }));
     };
 
     return (
         <Container
-            onDragEnter={onDragEnterConainer}
-            onDragLeave={onDragLeaveConainer}
-            onDrop={onDropContainer}
+            onDrop={() => setIsDrop(true)}
             onDragOver={(e) => e.preventDefault()}
         >
             {SortableList && (
@@ -184,7 +98,6 @@ const SetupRoute: FC = () => {
                                     }
                                     key={plan.id}
                                     dataId={plan.id}
-                                    onDragStartPlace={onDragStartPlace}
                                     placename={plan.name}
                                     location={plan.address}
                                 />

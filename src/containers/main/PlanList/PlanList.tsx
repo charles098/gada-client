@@ -4,11 +4,11 @@ import AddCard from 'containers/main/PlanList/AddCard';
 import PlanCard from 'containers/main/PlanList/PlanCard';
 import SlickSlider from 'components/SlickSlider';
 import axios from 'axios';
-import { PlanModel } from 'store/modules/plan/plan.model'
 import { getDday, getTerm } from 'utils/usefulFunctions';
-import getAuthHeader from 'utils/getAuthHeader'
+import getAuthHeader from 'utils/getAuthHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
+import { PlanModel } from 'store/modules/plan/plan.model';
 
 const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
     return planDataArray.map((data) => {
@@ -19,10 +19,10 @@ const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
             title,
             imgUrl,
             dDay: getDday(startDate),
-            term: getTerm(startDate, lastDate)
-        }
-    })
-}
+            term: getTerm(startDate, lastDate),
+        };
+    });
+};
 
 interface PreprocessedPlanModel {
     id: string;
@@ -35,11 +35,11 @@ interface PreprocessedPlanModel {
 
 const modalSelector = (state: RootState) => state.modal;
 
-const PlanList : FC = () => {
-    const [ planDatas, setPlanDatas ] = useState<PreprocessedPlanModel[]>();
-    const [ nickname, setNickname ] = useState<string>(".");
+const PlanList: FC = () => {
+    const [planDatas, setPlanDatas] = useState<PreprocessedPlanModel[]>();
+    const [nickname, setNickname] = useState<string>('.');
     const headers = getAuthHeader();
-    const { modalIsOpen, deletePlan} = useSelector(modalSelector);
+    const { modalIsOpen, deletePlan } = useSelector(modalSelector);
 
     useEffect(() => {
         (async () => {
@@ -48,11 +48,11 @@ const PlanList : FC = () => {
                 setNickname(`${data.username}님, 여행을 준비하세요.`);
                 const preprocessedData = preprocessPlanDatas(data.plans);
                 setPlanDatas(preprocessedData);
-                console.log(preprocessedData)
-            } catch(err) {
+                console.log(preprocessedData);
+            } catch (err) {
                 console.log(err);
             }
-        })()
+        })();
     }, [modalIsOpen, deletePlan]);
 
     return (
@@ -60,12 +60,12 @@ const PlanList : FC = () => {
             <PlanListTitle>{nickname}</PlanListTitle>
             <PlanListContainer>
                 <SlickSlider
-                width={1200}
-                slidesToShow={5}
-                slidesToScroll={2}
-                arrowPadding={50}
-                arrowSize={25}
-                boxShadow
+                    width={1200}
+                    slidesToShow={5}
+                    slidesToScroll={2}
+                    arrowPadding={50}
+                    arrowSize={25}
+                    boxShadow
                 >
                     <AddCard />
                     {planDatas?.map((data) => (
@@ -82,8 +82,8 @@ const PlanList : FC = () => {
                 </SlickSlider>
             </PlanListContainer>
         </PlanListWrapper>
-    )
-}
+    );
+};
 
 export default PlanList;
 
@@ -100,6 +100,6 @@ const PlanListTitle = styled.h2`
 
 const PlanListContainer = styled.div`
     padding: 20px 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 `;

@@ -4,6 +4,8 @@ import {
     createSlice,
     PayloadAction,
 } from '@reduxjs/toolkit';
+import { useCookies } from 'react-cookie';
+import getAuthHeader from 'utils/getAuthHeader';
 import axios, { AxiosRequestConfig } from 'axios';
 import {
     changePosition2DistanceArray,
@@ -19,6 +21,8 @@ import {
     sortPlanListController,
 } from './plan.controller';
 import { PlanDetailModel, PlanModel } from './plan.model';
+
+axios.defaults.withCredentials = true;
 
 export interface PlanState
     extends Omit<
@@ -68,13 +72,16 @@ const initialState: PlanState = {
 
 // Thunk
 
-const mockid = '62d79015bac11f6c17315241';
-
 const getPlanInfoById = createAsyncThunk(
     'GET/plan/getPlan',
-    async (planObjectId: string, { rejectWithValue }) => {
+    async (
+        { headers, planId }: { headers: any; planId: string },
+        { rejectWithValue },
+    ) => {
         try {
-            const result = await axios.get(`/plans/${mockid}`);
+            const result = await axios.get(`/plans/${planId}`, {
+                headers,
+            });
             return result;
         } catch (err) {
             return rejectWithValue(err);
@@ -85,20 +92,29 @@ const getPlanInfoById = createAsyncThunk(
 const movePlaceOptionToPlan = createAsyncThunk(
     'POST/plan/planDetails',
     async (
-        { place, setDay }: { place: Place; setDay: number },
+        {
+            headers,
+            planId,
+            place,
+            setDay,
+        }: { headers: any; planId: string; place: Place; setDay: number },
         { rejectWithValue },
     ) => {
         try {
-            const result = await axios.post(`/planDetails`, {
-                planId: mockid,
-                imgUrl: place.imgUrl,
-                index: setDay,
-                id: place.id,
-                name: place.name,
-                latitude: place.latitude,
-                longitude: place.longitude,
-                address: place.address,
-            });
+            const result = await axios.post(
+                `/planDetails`,
+                {
+                    planId,
+                    imgUrl: place.imgUrl,
+                    index: setDay,
+                    id: place.id,
+                    name: place.name,
+                    latitude: place.latitude,
+                    longitude: place.longitude,
+                    address: place.address,
+                },
+                { headers },
+            );
             return result;
         } catch (err) {
             return rejectWithValue(err);
@@ -110,22 +126,29 @@ const movePlanToPlaceOption = createAsyncThunk(
     'DELETE/plan/planDetails',
     async (
         {
+            headers,
             planId,
             row,
             col,
             id, // placeId
-        }: { planId: string; row: number; col: number; id: string },
+        }: {
+            headers: any;
+            planId: string;
+            row: number;
+            col: number;
+            id: string;
+        },
         { rejectWithValue },
     ) => {
         try {
             const data = {
-                planId: mockid,
+                planId,
                 row,
                 col,
                 id,
             };
             const result = await axios.delete('/planDetails', {
-                headers: {},
+                headers,
                 data,
             });
             return result;
@@ -140,11 +163,13 @@ const sortPlanListFailCheck = createAsyncThunk(
     'PATCH/plan/updateOrder',
     async (
         {
+            headers,
             planId,
             index,
             preplanDetails,
             curDetails,
         }: {
+            headers: any;
             planId: string;
             index: number;
             preplanDetails: PlanDetailModel[];
@@ -153,13 +178,15 @@ const sortPlanListFailCheck = createAsyncThunk(
         { rejectWithValue },
     ) => {
         const data = {
-            planId: mockid,
+            planId,
             index,
             // eslint-disable-next-line no-underscore-dangle
             planDetails: curDetails.map((data) => ({ planDetail: data._id })),
         };
         try {
-            const result = await axios.patch('/planDetails/order', data);
+            const result = await axios.patch('/planDetails/order', data, {
+                headers,
+            });
             if (result) return curDetails;
             return [];
         } catch (err) {
@@ -170,11 +197,19 @@ const sortPlanListFailCheck = createAsyncThunk(
 
 const memoPlanDetail = createAsyncThunk(
     'PATCH/plan/updatePlanDetail',
-    async (planDetail: PlanDetailModel, { rejectWithValue }) => {
+    async (
+        { headers, planDetail }: { headers: any; planDetail: PlanDetailModel },
+        { rejectWithValue },
+    ) => {
         try {
-            const result = await axios.patch(`/planDetails`, {
-                plan: planDetail,
-            });
+            const result = await axios.patch(
+                `/planDetails`,
+                {
+                    planDetail,
+                },
+                { headers },
+            );
+            console.log('0000000000000000000000000000000');
             return planDetail;
         } catch (err) {
             return rejectWithValue(err);
