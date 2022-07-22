@@ -96,10 +96,12 @@ const Header: FC = () => {
                         <Nav myPageIsOpen={boardIsOpen}>
                             <Ul onClick={removeMenu} onKeyDown={removeMenu}>
                                 <Li>
-                                    <LinkWrapper to="/board">전체</LinkWrapper>
+                                    <LinkWrapper to="/board?type=all">
+                                        전체
+                                    </LinkWrapper>
                                 </Li>
                                 <Li>
-                                    <LinkWrapper to="/board">
+                                    <LinkWrapper to="/board?type=myShare">
                                         공유내역
                                     </LinkWrapper>
                                 </Li>
