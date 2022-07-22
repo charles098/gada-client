@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useModal from 'hooks/useModal';
 
@@ -27,8 +27,9 @@ const LoginForm = () => {
                     await axios.post('/users/login', data);
                     navigate('/main');
                 }
-            } catch (err) {
-                console.error(err);
+            } catch (err: any) {
+                const { response } = err;
+                alert(response.data.message);
             }
         })();
     };
