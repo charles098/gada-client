@@ -1,3 +1,4 @@
+import CustomModalSubmitButton from 'components/StyledSmitButton';
 import SharedPlan from 'containers/share/SharedPlan';
 import PlanMaker from 'containers/share/SharedPlan/SharedRoute';
 import React, { useEffect, useState } from 'react';
@@ -32,6 +33,9 @@ const Share = () => {
                 <ShareContents>
                     <SharedPlan />
                 </ShareContents>
+                <CustomModalSubmitButton width={300} height={60} fontSize={24}>
+                    가져오기
+                </CustomModalSubmitButton>
             </ShareBody>
         </>
     );
