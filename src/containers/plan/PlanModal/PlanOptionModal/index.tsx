@@ -23,7 +23,6 @@ const PlanModal = () => {
 
     const onClickPlanModalTitle = () => dispatch(changeState());
     const onClickSubmitButton = () => {
-        console.log('Model confirm Execute!!!');
         dispatch(dropAllSelectedPlaces());
         dispatch(insertPlaceOptionList(selectedList));
         dispatch(changeOpenState(false));
@@ -55,7 +54,7 @@ const PlanModal = () => {
 const Container = styled.div`
     box-sizing: border-box;
     width: 920px;
-    height: 100%; 
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

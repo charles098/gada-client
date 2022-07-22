@@ -210,7 +210,6 @@ const memoPlanDetail = createAsyncThunk(
                 },
                 { headers },
             );
-            console.log('0000000000000000000000000000000');
             return planDetail;
         } catch (err) {
             return rejectWithValue(err);
@@ -309,13 +308,11 @@ const planDetailSlice = createSlice({
                 (plan) => plan.id === state.grabPlanId,
             ) as PlanDetailModel;
             const idx = state.planList[state.setDay].indexOf(droppedPlan);
-            console.log('CUSTOM LOG: ', state.grabPlanId, idx);
             state.planList[state.setDay].splice(idx, 1);
             state.placeOptionList.push(droppedPlan);
         },
         changeShareMode(state: PlanState, action: PayloadAction<boolean>) {
             state.shareMode = action.payload;
-            console.log('CUSTOM SHARE', state.shareMode);
         },
     },
     extraReducers,

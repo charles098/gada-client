@@ -64,7 +64,7 @@ const NewPlanForm: FC = () => {
                     closeModal();
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         })();
     };

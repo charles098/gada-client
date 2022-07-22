@@ -1,11 +1,4 @@
-import React, {
-    FC,
-    useEffect,
-    useRef,
-    useCallback,
-    useState,
-    useMemo,
-} from 'react';
+import React, { FC, useEffect, useRef, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ReactSortable } from 'react-sortablejs';
@@ -16,28 +9,21 @@ import { sortSharedPlanList } from 'store/modules/plan/share';
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
 import { useLocation } from 'react-router-dom';
-import getAuthHeader from 'utils/getAuthHeader';
 import RoutItem from './RoutItem';
 
 const planListSelector = (state: RootState) => state.share.planList;
 
 const setDaySelector = (state: RootState) => state.share.setDay;
-// eslint-disable-next-line no-underscore-dangle
-const planIdSelector = (state: RootState) => state.share._id;
-const grabPlaceOptionIdSelector = (state: RootState) =>
-    state.plan.grabPlaceOptionId;
 
 const SetupRoute: FC = () => {
     const dispatch = useDispatch<any>();
     const planList = useSelector(planListSelector);
     const setDay = useSelector(setDaySelector);
-    const planId = useSelector(planIdSelector);
     const location = useLocation();
     const [isDrop, setIsDrop] = useState(false);
     const [firstRender, setFistRender] = useState(false);
 
     const droppedRef = useRef<HTMLElement | null>(null);
-    const enterCnt = useRef(0);
     useEffect(() => {
         setFistRender(true);
     }, []);

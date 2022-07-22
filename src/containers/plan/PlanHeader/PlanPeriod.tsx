@@ -1,6 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/modules';
+import React from 'react';
 import styled from 'styled-components';
 
 const PlanPeriod = ({ start, end }: { start: string; end: string }) => {

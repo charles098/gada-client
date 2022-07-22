@@ -10,53 +10,57 @@ const preprocessLocationDatas = (locations: any) => {
     return Object.entries(locations).map((data) => {
         return {
             location: data[0],
-            imgUrl: data[1]
-        }
-    })
-}
+            imgUrl: data[1],
+        };
+    });
+};
 
-const LocationList : FC = () => {
+const LocationList: FC = () => {
     const defaultProps = {
         imgUrl: jejuImg,
-        location: '제주'
-    }
+        location: '제주',
+    };
     const [locations, setLocations] = useState<any>();
     const headers = getAuthHeader();
 
     useEffect(() => {
         (async () => {
             try {
-                const results = await axios.get("/plans/locations", { headers });
-                const preprocessedLocationDatas = preprocessLocationDatas(results.data);
+                const results = await axios.get('/plans/locations', {
+                    headers,
+                });
+                const preprocessedLocationDatas = preprocessLocationDatas(
+                    results.data,
+                );
                 setLocations(preprocessedLocationDatas);
-                console.log(locations);
             } catch (err) {
-                 console.log(err);
+                console.error(err);
             }
-        })()
-    }, [])
+        })();
+    }, []);
 
     return (
         <LocationWrapper>
             <LocationHeader>
-                <LocationIcon 
-                width='20px'
-                height='27px'
-                style={locationStyle}/>
+                <LocationIcon
+                    width="20px"
+                    height="27px"
+                    style={locationStyle}
+                />
                 <LocationTitle>국내 여행지</LocationTitle>
             </LocationHeader>
             <LocationContainer>
                 {locations?.map((data: any) => (
-                    <LocationCard 
-                    key={data.location}
-                    imgUrl={data.imgUrl}
-                    location={data.location}
+                    <LocationCard
+                        key={data.location}
+                        imgUrl={data.imgUrl}
+                        location={data.location}
                     />
                 ))}
             </LocationContainer>
         </LocationWrapper>
-    )
-}
+    );
+};
 
 export default LocationList;
 
@@ -69,18 +73,18 @@ const LocationWrapper = styled.section`
 
 const LocationHeader = styled.div`
     margin-bottom: 25px;
-`
+`;
 
 const LocationTitle = styled.h2`
     font-size: 24px;
     display: inline-block;
-    color: #3D95FF;
+    color: #3d95ff;
     cursor: default;
 `;
 
-const locationStyle =  {
+const locationStyle = {
     marginRight: '10px',
-}
+};
 
 const LocationContainer = styled.div`
     display: grid;
@@ -89,7 +93,7 @@ const LocationContainer = styled.div`
     grid-row-gap: 27px;
     border-radius: 10px;
     place-content: center;
-    
+
     > div:hover {
         cursor: pointer;
     }

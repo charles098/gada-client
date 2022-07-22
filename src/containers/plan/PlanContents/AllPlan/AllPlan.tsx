@@ -1,10 +1,4 @@
-import React, {
-    FC,
-    useState,
-    useEffect,
-    Dispatch,
-    SetStateAction,
-} from 'react';
+import React, { FC, useState, Dispatch, SetStateAction } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 interface IProps {

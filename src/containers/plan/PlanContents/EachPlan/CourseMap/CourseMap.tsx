@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { Place } from 'store/modules/plan';
 import jeju from 'images/jeju.jpg';

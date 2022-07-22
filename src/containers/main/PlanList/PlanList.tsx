@@ -48,9 +48,8 @@ const PlanList: FC = () => {
                 setNickname(`${data.username}님, 여행을 준비하세요.`);
                 const preprocessedData = preprocessPlanDatas(data.plans);
                 setPlanDatas(preprocessedData);
-                console.log(preprocessedData);
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         })();
     }, [modalIsOpen, deletePlan]);

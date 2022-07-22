@@ -37,7 +37,7 @@ const Register = () => {
                 .catch((error) => {
                     // 실패시
                     alert(error.response.data.message);
-                    console.log(error.response);
+                    console.error(error.response);
                 });
         }
     };

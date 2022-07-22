@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import styled from 'styled-components';
 import { theme } from 'styles/theme';

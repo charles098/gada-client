@@ -23,7 +23,6 @@ const PlacePolyline = ({ path, center, distance }: Props) => {
             strokeColor: '#ff0000',
             strokeStyle: 'solid',
         });
-        // console.log('CUSTOM', );
         if (textTimeoutId) clearTimeout(textTimeoutId);
     };
     const onMouseoutPolyline = (e: kakao.maps.Polyline) => {

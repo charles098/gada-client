@@ -8,9 +8,7 @@ import PlanTitle from 'containers/plan/PlanHeader/PlanTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeShareMode } from 'store/modules/plan/plan';
 import { RootState } from 'store/modules';
-import { getDate } from 'date-fns';
 import { getDatePeriod } from 'utils/planUtils';
-import { render } from '@testing-library/react';
 import PlanPeriod from './PlanPeriod';
 
 const planSelector = (state: RootState) => state.plan;
@@ -48,7 +46,6 @@ const PlanInfo: FC = () => {
     );
 
     useEffect(() => {
-        console.log(render, lastDate, startDate);
         setRender(true);
     }, []);
     useEffect(() => {
@@ -64,7 +61,7 @@ const PlanInfo: FC = () => {
                     dispatch(changeShareMode(!shareMode));
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         })();
     }, [confirmState]);

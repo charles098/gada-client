@@ -1,10 +1,9 @@
-import React, { FC, Dispatch, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { customAlphabet } from 'nanoid';
 import SlickSlider from 'components/SlickSlider';
 import { RootState } from 'store/modules';
-import { setUpDay } from 'store/modules/plan/plan';
 import { setUpSharedDay } from 'store/modules/plan/share';
 
 interface IProps {

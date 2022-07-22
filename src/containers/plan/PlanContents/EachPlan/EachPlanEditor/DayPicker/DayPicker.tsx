@@ -1,4 +1,4 @@
-import React, { FC, Dispatch, SetStateAction } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { customAlphabet } from 'nanoid';
@@ -66,7 +66,7 @@ const Container = styled.div`
     align-items: center;
     box-shadow: 0px 5px 3px -5px rgb(0 0 0 / 30%);
 `;
-// 0px 0px 6px 
+// 0px 0px 6px
 const ButtonCard = styled.div`
     width: 100px;
     height: 35px;

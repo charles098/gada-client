@@ -19,7 +19,7 @@ import {
 } from 'store/modules/plan/plan';
 import { Place } from 'store/modules/plan';
 import { PlanDetailModel } from 'store/modules/plan/plan.model';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import getAuthHeader from 'utils/getAuthHeader';
 import RoutItem from './RoutItem';
 

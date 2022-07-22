@@ -91,8 +91,6 @@ export const memoPlanDetailFulfilledController = (
 ) => {
     const data = action.payload as PlanDetailModel;
     const col = state.planList[state.setDay].map((p) => p.id).indexOf(data.id);
-    console.log('123123123123', data, col);
-    alert('성공적으로 변경했습니다');
     state.planList[state.setDay][col] = {
         ...state.planList[state.setDay][col],
         ...data,

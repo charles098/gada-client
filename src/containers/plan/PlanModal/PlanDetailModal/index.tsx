@@ -53,7 +53,6 @@ const PlanDetailModal: FC = () => {
                 cost: SelectedDetailPlace?.cost ?? '',
             });
         }
-        console.log('CUSTOM: It is State When you enter Detail', details);
     }, []);
 
     const handleChange = (
@@ -69,7 +68,6 @@ const PlanDetailModal: FC = () => {
     const submitHandler = (e: React.MouseEvent) => {
         e.preventDefault();
 
-        console.log('CUSTOM: It is State When you leave Detail', details);
         if (SelectedDetailPlace) {
             const { description, cost, time } = details;
             const memo = {

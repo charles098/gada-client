@@ -145,7 +145,7 @@ const Board = () => {
                 await axios.post('/likes', body, { headers });
                 setCheckLike(body);
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         })();
     };
@@ -177,7 +177,7 @@ const Board = () => {
                     setShareState(!shareState);
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         })();
     }, [confirmState]);
@@ -216,7 +216,7 @@ const Board = () => {
                 });
                 setDatas(sharedPlans);
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         })();
     }, [clickedTag, location, pageType, shareState]);
