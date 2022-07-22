@@ -134,7 +134,7 @@ const tags = [
 
 const Board = () => {
     const [clickedTag, setClickedTag] = useState<string>("전체");
-    const [datas, setDatas] = useState<any>(initDatas);
+    const [datas, setDatas] = useState<any>();
     const headers = getAuthHeader();
     const [checkLike, setCheckLike] = useState<any>();
 
@@ -168,23 +168,23 @@ const Board = () => {
     useEffect(() => {
         if (checkLike) {
             const { planId, toggle } = checkLike;
-            setDatas((prev: any) => {
-                return prev.map((data: any) => {
-                    const prevLikeCount = data.likeCount;
-                    if (data.planId === planId) {
-                        // 같으면 좋아요 및 하트 변경
-                        const newLikeCount = toggle ?
-                            prevLikeCount + 1 :
-                            prevLikeCount - 1;
-                        return {
-                            ...data,
-                            likeCount: newLikeCount,
-                            clickedLike: toggle
-                        }
+            const newData = datas.map((data: any) => {
+                const prevLikeCount = data.likeCount;
+                if (data.planId === planId) {
+                    // 같으면 좋아요 및 하트 변경
+                    const newLikeCount = toggle ?
+                        prevLikeCount + 1 :
+                        prevLikeCount - 1;
+                    return {
+                        ...data,
+                        likeCount: newLikeCount,
+                        clickedLike: toggle
                     }
-                    return data
-                })
+                }
+                return data
             })
+
+            setDatas(newData);
         }
     }, [checkLike])
 
@@ -256,7 +256,7 @@ const Board = () => {
                         </SelectWrapper>
                     </ButtonContainer>
                     <CardListContainer>
-                        {datas.map((data: any) => (
+                        {datas?.map((data: any) => (
                             <BoardCard
                                 key={data.planId}
                                 onClick={clickCardHandler}>
