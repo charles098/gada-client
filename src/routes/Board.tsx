@@ -79,7 +79,7 @@ const customStyles = {
 
 const initDatas = [
     {
-        id: '12f',
+        planId: '12f',
         tag: '맛집',
         location: '제주',
         title: '제주도 맛집 여행 코스 강추합니다!',
@@ -87,7 +87,7 @@ const initDatas = [
         likeCount: 14,
         clickedLike: true,
     }, {
-        id: '1fq',
+        planId: '1fq',
         tag: '맛집',
         location: '경북',
         title: '경북 맛집 여행 코스 강추합니다!',
@@ -95,7 +95,7 @@ const initDatas = [
         likeCount: 5,
         clickedLike: true,
     }, {
-        id: 'ber1',
+        planId: 'ber1',
         tag: '맛집',
         location: '울산',
         title: '울산 맛집 여행 코스 강추합니다!',
@@ -104,7 +104,7 @@ const initDatas = [
         clickedLike: false,
     },
     {
-        id: 'baswer',
+        planId: 'baswer',
         tag: '맛집',
         location: '부산',
         title: '부산 맛집 여행 코스 강추합니다!',
@@ -112,7 +112,7 @@ const initDatas = [
         likeCount: 4,
         clickedLike: true,
     }, {
-        id: 'srtw',
+        planId: 'srtw',
         tag: '맛집',
         location: '강원',
         title: '강원 맛집 여행 코스 강추합니다!',
@@ -142,6 +142,10 @@ const Board = () => {
             try {
                 const results = await axios.get("/shares", { headers });
                 console.log(results);
+                const { myLikes } = results.data.data;
+                const { sharedPlans } = results.data.data;
+                console.log(myLikes);
+                console.log(sharedPlans);
             } catch(err) {
                 console.log(err);
             }
@@ -224,7 +228,7 @@ const Board = () => {
                     <CardListContainer>
                         {datas.map((data: any, index: number) => (
                             <BoardCard
-                                key={data.id}
+                                key={data.planId}
                                 onClick={clickCardHandler}>
                                 <CardHeader>
                                     <Tag>{data.tag}</Tag>
