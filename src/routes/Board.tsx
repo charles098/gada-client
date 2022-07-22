@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled, { css } from 'styled-components';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LikeIcon, UnlikeIcon } from 'components/icons';
 import Select from 'react-select';
 import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
+import useConfirmModal from 'hooks/useConfirmModal';
 
 const selectOptions = [
     "전체",
@@ -77,52 +79,6 @@ const customStyles = {
     }),
 };
 
-const initDatas = [
-    {
-        planId: '12f',
-        tag: '맛집',
-        location: '제주',
-        title: '제주도 맛집 여행 코스 강추합니다!',
-        username: '뚱인데요',
-        likeCount: 14,
-        clickedLike: true,
-    }, {
-        planId: '1fq',
-        tag: '맛집',
-        location: '경북',
-        title: '경북 맛집 여행 코스 강추합니다!',
-        username: '어둠을부르는',
-        likeCount: 5,
-        clickedLike: true,
-    }, {
-        planId: 'ber1',
-        tag: '맛집',
-        location: '울산',
-        title: '울산 맛집 여행 코스 강추합니다!',
-        username: '김하나',
-        likeCount: 1,
-        clickedLike: false,
-    },
-    {
-        planId: 'baswer',
-        tag: '맛집',
-        location: '부산',
-        title: '부산 맛집 여행 코스 강추합니다!',
-        username: '니머하노',
-        likeCount: 4,
-        clickedLike: true,
-    }, {
-        planId: 'srtw',
-        tag: '맛집',
-        location: '강원',
-        title: '강원 맛집 여행 코스 강추합니다!',
-        username: '서른마흔다섯',
-        likeCount: 0,
-        clickedLike: false,
-    }
-
-]
-
 const tags = [
     "전체",
     "맛집",
@@ -132,69 +88,153 @@ const tags = [
     "자연"
 ]
 
-const Board = () => {
-    const [clickedTag, setClickedTag] = useState<string>("전체");
-    const [datas, setDatas] = useState<any>(initDatas);
-    const headers = getAuthHeader();
+const selectDefaultValue = {
+    label: "전체",
+    value: "전체",
+}
 
+const confirmPropsPayload = {
+    width: 400,
+    height: 310,
+    message: '계획 공유를 취소하시겠습니까?',
+};
+
+const Board = () => {
+    const [ searchParams ] = useSearchParams();
+    const [clickedTag, setClickedTag] = useState<string>("전체");
+    const [location, setLocation] = useState<string>("전체")
+    const [datas, setDatas] = useState<any>();
+    const [checkLike, setCheckLike] = useState<any>();
+    const [clickedId, setClickedId] = useState<any>();
+    const [shareState, setShareState] = useState<any>();
+    const [pageType, setPageType] = useState<any>(searchParams.get('type'));
+    const headers = getAuthHeader();
+    const [confirmState, confirmType, confirmModalHandler] = useConfirmModal(
+        confirmPropsPayload,
+        'cancelShare',
+    );
+    const navigate = useNavigate();
+    const options = selectOptions.map((option) => ({ value: option, label: option }));
+
+    const changeLocationHandler = (value: any) => {
+        setLocation(value.value);
+    }
+
+    const clickCardHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, planId: string) => {
+        navigate(`/share/${planId}`);
+    }
+
+    const cancelCardHandler = (e: any, planId: string) => {
+        e.stopPropagation();
+        setClickedId(planId);
+        confirmModalHandler();
+    }
+
+    const clickLikeHandler = (e: React.MouseEvent<SVGSVGElement, MouseEvent>, planId: string, clickedLike: boolean) => {
+        e.stopPropagation();
+
+        (async () => {
+            try {
+                const body = {
+                    planId,
+                    toggle: !clickedLike
+                }
+                await axios.post("/likes", body, { headers });
+                setCheckLike(body);
+            } catch(err) {
+                console.log(err)
+            }
+        })()
+    }
+
+    const clickTagHandler = (e: any) => {
+        setClickedTag(e.target.value);
+    }
+
+    useEffect(() => {
+        /**
+         * redux plan list -> []
+         */
+         setDatas([]);
+        setPageType(searchParams.get('type'));
+    }, [searchParams.get('type')])
+
+    // 공유 취소 관련
     useEffect(() => {
         (async () => {
             try {
-                const results = await axios.get("/shares", { headers });
+                if (confirmState && confirmType === 'cancelShare') {
+                    const data = {
+                        toggle: false
+                    }
+                    // 공유취소
+                    await axios.post(`shares/${clickedId}`, data, {
+                        headers,
+                    });
+                    setShareState(!shareState);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    }, [confirmState])
+    
+    // 초기 데이터 받아오기
+    useEffect(() => {
+        (async () => {
+            try {
+                let results;
+                if (pageType === "all") {
+                    results = await axios.get(`/shares/${clickedTag}/${location}`, { headers });
+                } else {
+                    results = await axios.get(`/shares/my-share/${clickedTag}/${location}`, { headers });
+                }
                 console.log(results);
                 const { myLikes } = results.data.data;
-                const { sharedPlans } = results.data.data;
-                console.log(myLikes);
-                console.log(sharedPlans);
+                let { sharedPlans } = results.data.data;
+                
+                // likeCount, clickedLike 추가
+                sharedPlans = sharedPlans.map((data: any) => {
+                    const clickedLike = myLikes.some((planId: string) => planId === data.planId)
+                    return ({
+                        ...data,
+                        likeCount: data.likes.length,
+                        title: data.shareTitle,
+                        location: data.area,
+                        clickedLike,
+                    })
+                })
+                setDatas(sharedPlans);
+                console.log('ab')
             } catch(err) {
                 console.log(err);
             }
         })()
-    }, [])
+    }, [clickedTag, location, pageType, shareState])
 
-    const options = selectOptions.map((option) => ({ value: option, label: option }));
-
-    const changeLocationHandler = (value: any) => {
-        console.log(value.value);
-    }
-
-    const clickCardHandler = () => {
-        console.log('카드 클릭');
-    }
-
-    const cancelCardHandler = (e: any) => {
-        e.stopPropagation();
-        console.log('취소 버튼 클릭')
-    }
-
-    const clickLikeHandler = (e: any, index: number) => {
-        e.stopPropagation();
-        console.log('좋아요 버튼 클릭');
-
-        setDatas((prev: any) => {
-            return prev.map((data: any, prevIndex: any) => {
-                const prevClickedLike = data.clickedLike;
+    // 좋아요 관련 side effect
+    useEffect(() => {
+        if (checkLike) {
+            const { planId, toggle } = checkLike;
+            const newData = datas.map((data: any) => {
                 const prevLikeCount = data.likeCount;
-                if (index === prevIndex) {
-                    const newLikeCount = prevClickedLike ?
-                        prevLikeCount - 1 :
-                        prevLikeCount + 1;
+                if (data.planId === planId) {
+                    // 같으면 좋아요 및 하트 변경
+                    const newLikeCount = toggle ?
+                        prevLikeCount + 1 :
+                        prevLikeCount - 1;
                     return {
                         ...data,
                         likeCount: newLikeCount,
-                        clickedLike: !prevClickedLike
+                        clickedLike: toggle
                     }
                 }
-                return data;
+                return data
             })
-        })
-    }
 
-    const clickTagHandler = (e: any) => {
-        console.log('태그 클릭');
-        console.log(e.target.value);
-        setClickedTag(e.target.value);
-    }
+            setDatas(newData);
+        }
+    }, [checkLike])
 
     return (
         <>
@@ -222,28 +262,31 @@ const Board = () => {
                                 options={options}
                                 styles={customStyles}
                                 placeholder="지역"
-                                onChange={changeLocationHandler} />
+                                onChange={changeLocationHandler}
+                                defaultValue={selectDefaultValue} />
                         </SelectWrapper>
                     </ButtonContainer>
                     <CardListContainer>
-                        {datas.map((data: any, index: number) => (
+                        {datas?.map((data: any) => (
                             <BoardCard
                                 key={data.planId}
-                                onClick={clickCardHandler}>
+                                onClick={(e) => clickCardHandler(e, data.planId)}>
                                 <CardHeader>
                                     <Tag>{data.tag}</Tag>
-                                    <Location>{data.location}</Location>
+                                    <Location>{data.area}</Location>
                                 </CardHeader>
-                                <CardTitle>{data.title}</CardTitle>
+                                <CardTitle>{data.shareTitle}</CardTitle>
                                 <CardButtons>
-                                    <CancelButton
-                                        onClick={cancelCardHandler}
-                                    >공유취소</CancelButton>
+                                    {pageType === 'myShare' &&<CancelButton
+                                        onClick={(e) => cancelCardHandler(e, data.planId)}
+                                    >공유취소</CancelButton>}
                                     {data.clickedLike ?
                                         <LikeButton
-                                            onClick={(e) => clickLikeHandler(e, index)} /> :
+                                            onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)}
+                                            pageType={pageType} /> :
                                         <UnlikeButton
-                                            onClick={(e) => clickLikeHandler(e, index)} />
+                                            onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)}
+                                            pageType={pageType} />
                                     }
 
                                 </CardButtons>
@@ -447,7 +490,7 @@ const CancelButton = styled.button`
     }
 `
 
-const LikeButton = styled(LikeIcon)`
+const LikeButton = styled(LikeIcon)<{pageType: string}>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -456,9 +499,15 @@ const LikeButton = styled(LikeIcon)`
     &:hover {
         transform: translate(0, -3px);
     }
+
+    ${({ pageType }) => 
+        (pageType === 'all') &&
+        css`
+          margin-left: auto;
+    `}
 `
 
-const UnlikeButton = styled(UnlikeIcon)`
+const UnlikeButton = styled(UnlikeIcon)<{pageType: string}>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -467,6 +516,12 @@ const UnlikeButton = styled(UnlikeIcon)`
     &:hover {
         transform: translate(0, -3px);
     }
+
+    ${({ pageType }) => 
+        (pageType === 'all') &&
+        css`
+          margin-left: auto;
+    `}
 `
 
 const CardInfo = styled.div`
