@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled, { css } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LikeIcon, UnlikeIcon } from 'components/icons';
 import Select from 'react-select';
 import axios from 'axios';
@@ -93,19 +93,31 @@ const selectDefaultValue = {
 }
 
 const Board = () => {
+    const [ searchParams ] = useSearchParams();
     const [clickedTag, setClickedTag] = useState<string>("전체");
     const [location, setLocation] = useState<string>("전체")
     const [datas, setDatas] = useState<any>();
-    const headers = getAuthHeader();
     const [checkLike, setCheckLike] = useState<any>();
+    const [pageType, setPageType] = useState<any>(searchParams.get('type'));
+    const headers = getAuthHeader();
     const navigate = useNavigate();
     const options = selectOptions.map((option) => ({ value: option, label: option }));
+
+    useEffect(() => {
+        setPageType(searchParams.get('type'));
+    })
 
     // 초기 데이터 받아오기
     useEffect(() => {
         (async () => {
             try {
-                const results = await axios.get(`/shares/${clickedTag}/${location}`, { headers });
+                let results;
+                if (pageType === "all") {
+                    results = await axios.get(`/shares/${clickedTag}/${location}`, { headers });
+                } else {
+                    results = await axios.get(`/shares/my-share/${clickedTag}/${location}`, { headers });
+                }
+                console.log(results);
                 const { myLikes } = results.data.data;
                 let { sharedPlans } = results.data.data;
                 
@@ -125,7 +137,7 @@ const Board = () => {
                 console.log(err);
             }
         })()
-    }, [clickedTag, location])
+    }, [clickedTag, location, pageType])
 
     // 좋아요 관련 side effect
     useEffect(() => {
