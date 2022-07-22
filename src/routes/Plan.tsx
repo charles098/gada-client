@@ -15,6 +15,8 @@ import { Place } from 'store/modules/plan';
 import EachPlan from 'containers/plan/PlanContents/EachPlan';
 import { useParams } from 'react-router-dom';
 import getAuthHeader from 'utils/getAuthHeader';
+import { toast, ToastContainer } from 'react-toastify';
+// toastify
 
 const Plan: FC = () => {
     const dispatch = useDispatch<any>();
