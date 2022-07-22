@@ -34,9 +34,13 @@ const SetupRoute: FC = () => {
     const planId = useSelector(planIdSelector);
     const location = useLocation();
     const [isDrop, setIsDrop] = useState(false);
+    const [firstRender, setFistRender] = useState(false);
 
     const droppedRef = useRef<HTMLElement | null>(null);
     const enterCnt = useRef(0);
+    useEffect(() => {
+        setFistRender(true);
+    }, []);
 
     useEffect(() => {
         if (isDrop) {
@@ -73,6 +77,7 @@ const SetupRoute: FC = () => {
 
     const onSort = (list: PlanDetailModel[]): void => {
         if (!(list.length > 0)) return;
+        if (!firstRender) return;
         dispatch(sortSharedPlanList({ list }));
     };
 

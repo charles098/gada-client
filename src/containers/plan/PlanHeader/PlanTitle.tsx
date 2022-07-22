@@ -5,53 +5,56 @@ import { RootState } from 'store/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTitle } from 'store/modules/plan/plan';
 
-const planTitleSelector = (state: RootState) => state.plan.title;
+const shareModeSelector = (state: RootState) => state.plan.shareMode;
 
-const PlanTitle: FC = () => {
+const PlanTitle = ({ title }: any) => {
     const dispatch = useDispatch();
-    const title = useSelector(planTitleSelector);
+    const shareMode = useSelector(shareModeSelector);
     const container = useRef<HTMLDivElement>(null);
     const [isEdit, setIsEdit] = useState<boolean>(false);
-    const [newTitle, setNewTitle] = useState<string>(title);
+    const [newTitle, setNewTitle] = useState<string>('');
 
-    // useEffect(() => {
-    //     document.addEventListener('mousedown', (e) => onClickOutside(e));
-    // }, [newTitle]);
-
-    const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewTitle(e.target.value);
+    useEffect(() => {
+        setNewTitle(title);
     }, []);
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+        setNewTitle(e.target.value);
 
     const onEnterKeyUp = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.code !== 'Enter') return;
-
-            dispatch(setTitle({ newTitle }));
             setIsEdit(false);
+            setNewTitle(newTitle);
+
+            if (shareMode) return;
+            dispatch(setTitle({ newTitle }));
         },
         [newTitle],
     );
 
-    const onStartEdit = useCallback(() => {
-        setIsEdit(true);
-    }, []);
+    const onStartEdit = () => setIsEdit(true);
 
     const onResetTitle = useCallback(() => {
+        if (shareMode) return;
         setNewTitle(title);
     }, [title]);
 
-    // const onClickOutside = useCallback(
-    //     (e: React.MouseEvent | MouseEvent): void => {
-    //         if (container.current?.contains(e.target as Node)) return;
-    //         dispatch(setTitle({ newTitle }));
-    //         setIsEdit(false);
-    //     },
-    //     [newTitle],
-    // );
+    const onClickOutside = useCallback(
+        (e: React.MouseEvent | MouseEvent): void => {
+            if (container.current?.contains(e.target as Node)) return;
+            setIsEdit(false);
+            setNewTitle(newTitle);
+
+            if (shareMode) return;
+            dispatch(setTitle({ newTitle }));
+        },
+        [newTitle],
+    );
 
     return (
         <Container ref={container as React.RefObject<HTMLDivElement>}>
-            {isEdit ? (
+            {isEdit && !shareMode ? (
                 <InputContainer>
                     <div className="input-info">
                         나만의 특별한 여행 제목을 만들어보세요.
@@ -68,8 +71,8 @@ const PlanTitle: FC = () => {
             ) : (
                 <Title>{title}</Title>
             )}
-            <EditButton type="button">
-                {isEdit ? (
+            {/* <EditButton type="button">
+                {isEdit && !shareMode ? (
                     <ResetIcon
                         width="15px"
                         height="15px"
@@ -82,7 +85,7 @@ const PlanTitle: FC = () => {
                         onClick={onStartEdit}
                     />
                 )}
-            </EditButton>
+            </EditButton> */}
         </Container>
     );
 };
