@@ -12,17 +12,19 @@ const confirmSharePayload = {
     width: 400,
     height: 300,
     message: `계획을 내 계획으로 가져오시겠습니까? 가져온 계획은 '마이페이지 > 내 계획'에서 확인 가능합니다.`,
-}
+};
 
 const Share = () => {
     const dispatch = useDispatch<any>();
     const navigate = useNavigate();
     const { id } = useParams<'id'>();
     const headers = getAuthHeader();
-    const [shareState, shareType, shareModalHandler] = useConfirmModal(confirmSharePayload, "share");
+    const [shareState, shareType, shareModalHandler] = useConfirmModal(
+        confirmSharePayload,
+        'share',
+    );
 
     useEffect(() => {
-        console.log(id);
         if (id) dispatch(getSharedPlanInfoById({ headers, planId: id }));
     }, []);
 
@@ -30,14 +32,14 @@ const Share = () => {
         if (shareState && shareType === 'share') {
             (async () => {
                 try {
-                    await axios.post(`/shares/${id}/bring`, {}, { headers })
-                    navigate("/main");
-                } catch(err) {
-                    console.log(err);
+                    await axios.post(`/shares/${id}/bring`, {}, { headers });
+                    navigate('/main');
+                } catch (err) {
+                    console.error(err);
                 }
-            })()
+            })();
         }
-    }, [shareState])
+    }, [shareState]);
 
     return (
         <>
@@ -55,8 +57,10 @@ const Share = () => {
                     <SharedPlan />
                 </ShareContents>
                 <SubmitButton
-                onClick={shareModalHandler}
-                type="submit" value="계획 가져오기" />
+                    onClick={shareModalHandler}
+                    type="submit"
+                    value="계획 가져오기"
+                />
             </ShareBody>
         </>
     );
@@ -104,7 +108,7 @@ const ShareBody = styled.main`
     justify-content: center;
     align-items: flex-start;
     margin-bottom: 40px;
-    margin-top: 10px; 
+    margin-top: 10px;
 `;
 
 const ShareContents = styled.article`

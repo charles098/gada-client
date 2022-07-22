@@ -16,7 +16,6 @@ import { store } from 'store/config';
 import Header from 'components/Header';
 import LoginHeader from 'components/LoginHeader';
 import PickModal from 'components/PickModal';
-import Home from 'routes/Home';
 import Login from 'routes/Login';
 import LoginForm from 'routes/LoginForm';
 import Register from 'routes/Register';
@@ -48,7 +47,6 @@ const App: FC = () => {
                             <Route path="/register" element={<Register />} />
                         </Route>
                         <Route element={<Header />}>
-                            <Route path="/home" element={<Home />} />
                             <Route path="/plan/:id" element={<Plan />} />
                             <Route path="/main" element={<Main />} />
                             <Route path="/profile" element={<Profile />} />
