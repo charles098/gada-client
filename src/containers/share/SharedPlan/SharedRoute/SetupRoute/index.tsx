@@ -78,7 +78,7 @@ const SetupRoute: FC = () => {
                     list={SortableList}
                     setList={onSort}
                 >
-                    {planList.length > 1 &&
+                    {planList.length > 0 &&
                         planList[setDay].map((plan: Place, index: number) => {
                             return (
                                 <RoutItem
