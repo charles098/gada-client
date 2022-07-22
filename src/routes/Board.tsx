@@ -197,18 +197,18 @@ const Board = () => {
                                 </CardHeader>
                                 <CardTitle>{data.shareTitle}</CardTitle>
                                 <CardButtons>
-                                    {pageType === 'myShare' &&<CancelButton
+                                    {pageType === 'myShare' ?<CancelButton
                                         onClick={(e) => cancelCardHandler(e, data.planId)}
-                                    >공유취소</CancelButton>}
+                                    >공유취소</CancelButton> :
+                                    <Helper />
+                                    }
                                     {data.clickedLike ?
                                         <LikeButton
                                             onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)}
                                             pageType={pageType} /> :
                                         <UnlikeButton
                                             onClick={(e) => clickLikeHandler(e, data.planId, data.clickedLike)}
-                                            pageType={pageType} />
-                                    }
-
+                                            pageType={pageType} />}
                                 </CardButtons>
                                 <CardInfo>
                                     <UserName>{data.username}</UserName>
@@ -394,6 +394,12 @@ const CardButtons = styled.div`
     border-bottom: solid #ccc 1px;
     margin-bottom: 15px;
 `
+
+const Helper = styled.div`
+    width: 1px;
+    height: 28px;
+`
+
 const CancelButton = styled.button`
     cursor: pointer;
     border: none;

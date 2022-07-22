@@ -91,18 +91,18 @@ const Header: FC = () => {
                     </MyPageContainer>
                     <BoardContainer>
                         <DropdownButton onClick={boardHandler} ref={boardRef}>
-                            게시판
+                            공유
                         </DropdownButton>
                         <Nav myPageIsOpen={boardIsOpen}>
                             <Ul onClick={removeMenu} onKeyDown={removeMenu}>
                                 <Li>
                                     <LinkWrapper to="/board?type=all">
-                                        전체
+                                        전체 공유
                                     </LinkWrapper>
                                 </Li>
                                 <Li>
                                     <LinkWrapper to="/board?type=myShare">
-                                        공유내역
+                                        내 공유
                                     </LinkWrapper>
                                 </Li>
                             </Ul>
