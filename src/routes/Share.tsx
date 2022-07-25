@@ -7,12 +7,19 @@ import { getSharedPlanInfoById } from 'store/modules/plan/share';
 import styled from 'styled-components';
 import getAuthHeader from 'utils/getAuthHeader';
 import useConfirmModal from 'hooks/useConfirmModal';
+import PageInfo from 'components/PageInfo';
 
 const confirmSharePayload = {
     width: 400,
     height: 300,
     message: `계획을 내 계획으로 가져오시겠습니까? 가져온 계획은 '마이페이지 > 내 계획'에서 확인 가능합니다.`,
 };
+
+const titles = {
+    mainTitle: '계획 가져오기',
+    subTitle1: '다른 사람의 계획이 마음에 드시나요?',
+    subTitle2: '계획 가져오기 버튼을 누르면 내 계획에 추가됩니다!'
+}
 
 const Share = () => {
     const dispatch = useDispatch<any>();
@@ -43,15 +50,8 @@ const Share = () => {
 
     return (
         <>
-            <ShareHeader>
-                <TitleContainer>
-                    <MainTitle>게시판</MainTitle>
-                    <SubTitle1>여행 계획을 고민중이신가요?</SubTitle1>
-                    <SubTitle2>
-                        다른 사람의 계획을 내 계획에 추가해보세요!
-                    </SubTitle2>
-                </TitleContainer>
-            </ShareHeader>
+            <PageInfo 
+            titles={titles}/>
             <ShareBody>
                 <ShareContents>
                     <SharedPlan />

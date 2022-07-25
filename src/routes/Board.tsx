@@ -7,6 +7,7 @@ import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
 import useConfirmModal from 'hooks/useConfirmModal';
 import { boardCustomStyles, selectOptions, tags } from 'utils/usefulFunctions';
+import PageInfo from 'components/PageInfo';
 
 const selectDefaultValue = {
     label: '전체',
@@ -18,6 +19,12 @@ const confirmPropsPayload = {
     height: 310,
     message: '계획 공유를 취소하시겠습니까?',
 };
+
+const titles = {
+    mainTitle: '공유 게시판',
+    subTitle1: '여행 계획을 고민중이신가요?',
+    subTitle2: '다른 사람의 계획을 내 계획에 추가해보세요!'
+}
 
 const Board = () => {
     const [searchParams] = useSearchParams();
@@ -174,15 +181,8 @@ const Board = () => {
 
     return (
         <>
-            <BoardHeader>
-                <TitleContainer>
-                    <MainTitle>게시판</MainTitle>
-                    <SubTitle1>여행 계획을 고민중이신가요?</SubTitle1>
-                    <SubTitle2>
-                        다른 사람의 계획을 내 계획에 추가해보세요!
-                    </SubTitle2>
-                </TitleContainer>
-            </BoardHeader>
+            <PageInfo 
+            titles={titles}/>
             <Main>
                 <MainContainer>
                     <ButtonContainer>
@@ -274,38 +274,6 @@ const Board = () => {
 };
 
 export default Board;
-
-const BoardHeader = styled.section`
-    min-width: 1287px;
-    width: 100%;
-    background-color: #e4f0ff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 60px 0;
-`;
-const TitleContainer = styled.div`
-    width: 1287px;
-    margin: 0 auto;
-    color: #333;
-`;
-const MainTitle = styled.h1`
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 1px;
-`;
-
-const Subtitle = styled.h2`
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: 1.5px;
-`;
-const SubTitle1 = styled(Subtitle)`
-    margin-top: 35px;
-    margin-bottom: 15px;
-`;
-const SubTitle2 = styled(Subtitle)``;
 
 const Main = styled.main`
     width: 100%;
