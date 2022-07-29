@@ -25,8 +25,7 @@ const PageList = ( { page, setPage, setDatas, pageType, clickedTag, location, he
                 
                 const { myLikes, pagingInfo } = results.data.data;
                 let { sharedPlans } = results.data.data;
-                console.log(pagingInfo)
-                console.log(results);
+                
                 // likeCount, clickedLike 추가
                 sharedPlans = sharedPlans.map((data: any) => {
                     const clickedLike = myLikes.some(
