@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { LeftIcon, RightIcon } from 'components/icons';
 
-const PageList = ( { page, setPage, setDatas, pageType, clickedTag, location, headers }: any ) => {
+const PageList = ( { page, setPage, setDatas, pagetype, clickedTag, location, headers }: any ) => {
     const { currentPage, startPage, endPage, totalPage } = page;
     const pageNums = [...Array(endPage - startPage + 1)].map((_, i) => i + startPage);
 
@@ -11,7 +11,7 @@ const PageList = ( { page, setPage, setDatas, pageType, clickedTag, location, he
         (async () => {
             try {
                 let results;
-                if (pageType === 'all') {
+                if (pagetype === 'all') {
                     results = await axios.get(
                         `/shares/${clickedTag}/${location}?page=${pageNum}`,
                         { headers },

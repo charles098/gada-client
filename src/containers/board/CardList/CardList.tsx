@@ -12,7 +12,7 @@ const confirmPropsPayload = {
     message: '계획 공유를 취소하시겠습니까?',
 };
 
-const CardList = ( { datas, setCheckLike, pageType, setClickedId }: any ) => {
+const CardList = ( { datas, setCheckLike, pagetype, setClickedId }: any ) => {
     const headers = getAuthHeader();
     const navigate = useNavigate();
 
@@ -70,7 +70,7 @@ const CardList = ( { datas, setCheckLike, pageType, setClickedId }: any ) => {
                     </CardHeader>
                     <CardTitle>{data.shareTitle}</CardTitle>
                     <CardButtons>
-                        {pageType === 'myShare' ? (
+                        {pagetype === 'myShare' ? (
                             <CancelButton
                                 onClick={(e) =>
                                     cancelCardHandler(
@@ -93,7 +93,7 @@ const CardList = ( { datas, setCheckLike, pageType, setClickedId }: any ) => {
                                         data.clickedLike,
                                     )
                                 }
-                                pageType={pageType}
+                                pagetype={pagetype}
                             />
                         ) : (
                             <UnlikeButton
@@ -104,7 +104,7 @@ const CardList = ( { datas, setCheckLike, pageType, setClickedId }: any ) => {
                                         data.clickedLike,
                                     )
                                 }
-                                pageType={pageType}
+                                pagetype={pagetype}
                             />
                         )}
                     </CardButtons>
@@ -217,7 +217,7 @@ const CancelButton = styled.button`
     }
 `;
 
-const LikeButton = styled(LikeIcon)<{ pageType: string }>`
+const LikeButton = styled(LikeIcon)<{ pagetype: string }>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -227,14 +227,14 @@ const LikeButton = styled(LikeIcon)<{ pageType: string }>`
         transform: translate(0, -3px);
     }
 
-    ${({ pageType }) =>
-        pageType === 'all' &&
+    ${({ pagetype }) =>
+        pagetype === 'all' &&
         css`
             margin-left: auto;
         `}
 `;
 
-const UnlikeButton = styled(UnlikeIcon)<{ pageType: string }>`
+const UnlikeButton = styled(UnlikeIcon)<{ pagetype: string }>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -244,8 +244,8 @@ const UnlikeButton = styled(UnlikeIcon)<{ pageType: string }>`
         transform: translate(0, -3px);
     }
 
-    ${({ pageType }) =>
-        pageType === 'all' &&
+    ${({ pagetype }) =>
+        pagetype === 'all' &&
         css`
             margin-left: auto;
         `}

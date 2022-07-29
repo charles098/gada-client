@@ -16,7 +16,7 @@ const titles = {
     subTitle2: '다른 사람의 계획을 내 계획에 추가해보세요!'
 }
 
-interface PageType {
+interface pageProps {
     currentPage: number;
     startPage: number;
     endPage: number;
@@ -37,18 +37,18 @@ const Board = () => {
     const [clickedTag, setClickedTag] = useState<string>('전체');
     const [location, setLocation] = useState<string>('전체');
     const [datas, setDatas] = useState<any>();
-    const [page, setPage] = useState<PageType>(initPage);
+    const [page, setPage] = useState<pageProps>(initPage);
     const [checkLike, setCheckLike] = useState<any>();
     const [clickedId, setClickedId] = useState<any>();
     const [shareState, setShareState] = useState<any>();
-    const [pageType, setPageType] = useState<any>(searchParams.get('type'));
+    const [pagetype, setpagetype] = useState<any>(searchParams.get('type'));
     const headers = getAuthHeader();
 
     const { confirmState, confirmType} = useSelector(ConfirmSelector);
 
     useEffect(() => {
         setDatas([]);
-        setPageType(searchParams.get('type'));
+        setpagetype(searchParams.get('type'));
     }, [searchParams.get('type')]);
 
     // 공유 취소 관련
@@ -76,7 +76,7 @@ const Board = () => {
         (async () => {
             try {
                 let results;
-                if (pageType === 'all') {
+                if (pagetype === 'all') {
                     results = await axios.get(
                         `/shares/${clickedTag}/${location}?page=${page.currentPage}`,
                         { headers },
@@ -110,7 +110,7 @@ const Board = () => {
                 console.error(err);
             }
         })();
-    }, [clickedTag, location, pageType, shareState]);
+    }, [clickedTag, location, pagetype, shareState]);
 
     // 좋아요 관련 side effect
     useEffect(() => {
@@ -150,7 +150,7 @@ const Board = () => {
                     <CardList 
                     datas={datas}
                     setCheckLike={setCheckLike}
-                    pageType={pageType}
+                    pagetype={pagetype}
                     setClickedId={setClickedId}
                     />
 
@@ -158,7 +158,7 @@ const Board = () => {
                     page={page}
                     setPage={setPage}
                     setDatas={setDatas}
-                    pageType={pageType}
+                    pagetype={pagetype}
                     clickedTag={clickedTag}
                     location={location}
                     headers={headers}
