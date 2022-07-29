@@ -183,28 +183,3 @@ const MainContainer = styled.div`
     width: 1287px;
     margin: 80px auto;
 `;
-
-
-
-/*
-const start = Math.floor(currentPage / 10) * 10
-
-if (Math.floor(currentPage / 10) === Math.floor(endPage / 10)) {
-    end = endPage
-} else {
-    end = start + 10
-}
-
-// prev button
-currentPage가 10보다 크면 true
-currentPage가 10보다 작으면 false
-
-// next button
-currentPage >= Math.floor(endPage / 10) * 10 이면 false
-currentPage < Math.floor(endPage / 10) * 10 이면 true
-
-start ~ end 까지 버튼 표시
-currentPage에 색칠
-isPrevButton 조건부 렌더링
-isCurrentPage 조건부 렌더링
-*/
