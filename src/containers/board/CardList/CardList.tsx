@@ -263,6 +263,8 @@ const CardInfo = styled.div`
 const UserName = styled.div`
     margin-left: 7px;
     overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100px;
 `;
 const LikeCount = styled.div`
     margin-right: 7px;
