@@ -8,11 +8,26 @@ import getAuthHeader from 'utils/getAuthHeader';
 import PageInfo from 'components/PageInfo';
 import Filter from 'containers/board/Filter';
 import CardList from 'containers/board/CardList';
+import PageList from 'containers/board/PageList';
 
 const titles = {
     mainTitle: '공유 게시판',
     subTitle1: '여행 계획을 고민중이신가요?',
     subTitle2: '다른 사람의 계획을 내 계획에 추가해보세요!'
+}
+
+interface PageType {
+    currentPage: number;
+    startPage: number;
+    endPage: number;
+    totalPage: number;
+}
+
+const initPage = {
+    startPage: 1,
+    currentPage: 1,
+    endPage: 1,
+    totalPage: 1
 }
 
 const ConfirmSelector = (state: RootState) => state.modal;
@@ -22,6 +37,7 @@ const Board = () => {
     const [clickedTag, setClickedTag] = useState<string>('전체');
     const [location, setLocation] = useState<string>('전체');
     const [datas, setDatas] = useState<any>();
+    const [page, setPage] = useState<PageType>(initPage);
     const [checkLike, setCheckLike] = useState<any>();
     const [clickedId, setClickedId] = useState<any>();
     const [shareState, setShareState] = useState<any>();
@@ -62,18 +78,19 @@ const Board = () => {
                 let results;
                 if (pageType === 'all') {
                     results = await axios.get(
-                        `/shares/${clickedTag}/${location}`,
+                        `/shares/${clickedTag}/${location}?page=${page.currentPage}`,
                         { headers },
                     );
                 } else {
                     results = await axios.get(
-                        `/shares/my-share/${clickedTag}/${location}`,
+                        `/shares/my-share/${clickedTag}/${location}?page=${page.currentPage}`,
                         { headers },
                     );
                 }
-                const { myLikes } = results.data.data;
+                
+                const { myLikes, pagingInfo } = results.data.data;
                 let { sharedPlans } = results.data.data;
-
+                
                 // likeCount, clickedLike 추가
                 sharedPlans = sharedPlans.map((data: any) => {
                     const clickedLike = myLikes.some(
@@ -88,6 +105,7 @@ const Board = () => {
                     };
                 });
                 setDatas(sharedPlans);
+                setPage(pagingInfo);
             } catch (err) {
                 console.error(err);
             }
@@ -135,6 +153,16 @@ const Board = () => {
                     pageType={pageType}
                     setClickedId={setClickedId}
                     />
+
+                    <PageList 
+                    page={page}
+                    setPage={setPage}
+                    setDatas={setDatas}
+                    pageType={pageType}
+                    clickedTag={clickedTag}
+                    location={location}
+                    headers={headers}
+                    />
                 </MainContainer>
             </Main>
         </>
@@ -155,3 +183,28 @@ const MainContainer = styled.div`
     width: 1287px;
     margin: 80px auto;
 `;
+
+
+
+/*
+const start = Math.floor(currentPage / 10) * 10
+
+if (Math.floor(currentPage / 10) === Math.floor(endPage / 10)) {
+    end = endPage
+} else {
+    end = start + 10
+}
+
+// prev button
+currentPage가 10보다 크면 true
+currentPage가 10보다 작으면 false
+
+// next button
+currentPage >= Math.floor(endPage / 10) * 10 이면 false
+currentPage < Math.floor(endPage / 10) * 10 이면 true
+
+start ~ end 까지 버튼 표시
+currentPage에 색칠
+isPrevButton 조건부 렌더링
+isCurrentPage 조건부 렌더링
+*/
