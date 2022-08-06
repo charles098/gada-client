@@ -2,12 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import Select from 'react-select';
 import { boardCustomStyles, selectOptions, tags } from 'utils/usefulFunctions';
-
-interface IFilter {
-    setClickedTag: React.Dispatch<React.SetStateAction<string>>;
-    clickedTag: string;
-    setLocation: React.Dispatch<React.SetStateAction<string>>
-}
+import { IFilter } from 'types';
 
 const selectDefaultValue = {
     label: '전체',

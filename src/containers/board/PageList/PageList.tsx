@@ -2,42 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { LeftIcon, RightIcon } from 'components/icons';
-
-interface pageProps {
-    currentPage: number;
-    startPage: number;
-    endPage: number;
-    totalPage: number;
-}
-
-interface ILikes {
-    [prop: number]: string;
-}
-
-interface ISharedData {
-    area: string;
-    clickedLike: boolean;
-    likeCount: number;
-    likes: ILikes[];
-    location?: string;
-    planId: string;
-    shareTitle: string;
-    tag: string;
-    title?: string;
-    username: string;
-}
-
-interface IPageList {
-    page: pageProps;
-    setPage: React.Dispatch<React.SetStateAction<pageProps>>;
-    setSharedDatas: React.Dispatch<React.SetStateAction<ISharedData[] | undefined>>;
-    pagetype: string | null;
-    clickedTag: string;
-    location: string;
-    headers: {
-        Authorization: string;
-    };
-}
+import { ISharedData, IPageList } from 'types';
 
 const PageList = ( { page, setPage, setSharedDatas, pagetype, clickedTag, location, headers }: IPageList ) => {
     const { currentPage, startPage, endPage, totalPage } = page;

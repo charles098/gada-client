@@ -1,15 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
-interface PageInfoTitles {
-    mainTitle: string;
-    subTitle1: string;
-    subTitle2: string;
-}
-
-type PageInfoProps = {
-    titles: PageInfoTitles;
-}
+import { PageInfoProps } from 'types';
 
 const PageInfo = ( { titles }: PageInfoProps ) => {
     const { mainTitle, subTitle1, subTitle2 } = titles;

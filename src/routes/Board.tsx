@@ -9,40 +9,12 @@ import PageInfo from 'components/PageInfo';
 import Filter from 'containers/board/Filter';
 import CardList from 'containers/board/CardList';
 import PageList from 'containers/board/PageList';
+import { pageProps, ICheckLike, ISharedData } from 'types';
 
 const titles = {
     mainTitle: '공유 게시판',
     subTitle1: '여행 계획을 고민중이신가요?',
     subTitle2: '다른 사람의 계획을 내 계획에 추가해보세요!'
-}
-
-interface pageProps {
-    currentPage: number;
-    startPage: number;
-    endPage: number;
-    totalPage: number;
-}
-
-interface ICheckLike {
-    planId: string;
-    toggle: boolean;
-}
-
-interface ILikes {
-    [prop: number]: string;
-}
-
-interface ISharedData {
-    area: string;
-    clickedLike: boolean;
-    likeCount: number;
-    likes: ILikes[];
-    location?: string;
-    planId: string;
-    shareTitle: string;
-    tag: string;
-    title?: string;
-    username: string;
 }
 
 const initPage = {

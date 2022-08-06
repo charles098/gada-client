@@ -1,32 +1,3 @@
-export interface ILikes {
-    [prop: number]: string;
-}
-
-export interface ISharedData {
-    area: string;
-    clickedLike: boolean;
-    likeCount: number;
-    likes: ILikes[];
-    location?: string;
-    planId: string;
-    shareTitle: string;
-    tag: string;
-    title?: string;
-    username: string;
-}
-
-export interface ICheckLike {
-    planId: string;
-    toggle: boolean;
-}
-
-export interface ICardList {
-    sharedDatas: ISharedData[] | undefined;
-    setCheckLike: React.Dispatch<React.SetStateAction<ICheckLike | undefined>>;
-    pagetype: string | null;
-    setClickedId: React.Dispatch<React.SetStateAction<string | undefined>>;
-}
-
 export interface PreprocessedPlanModel {
     id: string;
     area: string;
