@@ -6,13 +6,42 @@ import { useNavigate } from 'react-router-dom';
 import useConfirmModal from 'hooks/useConfirmModal';
 import { LikeIcon, UnlikeIcon } from 'components/icons';
 
+interface ILikes {
+    [prop: number]: string;
+}
+
+interface ISharedData {
+    area: string;
+    clickedLike: boolean;
+    likeCount: number;
+    likes: ILikes[];
+    location?: string;
+    planId: string;
+    shareTitle: string;
+    tag: string;
+    title?: string;
+    username: string;
+}
+
+interface ICheckLike {
+    planId: string;
+    toggle: boolean;
+}
+
+interface ICardList {
+    sharedDatas: ISharedData[] | undefined;
+    setCheckLike: React.Dispatch<React.SetStateAction<ICheckLike | undefined>>;
+    pagetype: string | null;
+    setClickedId: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+
 const confirmPropsPayload = {
     width: 400,
     height: 310,
     message: '계획 공유를 취소하시겠습니까?',
 };
 
-const CardList = ( { datas, setCheckLike, pagetype, setClickedId }: any ) => {
+const CardList = ( { sharedDatas, setCheckLike, pagetype, setClickedId }: ICardList ) => {
     const headers = getAuthHeader();
     const navigate = useNavigate();
 
@@ -42,7 +71,10 @@ const CardList = ( { datas, setCheckLike, pagetype, setClickedId }: any ) => {
         })();
     };
 
-    const cancelCardHandler = (e: any, planId: string) => {
+    const cancelCardHandler = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+        planId: string,
+    ) => {
         e.stopPropagation();
         setClickedId(planId);
         confirmModalHandler();
@@ -57,7 +89,7 @@ const CardList = ( { datas, setCheckLike, pagetype, setClickedId }: any ) => {
 
     return (
         <CardListContainer>
-            {datas?.map((data: any) => (
+            {sharedDatas?.map((data: ISharedData) => (
                 <Card
                     key={data.planId}
                     onClick={(e) =>
@@ -217,7 +249,7 @@ const CancelButton = styled.button`
     }
 `;
 
-const LikeButton = styled(LikeIcon)<{ pagetype: string }>`
+const LikeButton = styled(LikeIcon)<{ pagetype: string | null }>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;
@@ -234,7 +266,7 @@ const LikeButton = styled(LikeIcon)<{ pagetype: string }>`
         `}
 `;
 
-const UnlikeButton = styled(UnlikeIcon)<{ pagetype: string }>`
+const UnlikeButton = styled(UnlikeIcon)<{ pagetype: string | null }>`
     cursor: cursor;
     display: inline-block;
     margin-right: 7px;

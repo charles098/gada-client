@@ -23,6 +23,28 @@ interface pageProps {
     totalPage: number;
 }
 
+interface ICheckLike {
+    planId: string;
+    toggle: boolean;
+}
+
+interface ILikes {
+    [prop: number]: string;
+}
+
+interface ISharedData {
+    area: string;
+    clickedLike: boolean;
+    likeCount: number;
+    likes: ILikes[];
+    location?: string;
+    planId: string;
+    shareTitle: string;
+    tag: string;
+    title?: string;
+    username: string;
+}
+
 const initPage = {
     startPage: 1,
     currentPage: 1,
@@ -36,18 +58,18 @@ const Board = () => {
     const [searchParams] = useSearchParams();
     const [clickedTag, setClickedTag] = useState<string>('전체');
     const [location, setLocation] = useState<string>('전체');
-    const [datas, setDatas] = useState<any>();
+    const [sharedDatas, setSharedDatas] = useState<ISharedData[]>();
     const [page, setPage] = useState<pageProps>(initPage);
-    const [checkLike, setCheckLike] = useState<any>();
-    const [clickedId, setClickedId] = useState<any>();
-    const [shareState, setShareState] = useState<any>();
-    const [pagetype, setpagetype] = useState<any>(searchParams.get('type'));
+    const [checkLike, setCheckLike] = useState<ICheckLike>();
+    const [clickedId, setClickedId] = useState<string>();
+    const [shareState, setShareState] = useState<boolean>();
+    const [pagetype, setpagetype] = useState<string | null>(searchParams.get('type'));
     const headers = getAuthHeader();
 
     const { confirmState, confirmType} = useSelector(ConfirmSelector);
 
     useEffect(() => {
-        setDatas([]);
+        setSharedDatas([]);
         setpagetype(searchParams.get('type'));
     }, [searchParams.get('type')]);
 
@@ -92,7 +114,7 @@ const Board = () => {
                 let { sharedPlans } = results.data.data;
                 
                 // likeCount, clickedLike 추가
-                sharedPlans = sharedPlans.map((data: any) => {
+                sharedPlans = sharedPlans.map((data: ISharedData) => {
                     const clickedLike = myLikes.some(
                         (planId: string) => planId === data.planId,
                     );
@@ -104,7 +126,8 @@ const Board = () => {
                         clickedLike,
                     };
                 });
-                setDatas(sharedPlans);
+                
+                setSharedDatas(sharedPlans);
                 setPage(pagingInfo);
             } catch (err) {
                 console.error(err);
@@ -116,7 +139,7 @@ const Board = () => {
     useEffect(() => {
         if (checkLike) {
             const { planId, toggle } = checkLike;
-            const newData = datas.map((data: any) => {
+            const newData = sharedDatas?.map((data: ISharedData) => {
                 const prevLikeCount = data.likeCount;
                 if (data.planId === planId) {
                     // 같으면 좋아요 및 하트 변경
@@ -132,7 +155,7 @@ const Board = () => {
                 return data;
             });
 
-            setDatas(newData);
+            setSharedDatas(newData);
         }
     }, [checkLike]);
 
@@ -148,21 +171,19 @@ const Board = () => {
                     setLocation={setLocation}/>
 
                     <CardList 
-                    datas={datas}
+                    sharedDatas={sharedDatas}
                     setCheckLike={setCheckLike}
                     pagetype={pagetype}
-                    setClickedId={setClickedId}
-                    />
+                    setClickedId={setClickedId}/>
 
                     <PageList 
                     page={page}
                     setPage={setPage}
-                    setDatas={setDatas}
+                    setSharedDatas={setSharedDatas}
                     pagetype={pagetype}
                     clickedTag={clickedTag}
                     location={location}
-                    headers={headers}
-                    />
+                    headers={headers}/>
                 </MainContainer>
             </Main>
         </>

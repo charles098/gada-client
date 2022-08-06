@@ -12,6 +12,13 @@ interface InitialState {
     deletePlan: boolean;
 }
 
+interface ConfirmProps {
+    width: number;
+    height: number;
+    message: string;
+    type: string;
+}
+
 // InitialState
 const initialState: InitialState = {
     modalIsOpen: false,
@@ -38,7 +45,7 @@ const modalSlice = createSlice({
         changeConfirmState(state, action:PayloadAction<boolean>) {
             state.confirmState = action.payload;
         },
-        changeConfirmProps(state, action:PayloadAction<any>) {
+        changeConfirmProps(state, action:PayloadAction<ConfirmProps>) {
             state.confirmWidth = action.payload.width;
             state.confirmHeight = action.payload.height;
             state.confirmMessage = action.payload.message;

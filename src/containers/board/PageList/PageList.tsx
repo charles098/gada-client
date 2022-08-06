@@ -3,7 +3,43 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { LeftIcon, RightIcon } from 'components/icons';
 
-const PageList = ( { page, setPage, setDatas, pagetype, clickedTag, location, headers }: any ) => {
+interface pageProps {
+    currentPage: number;
+    startPage: number;
+    endPage: number;
+    totalPage: number;
+}
+
+interface ILikes {
+    [prop: number]: string;
+}
+
+interface ISharedData {
+    area: string;
+    clickedLike: boolean;
+    likeCount: number;
+    likes: ILikes[];
+    location?: string;
+    planId: string;
+    shareTitle: string;
+    tag: string;
+    title?: string;
+    username: string;
+}
+
+interface IPageList {
+    page: pageProps;
+    setPage: React.Dispatch<React.SetStateAction<pageProps>>;
+    setSharedDatas: React.Dispatch<React.SetStateAction<ISharedData[] | undefined>>;
+    pagetype: string | null;
+    clickedTag: string;
+    location: string;
+    headers: {
+        Authorization: string;
+    };
+}
+
+const PageList = ( { page, setPage, setSharedDatas, pagetype, clickedTag, location, headers }: IPageList ) => {
     const { currentPage, startPage, endPage, totalPage } = page;
     const pageNums = [...Array(endPage - startPage + 1)].map((_, i) => i + startPage);
 
@@ -27,7 +63,7 @@ const PageList = ( { page, setPage, setDatas, pagetype, clickedTag, location, he
                 let { sharedPlans } = results.data.data;
                 
                 // likeCount, clickedLike 추가
-                sharedPlans = sharedPlans.map((data: any) => {
+                sharedPlans = sharedPlans.map((data: ISharedData) => {
                     const clickedLike = myLikes.some(
                         (planId: string) => planId === data.planId,
                     );
@@ -39,7 +75,7 @@ const PageList = ( { page, setPage, setDatas, pagetype, clickedTag, location, he
                         clickedLike,
                     };
                 });
-                setDatas(sharedPlans);
+                setSharedDatas(sharedPlans);
                 setPage(pagingInfo);
             } catch (err) {
                 console.error(err);

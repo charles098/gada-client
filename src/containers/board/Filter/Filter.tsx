@@ -3,19 +3,25 @@ import styled, { css } from 'styled-components';
 import Select from 'react-select';
 import { boardCustomStyles, selectOptions, tags } from 'utils/usefulFunctions';
 
+interface IFilter {
+    setClickedTag: React.Dispatch<React.SetStateAction<string>>;
+    clickedTag: string;
+    setLocation: React.Dispatch<React.SetStateAction<string>>
+}
+
 const selectDefaultValue = {
     label: '전체',
     value: '전체',
 };
 
-const Filter = ( { setClickedTag, clickedTag, setLocation }: any ) => {
+const Filter = ( { setClickedTag, clickedTag, setLocation }: IFilter ) => {
     const options = selectOptions.map((option) => ({
         value: option,
         label: option,
     }));
 
-    const clickTagHandler = (e: any) => {
-        setClickedTag(e.target.value);
+    const clickTagHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+        setClickedTag(e.currentTarget.value);
     };
 
     const changeLocationHandler = (value: any) => {

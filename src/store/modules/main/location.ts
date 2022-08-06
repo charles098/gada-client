@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface InitialState {
+interface LocationProps {
     isClickedLocation: boolean;
     imageUrl: string;
     locationName: string;
 }
 
-const initialState: InitialState = {
+const initialState: LocationProps = {
     isClickedLocation: false,
     imageUrl: '',
     locationName: '',
@@ -16,7 +16,7 @@ const locationSlice = createSlice({
     name: 'location',
     initialState,
     reducers: {
-        changeLocationState(state, action: PayloadAction<InitialState>) {
+        changeLocationState(state, action: PayloadAction<LocationProps>) {
             state.isClickedLocation = action.payload.isClickedLocation;
             state.imageUrl = action.payload.imageUrl;
             state.locationName = action.payload.locationName;

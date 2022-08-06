@@ -4,9 +4,17 @@ import { LocationIcon } from 'components/icons';
 import LocationCard from 'containers/main/LocationList/LocationCard';
 import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
-import jejuImg from 'images/jeju.jpg';
 
-const preprocessLocationDatas = (locations: any) => {
+interface ILocation {
+    [prop: string]: string;
+}
+
+interface IPreprocessLocation {
+    location: string;
+    imgUrl: string;
+}
+
+const preprocessLocationDatas = (locations: ILocation) => {
     return Object.entries(locations).map((data) => {
         return {
             location: data[0],
@@ -16,11 +24,7 @@ const preprocessLocationDatas = (locations: any) => {
 };
 
 const LocationList: FC = () => {
-    const defaultProps = {
-        imgUrl: jejuImg,
-        location: '제주',
-    };
-    const [locations, setLocations] = useState<any>();
+    const [locations, setLocations] = useState<IPreprocessLocation[]>();
     const headers = getAuthHeader();
 
     useEffect(() => {
@@ -50,7 +54,7 @@ const LocationList: FC = () => {
                 <LocationTitle>국내 여행지</LocationTitle>
             </LocationHeader>
             <LocationContainer>
-                {locations?.map((data: any) => (
+                {locations?.map((data: IPreprocessLocation) => (
                     <LocationCard
                         key={data.location}
                         imgUrl={data.imgUrl}

@@ -1,6 +1,10 @@
 import { useCookies } from 'react-cookie';
 
-const getAuthHeader: any = () => {
+interface IHeader {
+    (): { Authorization: string };
+}
+
+const getAuthHeader: IHeader = () => {
     const [cookies] = useCookies(['accessToken']);
     const { accessToken } = cookies;
     
