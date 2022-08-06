@@ -7,13 +7,13 @@ const Register = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    const email: any = searchParams.get('email');
-    const authToken: any = searchParams.get('authToken');
+    const email: string = searchParams.get('email') || "";
+    const authToken: string = searchParams.get('authToken') || "";
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const { username, email, password, passwordCheck } = e.target;
+        const { username, email, password, passwordCheck } = e.currentTarget;
 
         if (!username.value) alert('이름을 입력해주세요!');
         else if (!password.value) alert('비밀번호를 입력해주세요!');

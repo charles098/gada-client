@@ -9,12 +9,12 @@ const LoginForm = () => {
     const findPasswordClickHandler = useModal('FindPasswordModal');
     const navigate = useNavigate();
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         (async () => {
             try {
-                const { email, password } = e.target;
+                const { email, password } = e.currentTarget;
 
                 if (!email.value) alert('이메일을 입력해주세요!');
                 else if (!password.value) alert('비밀번호를 입력해주세요!');
@@ -24,7 +24,7 @@ const LoginForm = () => {
                         email: email.value,
                         password: password.value,
                     };
-                    await axios.post('/users/login', data);
+                    const a = await axios.post('/users/login', data);
                     navigate('/main');
                 }
             } catch (err: any) {
