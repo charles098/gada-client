@@ -4,15 +4,7 @@ import { LocationIcon } from 'components/icons';
 import LocationCard from 'containers/main/LocationList/LocationCard';
 import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
-
-interface ILocation {
-    [prop: string]: string;
-}
-
-interface IPreprocessLocation {
-    location: string;
-    imgUrl: string;
-}
+import { ILocation, IPreprocessLocation } from 'types'
 
 const preprocessLocationDatas = (locations: ILocation) => {
     return Object.entries(locations).map((data) => {

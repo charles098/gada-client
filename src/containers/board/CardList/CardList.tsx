@@ -5,35 +5,7 @@ import getAuthHeader from 'utils/getAuthHeader';
 import { useNavigate } from 'react-router-dom';
 import useConfirmModal from 'hooks/useConfirmModal';
 import { LikeIcon, UnlikeIcon } from 'components/icons';
-
-interface ILikes {
-    [prop: number]: string;
-}
-
-interface ISharedData {
-    area: string;
-    clickedLike: boolean;
-    likeCount: number;
-    likes: ILikes[];
-    location?: string;
-    planId: string;
-    shareTitle: string;
-    tag: string;
-    title?: string;
-    username: string;
-}
-
-interface ICheckLike {
-    planId: string;
-    toggle: boolean;
-}
-
-interface ICardList {
-    sharedDatas: ISharedData[] | undefined;
-    setCheckLike: React.Dispatch<React.SetStateAction<ICheckLike | undefined>>;
-    pagetype: string | null;
-    setClickedId: React.Dispatch<React.SetStateAction<string | undefined>>;
-}
+import { ISharedData, ICardList } from 'types';
 
 const confirmPropsPayload = {
     width: 400,

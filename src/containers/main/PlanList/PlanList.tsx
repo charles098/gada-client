@@ -9,6 +9,7 @@ import getAuthHeader from 'utils/getAuthHeader';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/modules';
 import { PlanModel } from 'store/modules/plan/plan.model';
+import { PreprocessedPlanModel } from 'types';
 
 const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
     return planDataArray.map((data) => {
@@ -23,15 +24,6 @@ const preprocessPlanDatas = (planDataArray: PlanModel[]) => {
         };
     });
 };
-
-interface PreprocessedPlanModel {
-    id: string;
-    area: string;
-    title: string;
-    imgUrl: string;
-    dDay: string;
-    term: string;
-}
 
 const modalSelector = (state: RootState) => state.modal;
 

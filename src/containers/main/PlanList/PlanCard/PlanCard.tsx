@@ -8,16 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { CancelDetailIcon } from 'components/icons';
 import useConfirmModal from 'hooks/useConfirmModal';
 import getAuthHeader from 'utils/getAuthHeader';
-
-interface CardProps {
-    id: string;
-    dday: string;
-    src: string;
-    imageName: string;
-    title: string;
-    term: string;
-}
-// 속성 id가 2개여서 하나 삭제함
+import { CardProps } from 'types';
 
 const confirmNicknamePayload = {
     width: 400,

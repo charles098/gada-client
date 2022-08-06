@@ -3,13 +3,9 @@ import styled from 'styled-components';
 import useModal from 'hooks/useModal';
 import { useDispatch } from 'react-redux';
 import { changeLocationState } from 'store/modules/main/location';
+import { LocationCardProps } from 'types'
 
-interface CardProps {
-    imgUrl: string;
-    location: string;
-}
-
-const LocationCard = ({ imgUrl, location } : CardProps) => {
+const LocationCard = ({ imgUrl, location } : LocationCardProps) => {
     const dispatch = useDispatch();
     const openModal = useModal("NewPlanModal");
 
