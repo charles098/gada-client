@@ -3,6 +3,7 @@ import getAuthHeader from 'utils/getAuthHeader';
 import axios from 'axios';
 import styled from 'styled-components';
 import useConfirmModal from 'hooks/useConfirmModal';
+import { INicknameForm } from 'types';
 
 const nicknameInfoMessages = {
     sameNickname: '이전 닉네임과 동일합니다.',
@@ -15,7 +16,7 @@ const confirmNicknamePayload = {
     message: '닉네임을 변경하시겠습니까?',
 };
 
-const NicknameForm = ({ profileData, setProfileData }: any) => {
+const NicknameForm = ({ profileData, setProfileData }: INicknameForm) => {
     const { username } = profileData;
 
     const [nicknameState, nicknameType, nicknameModalHandler] = useConfirmModal(
@@ -23,7 +24,7 @@ const NicknameForm = ({ profileData, setProfileData }: any) => {
         'nickname',
     );
 
-    const nicknameRef = useRef<any>(null);
+    const nicknameRef = useRef<HTMLInputElement | null>(null);
 
     const [nicknameMessage, setMessage] = useState('');
 
@@ -32,7 +33,7 @@ const NicknameForm = ({ profileData, setProfileData }: any) => {
     useEffect(() => {
         if (nicknameState && nicknameType === 'nickname') {
             const data = {
-                username: nicknameRef.current.value,
+                username: nicknameRef.current?.value,
             };
 
             (async () => {
@@ -40,7 +41,7 @@ const NicknameForm = ({ profileData, setProfileData }: any) => {
                     await axios.patch('/users/username', data, { headers });
                     setProfileData({
                         ...profileData,
-                        username: nicknameRef.current.value,
+                        username: nicknameRef.current?.value as string,
                     });
                     setMessage('');
                 } catch (err) {
@@ -50,9 +51,9 @@ const NicknameForm = ({ profileData, setProfileData }: any) => {
         }
     }, [nicknameState]);
 
-    const usernameSubmitHandler = (e: any) => {
+    const usernameSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const nickname = nicknameRef.current.value;
+        const nickname = nicknameRef.current?.value;
 
         if (nickname === username) {
             setMessage(nicknameInfoMessages.sameNickname);

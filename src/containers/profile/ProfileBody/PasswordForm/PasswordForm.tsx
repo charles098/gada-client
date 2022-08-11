@@ -25,9 +25,9 @@ const PasswordForm = () => {
         'password',
     );
 
-    const passwordRef = useRef<any>(null);
-    const newPasswordRef = useRef<any>(null);
-    const newPasswordCheckRef = useRef<any>(null);
+    const passwordRef = useRef<HTMLInputElement | null>(null);
+    const newPasswordRef = useRef<HTMLInputElement | null>(null);
+    const newPasswordCheckRef = useRef<HTMLInputElement | null>(null);
 
     const [passwordMessage, setPasswordMessage] = useState('');
 
@@ -37,18 +37,18 @@ const PasswordForm = () => {
     useEffect(() => {
         if (passwordState && passwordType === 'password') {
             const data = {
-                currentPassword: passwordRef.current.value,
-                newPassword: newPasswordRef.current.value,
-                newPasswordCheck: newPasswordCheckRef.current.value,
+                currentPassword: passwordRef.current?.value,
+                newPassword: newPasswordRef.current?.value,
+                newPasswordCheck: newPasswordCheckRef.current?.value,
             };
 
             (async () => {
                 try {
                     await axios.patch('/users/password', data, { headers });
                     setPasswordMessage('');
-                    passwordRef.current.value = '';
-                    newPasswordRef.current.value = '';
-                    newPasswordCheckRef.current.value = '';
+                    if (passwordRef.current !== null) passwordRef.current.value = '';
+                    if (newPasswordRef.current !== null) newPasswordRef.current.value = '';
+                    if (newPasswordCheckRef.current !== null) newPasswordCheckRef.current.value = '';
                 } catch (err: any) {
                     if (err.response.status === 400) {
                         setPasswordMessage(err.response.data.message);
@@ -62,9 +62,9 @@ const PasswordForm = () => {
     const passwordSubmitHandler = (e: any) => {
         e.preventDefault();
 
-        const currentPassword = passwordRef.current.value;
-        const newPassword = newPasswordRef.current.value;
-        const newPasswordCheck = newPasswordCheckRef.current.value;
+        const currentPassword = passwordRef.current?.value;
+        const newPassword = newPasswordRef.current?.value;
+        const newPasswordCheck = newPasswordCheckRef.current?.value;
 
         if (!currentPassword || !newPassword || !newPasswordCheck) {
             setPasswordMessage(passwordInfoMessages.emptyPassword);

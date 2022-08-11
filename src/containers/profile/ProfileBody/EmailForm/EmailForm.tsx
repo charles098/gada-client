@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { IEmailForm } from 'types';
 
-const EmailForm = ({ profileData }: any) => {
+const EmailForm = ({ profileData }: IEmailForm) => {
     const { email } = profileData;
     
     return (

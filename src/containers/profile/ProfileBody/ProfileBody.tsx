@@ -3,15 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import getAuthHeader from 'utils/getAuthHeader';
+import { IProfileData } from 'types';
 import EmailForm from './EmailForm';
 import NicknameForm from './NicknameForm';
 import PasswordForm from './PasswordForm';
 import WithdrawalForm from './WithdrawalForm';
-
-interface ProfileProps {
-    email: string;
-    username: string;
-}
 
 const initData = {
     email: '',
@@ -19,7 +15,7 @@ const initData = {
 };
 
 const ProfileBody: FC = () => {
-    const [profileData, setProfileData] = useState<ProfileProps>(initData);
+    const [profileData, setProfileData] = useState<IProfileData>(initData);
     const headers = getAuthHeader();
     const navigate = useNavigate();
 

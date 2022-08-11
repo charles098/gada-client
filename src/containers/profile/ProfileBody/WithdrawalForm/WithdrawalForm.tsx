@@ -32,7 +32,7 @@ const NicknameForm = () => {
         }
     }, [withdrawlState])
 
-    const withdrawlSubmitHandler = (e: any) => {
+    const withdrawlSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         withdrawlModalHandler();
     }
@@ -88,7 +88,7 @@ const CardNameContainer = styled.div`
 
 const CardTitle = styled.div``
 
-const Toggle = styled(RightIcon)<{toggle : any}>`
+const Toggle = styled(RightIcon)<{toggle : number}>`
     width: 15px;
     height: 15px;
     margin-left: auto;
