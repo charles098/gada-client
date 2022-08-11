@@ -7,7 +7,7 @@ import { RootState } from 'store/modules';
 const LoactionSelector = (state: RootState) => state.location;
 
 const NewPlanImage: FC = () => {
-    const [imageSrc, setImageSrc] = useState<any>('');
+    const [imageSrc, setImageSrc] = useState<string>('');
     const { imageUrl, isClickedLocation } = useSelector(LoactionSelector);
 
     useEffect(() => {
@@ -20,14 +20,14 @@ const NewPlanImage: FC = () => {
         const reader = new FileReader();
         reader.readAsDataURL(fileBlob);
         return new Promise((resolve) => {
-          reader.onload = () => setImageSrc(reader.result);
+          reader.onload = () => setImageSrc(reader.result as string);
           resolve(true);
         })
       }
     
-    const handleChange = (e: any) => {
-      if (e.target.files.length > 0)
-        encodeFileToBase64(e.target.files[0])
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.currentTarget.files !== null && e.currentTarget.files.length > 0)
+        encodeFileToBase64(e.currentTarget.files[0])
     }
 
     return (

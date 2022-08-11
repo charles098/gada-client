@@ -7,7 +7,11 @@ import { newPlanSelectOptions, newPlanCustomStyles } from 'utils/usefulFunctions
 
 const LoactionSelector = (state: RootState) => state.location;
 
-const NewPlanlocation = ( { setLocation }: any ) => {
+interface INewPlanlocation {
+    setLocation: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const NewPlanlocation = ( { setLocation }: INewPlanlocation ) => {
     const options = newPlanSelectOptions.map((x) => ({ value: x, label: x }));
 
     const { locationName, isClickedLocation } = useSelector(LoactionSelector);

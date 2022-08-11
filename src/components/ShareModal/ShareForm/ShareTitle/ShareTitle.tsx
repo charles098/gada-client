@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const ShareTitle = () => {
-    const [ title, setTitle ] = useState<string>("");
-    const handleChange = (e: any) => setTitle(e.target.value);
+type TShareTitle = {
+    title: string;
+    setTitle: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ShareTitle = ({ title, setTitle }: TShareTitle) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
 
     return (
         <TitleWrapper>

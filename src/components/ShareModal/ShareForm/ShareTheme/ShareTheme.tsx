@@ -53,7 +53,11 @@ const customStyles = {
     })
 };
 
-const ShareTheme = ( { setTheme }: any ) => {
+type TShareTheme = {
+    setTheme: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const ShareTheme = ( { setTheme }: TShareTheme ) => {
     const options = themeOptions.map((x) => ({ value: x, label: x }));
 
     const handleChange = (value: any) => {

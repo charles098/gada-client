@@ -6,8 +6,14 @@ import ko from 'date-fns/locale/ko';
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
+interface ICalender {
+  startDate: Date;
+  endDate: Date;
+  key: string;
+}
+
 const NewPlanDate: FC = () => {
-    const [calendar, setCalendar] = useState<any>([
+    const [calendar, setCalendar] = useState<ICalender[]>([
         {
             startDate: new Date(),
             endDate: addDays(new Date(), 1),
@@ -15,7 +21,7 @@ const NewPlanDate: FC = () => {
         },
     ])
 
-    const getDateInput = useCallback((calendar: any) => {
+    const getDateInput = useCallback((calendar: ICalender) => {
         const start = calendar.startDate.toISOString().split('T')[0];
         const end = calendar.endDate.toISOString().split('T')[0];
         return `${start} ~ ${end}`

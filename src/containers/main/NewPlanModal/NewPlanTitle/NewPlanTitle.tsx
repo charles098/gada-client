@@ -15,7 +15,7 @@ const NewPlanTitle : FC = () => {
       }
     }, [])
 
-    const handleChange = (e: any) => setTitle(e.target.value);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
 
     return (
         <TitleWrapper>

@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 const FindPasswordForm: FC = () => {
     const [sendEmail, setSendEmail] = useState<boolean>(false);
-    const emailRef = useRef<any>();
+    const emailRef = useRef<HTMLInputElement>(null);
 
     const handleClick = () => {
-        const data = { email: emailRef.current.value };
+        const data = { email: emailRef.current?.value };
         
         axios
             .post('/users/reset', data).then((response) => {
