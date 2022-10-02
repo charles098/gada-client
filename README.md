@@ -1,7 +1,5 @@
-<div align="center">
-  <img width='15%' src='https://user-images.githubusercontent.com/101157141/180495615-d773735a-c0b1-480c-ba15-87b571e9a4e3.png'/>
-  <img width='55%' src="https://user-images.githubusercontent.com/101157141/180495469-a50408d1-4115-4365-814d-889204bcd186.gif"/>
-</div>
+
+https://user-images.githubusercontent.com/55475550/193474283-75818b9a-9a0a-44da-abe1-f695239a926c.mp4
 
 <br/>
 
